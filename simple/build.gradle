@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk rootProject.androidConfig.compileSdk
 
     defaultConfig {
         applicationId "com.bonepeople.android.widget.simple"
-        minSdk 23
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        minSdk rootProject.androidConfig.minSdk
+        targetSdk rootProject.androidConfig.targetSdk
+        versionCode rootProject.androidConfig.versionCode
+        versionName rootProject.androidConfig.versionName
     }
 
     buildTypes {
