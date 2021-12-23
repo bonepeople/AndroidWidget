@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
 }
 
@@ -7,11 +7,12 @@ android {
     compileSdk rootProject.androidConfig.compileSdk
 
     defaultConfig {
-        applicationId "com.bonepeople.android.widget.simple"
         minSdk rootProject.androidConfig.minSdk
         targetSdk rootProject.androidConfig.targetSdk
         versionCode rootProject.androidConfig.versionCode
         versionName rootProject.androidConfig.versionName
+
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -20,18 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-
-    buildFeatures {
-        viewBinding true
     }
 }
 
@@ -39,7 +34,4 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-
-    implementation project(path: ':widget')
 }

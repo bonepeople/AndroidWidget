@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidWidget"
 include ':simple'
+include ':widget'
