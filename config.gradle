@@ -6,4 +6,9 @@ ext {
             versionCode: 1,
             versionName: "1.0.0",
     ]
+    publishConfig = [
+            groupId       : "com.bonepeople.android.lib",
+            artifactId    : "AndroidWidget",
+            publishVersion: "1.0.0",
+    ]
 }
