@@ -38,6 +38,9 @@ dependencies {
 
     //gson https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    //AppStartup https://developer.android.google.cn/topic/libraries/app-startup?hl=zh-cn
+    implementation 'androidx.startup:startup-runtime:1.0.0'
 }
 
 afterEvaluate {
