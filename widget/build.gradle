@@ -36,6 +36,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
 
+    //kotlin协程 https://github.com/Kotlin/kotlinx.coroutines/blob/master/README.md#using-in-your-projects
+    //kotlinx-coroutines-android依赖用于切换至android的UI线程
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
     //gson https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
