@@ -9,14 +9,14 @@ object AppLog {
     //日志TAG
     var tag = "AppLog"
 
-    //日志输出开关，debug=true输出日志，默认为false
-    var debug = false
+    //日志输出开关
+    var enable = false
 
     /**
      * 打印debug日志
      */
     fun debug(content: Any?) {
-        if (debug) {
+        if (enable) {
             Log.d(tag, content.toString())
         }
     }
@@ -25,7 +25,7 @@ object AppLog {
      * 打印info日志
      */
     fun print(content: Any?) {
-        if (debug) {
+        if (enable) {
             Log.i(tag, content.toString())
         }
     }
@@ -34,7 +34,7 @@ object AppLog {
      * 输出错误日志
      */
     fun error(message: Any?, throwable: Throwable? = null) {
-        if (debug) {
+        if (enable) {
             Log.e(tag, message.toString(), throwable)
         }
     }
