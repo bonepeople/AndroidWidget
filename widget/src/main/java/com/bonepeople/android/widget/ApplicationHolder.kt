@@ -26,6 +26,7 @@ object ApplicationHolder {
         override fun create(context: Context): ApplicationHolder {
             if (context is Application) {
                 instance = context
+                instance.registerActivityLifecycleCallbacks(ActivityHolder)
             }
             return ApplicationHolder
         }
