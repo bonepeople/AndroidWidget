@@ -22,7 +22,7 @@ object AppStorage {
     }
 
     /**
-     * 取出字符串，默认未空字符串
+     * 取出字符串，默认为空字符串
      */
     fun getString(key: String, default: String = ""): String {
         return storage?.getString(key, default) ?: default
@@ -40,5 +40,19 @@ object AppStorage {
      */
     fun getBoolean(key: String, default: Boolean = false): Boolean {
         return storage?.getBoolean(key, default) ?: default
+    }
+
+    /**
+     * 存放整型数字
+     */
+    fun putInt(key: String, value: Int) {
+        storage?.putInt(key, value)
+    }
+
+    /**
+     * 取出整型数字，默认为0
+     */
+    fun getInt(key: String, default: Int = 0): Int {
+        return storage?.getInt(key, default) ?: default
     }
 }
