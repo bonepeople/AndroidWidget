@@ -3,7 +3,7 @@ package com.bonepeople.android.widget.util
 import java.text.DateFormat
 
 /**
- * 时间相关工具
+ * 时间转换工具类
  */
 object AppTime {
     /**

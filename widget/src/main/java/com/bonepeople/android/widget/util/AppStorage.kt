@@ -4,7 +4,7 @@ import com.bonepeople.android.widget.ApplicationHolder
 import com.tencent.mmkv.MMKV
 
 /**
- * App数据存储类
+ * App数据存储工具类
  *
  * 基于MMKV
  */
