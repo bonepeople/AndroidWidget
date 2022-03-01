@@ -43,7 +43,7 @@ class AppPermission private constructor() {
         /**
          * 创建一个权限申请流程
          */
-        fun request(permissions: Array<String>): AppPermission {
+        fun request(vararg permissions: String): AppPermission {
             val permissionRequest = AppPermission()
             val launcher = Intent(RequestMultiplePermissions.ACTION_REQUEST_PERMISSIONS).putExtra(RequestMultiplePermissions.EXTRA_PERMISSIONS, permissions).createLauncher()
                 .onResult { result ->

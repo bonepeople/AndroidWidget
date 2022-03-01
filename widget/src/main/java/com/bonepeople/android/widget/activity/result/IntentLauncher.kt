@@ -11,32 +11,49 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.bonepeople.android.widget.ActivityHolder.putExtra
 import com.bonepeople.android.widget.DefaultActivityLifecycleCallbacks
 
+/**
+ * 用于调用ActivityResultLauncher的启动器
+ */
 class IntentLauncher : ActivityResultCallback<ActivityResult> {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private var intent: Intent? = null
-    private var result: ((ActivityResult) -> Unit)? = null
-    private var success: ((Intent?) -> Unit)? = null
-    private var failure: ((ActivityResult) -> Unit)? = null
+    private var resultAction: ((ActivityResult) -> Unit)? = null
+    private var successAction: ((Intent?) -> Unit)? = null
+    private var failureAction: ((ActivityResult) -> Unit)? = null
 
     internal fun prepare(intent: Intent) {
         this.intent = intent
-        result = null
-        success = null
-        failure = null
+        resultAction = null
+        successAction = null
+        failureAction = null
     }
 
-    fun onResult(method: (ActivityResult) -> Unit) = apply {
-        result = method
+    /**
+     * 设置收到Activity的返回结果时执行的动作
+     */
+    fun onResult(action: (ActivityResult) -> Unit) = apply {
+        resultAction = action
     }
 
-    fun onSuccess(method: (Intent?) -> Unit) = apply {
-        success = method
+    /**
+     * 设置Activity的返回结果为[Activity.RESULT_OK]时的动作
+     *
+     * 附带参数为返回的[Intent]
+     */
+    fun onSuccess(action: (Intent?) -> Unit) = apply {
+        successAction = action
     }
 
-    fun onFailure(method: (ActivityResult) -> Unit) = apply {
-        failure = method
+    /**
+     * 设置Activity的返回结果不为[Activity.RESULT_OK]时的动作
+     */
+    fun onFailure(action: (ActivityResult) -> Unit) = apply {
+        failureAction = action
     }
 
+    /**
+     *启动Activity
+     */
     fun launch() {
         intent?.let {
             launcher?.launch(it)
@@ -44,11 +61,11 @@ class IntentLauncher : ActivityResultCallback<ActivityResult> {
     }
 
     override fun onActivityResult(result: ActivityResult) {
-        this.result?.invoke(result)
+        this.resultAction?.invoke(result)
         if (result.resultCode == Activity.RESULT_OK) {
-            success?.invoke(result.data)
+            successAction?.invoke(result.data)
         } else {
-            failure?.invoke(result)
+            failureAction?.invoke(result)
         }
     }
 
