@@ -4,7 +4,7 @@ import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.core.content.ContextCompat
 import com.bonepeople.android.widget.ApplicationHolder
-import com.bonepeople.android.widget.activity.result.createLauncher
+import com.bonepeople.android.widget.activity.result.launch
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -65,14 +65,14 @@ class AppPermission private constructor() {
                 if (requestList.isEmpty()) { //所有权限均已授予
                     finished = true
                 } else { //申请未授予的权限
-                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, requestList.toTypedArray()).createLauncher()
+                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, requestList.toTypedArray()).launch()
                         .onResult { result ->
                             permissionResult.putAll(RequestMultiplePermissions().parseResult(result.resultCode, result.data))
                             val granted = permissionResult.values.all { it }
                             resultAction.invoke(granted, permissionResult)
                             if (granted) grantedAction.invoke()
                             finished = true
-                        }.launch()
+                        }
                 }
             }
         }

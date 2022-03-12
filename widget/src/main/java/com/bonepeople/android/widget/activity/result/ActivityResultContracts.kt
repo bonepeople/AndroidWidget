@@ -5,13 +5,13 @@ import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.ActivityHolder.getExtra
 
 /**
- * 为[Intent]创建一个[IntentLauncher]，用于获取Activity的返回结果
+ * 启动[Intent]并返回[IntentCallback]，用于获取Activity的返回结果
  */
-fun Intent.createLauncher(): IntentLauncher {
-    ActivityHolder.getTopActivity()?.getExtra("com.bonepeople.android.widget.activity.result.IntentLauncher")?.let {
-        val intentLauncher = it as IntentLauncher
-        intentLauncher.prepare(this)
-        return intentLauncher
+fun Intent.launch(): IntentCallback {
+    ActivityHolder.getTopActivity()?.getExtra("com.bonepeople.android.widget.activity.result.IntentCallback")?.let {
+        val intentCallback = it as IntentCallback
+        intentCallback.launch(this)
+        return intentCallback
     }
-    throw IllegalStateException("缺少可用的AppCompatActivity")
+    throw IllegalStateException("${ActivityHolder.getTopActivity()?.javaClass}需要继承自ComponentActivity")
 }

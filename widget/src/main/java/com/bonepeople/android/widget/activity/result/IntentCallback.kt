@@ -12,20 +12,21 @@ import com.bonepeople.android.widget.ActivityHolder.putExtra
 import com.bonepeople.android.widget.DefaultActivityLifecycleCallbacks
 
 /**
- * 用于调用ActivityResultLauncher的启动器
+ * ActivityResultLauncher返回结果的处理器
  */
-class IntentLauncher : ActivityResultCallback<ActivityResult> {
+class IntentCallback private constructor() : ActivityResultCallback<ActivityResult> {
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private var intent: Intent? = null
     private var resultAction: ((ActivityResult) -> Unit)? = null
     private var successAction: ((Intent?) -> Unit)? = null
     private var failureAction: ((ActivityResult) -> Unit)? = null
+    private var activityResult: ActivityResult? = null
 
-    internal fun prepare(intent: Intent) {
-        this.intent = intent
+    internal fun launch(intent: Intent) {
         resultAction = null
         successAction = null
         failureAction = null
+        activityResult = null
+        launcher?.launch(intent)
     }
 
     /**
@@ -33,6 +34,7 @@ class IntentLauncher : ActivityResultCallback<ActivityResult> {
      */
     fun onResult(action: (ActivityResult) -> Unit) = apply {
         resultAction = action
+        activityResult?.let(action)
     }
 
     /**
@@ -42,6 +44,11 @@ class IntentLauncher : ActivityResultCallback<ActivityResult> {
      */
     fun onSuccess(action: (Intent?) -> Unit) = apply {
         successAction = action
+        activityResult?.let {
+            if (it.resultCode == Activity.RESULT_OK) {
+                action.invoke(it.data)
+            }
+        }
     }
 
     /**
@@ -49,14 +56,10 @@ class IntentLauncher : ActivityResultCallback<ActivityResult> {
      */
     fun onFailure(action: (ActivityResult) -> Unit) = apply {
         failureAction = action
-    }
-
-    /**
-     *启动Activity
-     */
-    fun launch() {
-        intent?.let {
-            launcher?.launch(it)
+        activityResult?.let {
+            if (it.resultCode != Activity.RESULT_OK) {
+                action.invoke(it)
+            }
         }
     }
 
@@ -67,14 +70,15 @@ class IntentLauncher : ActivityResultCallback<ActivityResult> {
         } else {
             failureAction?.invoke(result)
         }
+        activityResult = result
     }
 
     internal object Register : DefaultActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
             if (activity is ComponentActivity) {
-                val intentLauncher = IntentLauncher()
-                intentLauncher.launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult(), intentLauncher)
-                activity.putExtra("com.bonepeople.android.widget.activity.result.IntentLauncher", intentLauncher)
+                val intentCallback = IntentCallback()
+                intentCallback.launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult(), intentCallback)
+                activity.putExtra("com.bonepeople.android.widget.activity.result.IntentCallback", intentCallback)
             }
         }
     }

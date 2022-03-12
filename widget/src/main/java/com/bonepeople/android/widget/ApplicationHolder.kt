@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.startup.Initializer
-import com.bonepeople.android.widget.activity.result.IntentLauncher
+import com.bonepeople.android.widget.activity.result.IntentCallback
 
 object ApplicationHolder {
     lateinit var instance: Application
@@ -28,7 +28,7 @@ object ApplicationHolder {
             if (context is Application) {
                 instance = context
                 instance.registerActivityLifecycleCallbacks(ActivityHolder)
-                instance.registerActivityLifecycleCallbacks(IntentLauncher.Register)
+                instance.registerActivityLifecycleCallbacks(IntentCallback.Register)
             }
             return ApplicationHolder
         }
