@@ -3,7 +3,9 @@ package com.bonepeople.android.widget.util
 import android.view.View
 import com.bonepeople.android.widget.R
 
-fun <T : View> T.singleClick(interval: Long = 1000, action: (T) -> Unit): T = apply {
+var singleClickInterval = 800L
+
+fun <T : View> T.singleClick(interval: Long = singleClickInterval, action: (T) -> Unit): T = apply {
     setOnClickListener {
         val now = System.currentTimeMillis()
         val lastClickTime = getTag(R.id.lastClickTime) as? Long ?: 0
