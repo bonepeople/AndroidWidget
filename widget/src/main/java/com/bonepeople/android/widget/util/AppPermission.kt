@@ -1,9 +1,12 @@
 package com.bonepeople.android.widget.util
 
-import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
-import com.bonepeople.android.widget.activity.result.IntentLauncher
+import androidx.core.content.ContextCompat
+import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.activity.result.createLauncher
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 /**
  * 权限申请工具类
@@ -11,15 +14,22 @@ import com.bonepeople.android.widget.activity.result.createLauncher
  * 采用ActivityResultContract方式申请权限
  */
 class AppPermission private constructor() {
-    private var launcher: IntentLauncher? = null
-    private var resultAction: (Boolean, Map<String, Boolean>) -> Unit = { _, _ -> }
+    private val permissionResult = LinkedHashMap<String, Boolean>()
+    private var resultAction: (Boolean, LinkedHashMap<String, Boolean>) -> Unit = { _, _ -> }
     private var grantedAction: () -> Unit = {}
+    private var finished = false
 
     /**
      * 设置权限全部授予时的动作
      */
     fun onGranted(action: () -> Unit) = apply {
-        grantedAction = action
+        if (finished) {
+            if (permissionResult.values.all { it }) {
+                action.invoke()
+            }
+        } else {
+            grantedAction = action
+        }
     }
 
     /**
@@ -28,32 +38,43 @@ class AppPermission private constructor() {
      * allGranted - 是否全部授予权限
      * permissionResult - 每一项权限及其所对应的申请结果
      */
-    fun onResult(action: (allGranted: Boolean, permissionResult: Map<String, Boolean>) -> Unit) = apply {
-        resultAction = action
-    }
-
-    /**
-     * 申请权限
-     */
-    fun launch() {
-        launcher?.launch()
+    fun onResult(action: (allGranted: Boolean, permissionResult: LinkedHashMap<String, Boolean>) -> Unit) = apply {
+        if (finished) {
+            val granted = permissionResult.values.all { it }
+            action.invoke(granted, permissionResult)
+        } else {
+            resultAction = action
+        }
     }
 
     companion object {
         /**
-         * 创建一个权限申请流程
+         * 发起权限申请
          */
         fun request(vararg permissions: String): AppPermission {
-            val permissionRequest = AppPermission()
-            val launcher = Intent(RequestMultiplePermissions.ACTION_REQUEST_PERMISSIONS).putExtra(RequestMultiplePermissions.EXTRA_PERMISSIONS, permissions).createLauncher()
-                .onResult { result ->
-                    val permissionResult = RequestMultiplePermissions().parseResult(result.resultCode, result.data)
-                    val granted = permissionResult.values.all { it }
-                    permissionRequest.resultAction.invoke(granted, permissionResult)
-                    if (granted) permissionRequest.grantedAction.invoke()
+            return AppPermission().apply {
+                val requestList = LinkedList<String>()
+                permissions.forEach {
+                    if (ContextCompat.checkSelfPermission(ApplicationHolder.instance, it) == PackageManager.PERMISSION_GRANTED) {
+                        permissionResult[it] = true
+                    } else {
+                        permissionResult[it] = false
+                        requestList.add(it)
+                    }
                 }
-            permissionRequest.launcher = launcher
-            return permissionRequest
+                if (requestList.isEmpty()) { //所有权限均已授予
+                    finished = true
+                } else { //申请未授予的权限
+                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, requestList.toTypedArray()).createLauncher()
+                        .onResult { result ->
+                            permissionResult.putAll(RequestMultiplePermissions().parseResult(result.resultCode, result.data))
+                            val granted = permissionResult.values.all { it }
+                            resultAction.invoke(granted, permissionResult)
+                            if (granted) grantedAction.invoke()
+                            finished = true
+                        }.launch()
+                }
+            }
         }
     }
 }
