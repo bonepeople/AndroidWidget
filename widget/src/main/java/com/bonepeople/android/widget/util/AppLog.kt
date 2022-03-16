@@ -6,10 +6,14 @@ import android.util.Log
  * 日志输出工具类
  */
 object AppLog {
-    //日志TAG
+    /**
+     * 默认日志TAG
+     */
     var tag = "AppLog"
 
-    //日志输出开关
+    /**
+     * 日志输出开关
+     */
     var enable = false
 
     /**
