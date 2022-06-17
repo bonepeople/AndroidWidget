@@ -1,6 +1,7 @@
 package com.bonepeople.android.widget.util
 
 import android.util.Log
+import com.bonepeople.android.widget.ApplicationHolder
 
 /**
  * 日志输出工具类
@@ -14,7 +15,7 @@ object AppLog {
     /**
      * 日志输出开关
      */
-    var enable = false
+    var enable = ApplicationHolder.debug
 
     /**
      * 打印debug日志

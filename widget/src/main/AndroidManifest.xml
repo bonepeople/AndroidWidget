@@ -10,7 +10,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.bonepeople.android.widget.ApplicationHolder$AppInitializer"
+                android:name="com.bonepeople.android.widget.ApplicationHolder$StartUp"
                 android:value="@string/androidx_startup" />
         </provider>
     </application>
