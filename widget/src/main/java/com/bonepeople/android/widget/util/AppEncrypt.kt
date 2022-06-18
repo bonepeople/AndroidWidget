@@ -1,6 +1,7 @@
 package com.bonepeople.android.widget.util
 
 import android.util.Base64
+import java.io.InputStream
 import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -17,8 +18,33 @@ object AppEncrypt {
     fun encryptByMD5(content: String): String {
         val messageDigest = MessageDigest.getInstance("MD5")
         val resultBytes = messageDigest.digest(content.toByteArray())
+        return convertByteArrayToString(resultBytes)
+    }
+
+    /**
+     * 计算输入流中数据的MD5值并将结果转换为字符串返回
+     *
+     * 待完善：添加终止计算的逻辑
+     * @param inputStream 输入流
+     * @param blockSize 缓冲区大小，通常配合[onProgress]使用，控制回调频率
+     * @param onProgress 计算进度的回调，返回当前已处理内容的大小
+     */
+    fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String {
+        val messageDigest = MessageDigest.getInstance("MD5")
+        val buffer = ByteArray(blockSize)
+        var i: Int
+        var count = 0L
+        while (inputStream.read(buffer, 0, buffer.size).also { i = it } != -1) {
+            count += i
+            messageDigest.update(buffer, 0, i)
+            onProgress?.invoke(count)
+        }
+        return convertByteArrayToString(messageDigest.digest())
+    }
+
+    fun convertByteArrayToString(bytes: ByteArray): String {
         val buffer = StringBuffer()
-        resultBytes.map {
+        bytes.map {
             val hexStr = Integer.toHexString(it.toInt() and 0xFF)
             if (hexStr.length < 2) {
                 buffer.append(0)
