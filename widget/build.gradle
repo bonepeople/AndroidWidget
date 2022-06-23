@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.tencent:mmkv-static:1.2.9'
 
     //AppStartup https://developer.android.google.cn/topic/libraries/app-startup?hl=zh-cn
-    implementation 'androidx.startup:startup-runtime:1.0.0'
+    implementation("androidx.startup:startup-runtime:1.1.1")
 }
 
 afterEvaluate {
