@@ -1,7 +1,9 @@
 package com.bonepeople.android.widget.simple
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.simple.databinding.ActivityMainBinding
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.singleClick
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         views.buttonTest.singleClick { test() }
+        views.buttonContract.singleClick { Intent(this, ContractActivity::class.java).launch() }
     }
 
     private fun initData(savedInstanceState: Bundle?) {
