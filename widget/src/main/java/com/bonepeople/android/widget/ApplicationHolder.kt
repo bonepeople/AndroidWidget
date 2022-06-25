@@ -6,7 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.startup.Initializer
-import com.bonepeople.android.widget.activity.result.IntentCallback
+import com.bonepeople.android.widget.activity.result.IntentLauncher
 
 /**
  * Application状态保存器
@@ -56,7 +56,7 @@ object ApplicationHolder {
             if (context is Application) {
                 instance = context
                 instance.registerActivityLifecycleCallbacks(ActivityHolder)
-                instance.registerActivityLifecycleCallbacks(IntentCallback.Register)
+                instance.registerActivityLifecycleCallbacks(IntentLauncher.Registry)
             }
             return ApplicationHolder
         }
