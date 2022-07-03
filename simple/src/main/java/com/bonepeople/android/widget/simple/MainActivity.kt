@@ -6,7 +6,9 @@ import android.os.Bundle
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.simple.databinding.ActivityMainBinding
 import com.bonepeople.android.widget.util.AppLog
+import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.singleClick
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
     private val views: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -28,10 +30,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test() {
-        kotlin.runCatching {
-            AppLog.print("test")
-        }.getOrElse {
-            AppLog.error("test", it)
+        measureTimeMillis {
+            kotlin.runCatching {
+                AppLog.print("test")
+            }.getOrElse {
+                AppLog.error("test", it)
+            }
+        }.let {
+            AppLog.print("used ${AppTime.getTimeString(it)}")
         }
     }
 }
