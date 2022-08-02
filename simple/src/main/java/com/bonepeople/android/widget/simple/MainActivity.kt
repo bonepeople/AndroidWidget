@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
     private fun test() {
         measureTimeMillis {
             kotlin.runCatching {
-                AppLog.print("test")
+                AppLog.debug("test")
             }.getOrElse {
-                AppLog.error("test", it)
+                AppLog.error("Exception@test", it)
             }
         }.let {
-            AppLog.print("used ${AppTime.getTimeString(it)}")
+            AppLog.debug("used ${AppTime.getTimeString(it)}")
         }
     }
 }
