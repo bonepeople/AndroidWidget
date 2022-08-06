@@ -1,6 +1,7 @@
 package com.bonepeople.android.widget.util
 
 import android.util.Base64
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
@@ -89,10 +90,17 @@ object AppEncrypt {
      * @return 将加密的数据进行Base64编码后返回
      */
     fun encryptByRSA(data: String, key: Key): String {
-        val cipher = Cipher.getInstance("RSA")
-        cipher.init(Cipher.ENCRYPT_MODE, key)
-        val encrypted = cipher.doFinal(data.toByteArray())
-        return Base64.encodeToString(encrypted, Base64.DEFAULT)
+        val outputStream = ByteArrayOutputStream()
+        data.byteInputStream().use { stream ->
+            val cipher = Cipher.getInstance("RSA")
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            val buffer = ByteArray(cipher.blockSize)
+            var i: Int
+            while (stream.read(buffer, 0, buffer.size).also { i = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, i))
+            }
+        }
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
     }
 
     /**
@@ -103,10 +111,17 @@ object AppEncrypt {
      * @return 解密得到的数据
      */
     fun decryptByRSA(data: String, key: Key): String {
-        val cipher = Cipher.getInstance("RSA")
-        cipher.init(Cipher.DECRYPT_MODE, key)
-        val decrypted = cipher.doFinal(Base64.decode(data, Base64.DEFAULT))
-        return String(decrypted)
+        val outputStream = ByteArrayOutputStream()
+        Base64.decode(data, Base64.DEFAULT).inputStream().use { stream ->
+            val cipher = Cipher.getInstance("RSA")
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            val buffer = ByteArray(cipher.blockSize)
+            var i: Int
+            while (stream.read(buffer, 0, buffer.size).also { i = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, i))
+            }
+        }
+        return outputStream.toString()
     }
 
     /**
