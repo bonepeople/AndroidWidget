@@ -10,8 +10,6 @@ android {
     defaultConfig {
         minSdk rootProject.androidConfig.minSdk
         targetSdk rootProject.androidConfig.targetSdk
-        versionCode rootProject.androidConfig.versionCode
-        versionName rootProject.androidConfig.versionName
 
         consumerProguardFiles "consumer-rules.pro"
     }
