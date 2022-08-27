@@ -1,24 +1,33 @@
 package com.bonepeople.android.widget.util
 
 import java.lang.StringBuilder
-import java.text.DateFormat
+import java.util.Calendar
 
 /**
  * 时间转换工具类
  */
 object AppTime {
-    /**
-     * 用于格式化时间戳的对象
-     */
-    private val dateFormatter: DateFormat by lazy {
-        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM)
-    }
+    private val calendar: Calendar by lazy { Calendar.getInstance() }
 
     /**
-     * 将时间戳格式化为"2021/1/1 12:33:33"形式的字符串
+     * 将13位的时间戳格式化为"2021/1/1 12:33:33"形式的字符串
+     * @param withMillis 返回的字符串中包含毫秒数
      */
-    fun getDateTimeString(milliseconds: Long): String {
-        return dateFormatter.format(milliseconds)
+    fun getDateTimeString(timestamp: Long, withMillis: Boolean = false): String {
+        calendar.timeInMillis = timestamp
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH] + 1
+        val day = calendar[Calendar.DAY_OF_MONTH]
+        val hour = calendar[Calendar.HOUR_OF_DAY]
+        val minute = formatTimeNumber(calendar[Calendar.MINUTE].toLong(), 2)
+        val second = formatTimeNumber(calendar[Calendar.SECOND].toLong(), 2)
+        val millisecond = formatTimeNumber(calendar[Calendar.MILLISECOND].toLong(), 3)
+
+        return if (withMillis) {
+            "$year/$month/$day $hour:$minute:$second.$millisecond"
+        } else {
+            "$year/$month/$day $hour:$minute:$second"
+        }
     }
 
     /**
