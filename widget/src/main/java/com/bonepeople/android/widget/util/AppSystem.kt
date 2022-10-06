@@ -30,6 +30,7 @@ object AppSystem {
      */
     fun registerBatteryChanged(context: Context, onChange: (percent: Int) -> Unit): BroadcastReceiver {
         val receiver = object : BroadcastReceiver() {
+            private var lastPercent = 0
             override fun onReceive(context: Context, intent: Intent) {
                 val level = intent.getIntExtra("level", 0)
                 val scale = intent.getIntExtra("scale", 0)
@@ -38,7 +39,10 @@ object AppSystem {
                 }.getOrElse {
                     0
                 }
-                onChange(percent)
+                if (percent != lastPercent) {
+                    lastPercent = percent
+                    onChange(percent)
+                }
             }
         }
         context.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
