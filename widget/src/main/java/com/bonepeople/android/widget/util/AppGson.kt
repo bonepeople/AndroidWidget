@@ -51,7 +51,7 @@ object AppGson {
         }
     }
 
-    private class GsonAdapter : JsonDeserializer<Any> {
+    private class GsonAdapter : JsonDeserializer<Any>, JsonSerializer<Any> {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Any {
             if (json.isJsonObject) searchInObject(json.asJsonObject)
             if (json.isJsonArray) searchInArray(json.asJsonArray)
@@ -81,6 +81,10 @@ object AppGson {
                 }
             }
             nullIndex.forEach { arr.remove(it) }
+        }
+
+        override fun serialize(src: Any, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+            return context.serialize(src, typeOfSrc)
         }
     }
 }
