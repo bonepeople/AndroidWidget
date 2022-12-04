@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace "com.bonepeople.android.widget"
     compileSdk rootProject.androidConfig.compileSdk
 
     defaultConfig {
