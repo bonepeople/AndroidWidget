@@ -1,6 +1,7 @@
 package com.bonepeople.android.widget.util
 
 import android.util.Base64
+import androidx.annotation.Size
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.security.*
@@ -60,25 +61,25 @@ object AppEncrypt {
      * 根据传入的密钥对数据进行AES加密
      * + 模式：AES/CBC/PKCS5Padding
      */
-    fun encryptByAES(data: String, secret: String, salt: String): String {
+    fun encryptByAES(data: String, @Size(16) secret: String, @Size(16) salt: String, base64Flag: Int = Base64.NO_WRAP): String {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv)
         val encrypted = cipher.doFinal(data.toByteArray())
-        return Base64.encodeToString(encrypted, Base64.DEFAULT)
+        return Base64.encodeToString(encrypted, base64Flag)
     }
 
     /**
      * 根据传入的密钥对数据进行AES解密
      * + 模式：AES/CBC/PKCS5Padding
      */
-    fun decryptByAES(data: String, secret: String, salt: String): String {
+    fun decryptByAES(data: String, @Size(16) secret: String, @Size(16) salt: String, base64Flag: Int = Base64.NO_WRAP): String {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
-        val decrypted = cipher.doFinal(Base64.decode(data, Base64.DEFAULT))
+        val decrypted = cipher.doFinal(Base64.decode(data, base64Flag))
         return String(decrypted)
     }
 
@@ -89,7 +90,7 @@ object AppEncrypt {
      * @param key 加密所需的公钥或私钥，可以通过[decodeRSAPublicKey]或[decodeRSAPrivateKey]方法生成
      * @return 将加密的数据进行Base64编码后返回
      */
-    fun encryptByRSA(data: String, key: Key): String {
+    fun encryptByRSA(data: String, key: Key, base64Flag: Int = Base64.NO_WRAP): String {
         val outputStream = ByteArrayOutputStream()
         data.byteInputStream().use { stream ->
             val cipher = Cipher.getInstance("RSA")
@@ -100,7 +101,7 @@ object AppEncrypt {
                 outputStream.write(cipher.doFinal(buffer, 0, i))
             }
         }
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+        return Base64.encodeToString(outputStream.toByteArray(), base64Flag)
     }
 
     /**
@@ -110,9 +111,9 @@ object AppEncrypt {
      * @param key 解密所需的公钥或私钥，可以通过[decodeRSAPublicKey]或[decodeRSAPrivateKey]方法生成
      * @return 解密得到的数据
      */
-    fun decryptByRSA(data: String, key: Key): String {
+    fun decryptByRSA(data: String, key: Key, base64Flag: Int = Base64.NO_WRAP): String {
         val outputStream = ByteArrayOutputStream()
-        Base64.decode(data, Base64.DEFAULT).inputStream().use { stream ->
+        Base64.decode(data, base64Flag).inputStream().use { stream ->
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.DECRYPT_MODE, key)
             val buffer = ByteArray(cipher.blockSize)
