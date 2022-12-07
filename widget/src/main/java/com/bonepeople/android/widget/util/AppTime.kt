@@ -53,7 +53,7 @@ object AppTime {
         }
     }
 
-    private fun formatTimeNumber(number: Long, length: Int): String {
+    fun formatTimeNumber(number: Long, length: Int): String {
         val fillSize = length - number.toString().length
         val result = StringBuilder()
         for (i in 1..fillSize) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="date_time_picker_year" type="string">year</item>
+    <item name="date_time_picker_month" type="string">month</item>
+    <item name="date_time_picker_day" type="string">day</item>
+</resources>

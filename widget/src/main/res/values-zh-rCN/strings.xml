@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="date_time_picker_year" type="string">年</item>
+    <item name="date_time_picker_month" type="string">月</item>
+    <item name="date_time_picker_day" type="string">日</item>
+</resources>
