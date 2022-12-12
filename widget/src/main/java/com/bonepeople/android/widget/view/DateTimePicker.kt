@@ -1,5 +1,8 @@
 package com.bonepeople.android.widget.view
 
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +58,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         views.numberPickerSecond.setFormatter { AppTime.formatTimeNumber(it.toLong(), 2) }
         views.numberPickerSecond.value = calendar[Calendar.SECOND]
 
-        views.textViewOk.singleClick { onTimeSet() }
+        views.buttonOk.singleClick { onTimeSet() }
     }
 
     override fun onResume() {
@@ -106,5 +109,19 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         fun create(activity: FragmentActivity) = DateTimePicker(activity.supportFragmentManager)
         fun create(fragment: Fragment) = DateTimePicker(fragment.childFragmentManager)
         fun create(fragmentManager: FragmentManager) = DateTimePicker(fragmentManager)
+
+        fun showSystemDialog(activity: Activity, time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
+            val calendar = Calendar.getInstance()
+            if (time > 0) calendar.timeInMillis = time
+            val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val listener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                    calendar.set(year, month, dayOfMonth, hourOfDay, minute, 0)
+                    calendar[Calendar.MILLISECOND] = 0
+                    action.invoke(calendar)
+                }
+                TimePickerDialog(activity, listener, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true).show()
+            }
+            DatePickerDialog(activity, listener, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]).show()
+        }
     }
 }
