@@ -21,3 +21,24 @@ fun <T : View> T.singleClick(interval: Long = singleClickInterval, action: (T) -
         }
     }
 }
+
+/**
+ * 设置[View]为[View.VISIBLE]
+ */
+fun <T : View> T.show(): T = apply {
+    visibility = View.VISIBLE
+}
+
+/**
+ * 设置[View]为[View.INVISIBLE]
+ */
+fun <T : View> T.hide(): T = apply {
+    visibility = View.INVISIBLE
+}
+
+/**
+ * 设置[View]为[View.GONE]
+ */
+fun <T : View> T.gone(): T = apply {
+    visibility = View.GONE
+}
