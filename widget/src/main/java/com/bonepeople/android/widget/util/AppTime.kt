@@ -18,10 +18,10 @@ object AppTime {
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH] + 1
         val day = calendar[Calendar.DAY_OF_MONTH]
-        val hour = calendar[Calendar.HOUR_OF_DAY]
-        val minute = formatTimeNumber(calendar[Calendar.MINUTE].toLong(), 2)
-        val second = formatTimeNumber(calendar[Calendar.SECOND].toLong(), 2)
-        val millisecond = formatTimeNumber(calendar[Calendar.MILLISECOND].toLong(), 3)
+        val hour = fillString(calendar[Calendar.HOUR_OF_DAY], "00")
+        val minute = fillString(calendar[Calendar.MINUTE], "00")
+        val second = fillString(calendar[Calendar.SECOND], "00")
+        val millisecond = fillString(calendar[Calendar.MILLISECOND], "000")
 
         return if (withMillis) {
             "$year/$month/$day $hour:$minute:$second.$millisecond"
@@ -32,34 +32,49 @@ object AppTime {
 
     /**
      * 将时间戳格式化为"102:04:59.999"形式的字符串
+     * @param fullTimeString 时间不足小时或分钟的时候以**00**补全，默认为**false**
+     * @param withMillis 显示毫秒数，默认为**true**
      */
-    fun getTimeString(milliseconds: Long): String {
+    fun getTimeString(milliseconds: Long, fullTimeString: Boolean = false, withMillis: Boolean = true): String {
         val seconds = milliseconds / 1000
         val minutes = seconds / 60
         val hours = minutes / 60
 
-        val milliStr = formatTimeNumber(milliseconds % 1000, 3)
-        val secondStr = formatTimeNumber(seconds % 60, 2)
-        val minuteStr = formatTimeNumber(minutes % 60, 2)
+        val milliStr = fillString(milliseconds % 1000, "000")
+        val secondStr = fillString(seconds % 60, "00")
+        val minuteStr = fillString(minutes % 60, "00")
+        val hourStr = fillString(hours, "00")
 
-        return if (hours != 0L) {
-            "$hours:$minuteStr:$secondStr.$milliStr"
-        } else if (minutes != 0L) {
-            "$minuteStr:$secondStr.$milliStr"
-        } else if (seconds != 0L) {
-            "${seconds % 60}.$milliStr"
-        } else {
-            "0.$milliStr"
+        val stringBuilder = StringBuilder()
+        if (hours != 0L || fullTimeString) {
+            stringBuilder.append(hourStr)
+            stringBuilder.append(':')
         }
+        if (minutes != 0L || fullTimeString) {
+            stringBuilder.append(minuteStr)
+            stringBuilder.append(':')
+        }
+        if (stringBuilder.isEmpty()) {
+            stringBuilder.append(seconds)
+        } else {
+            stringBuilder.append(secondStr)
+        }
+        if (withMillis) {
+            stringBuilder.append('.')
+            stringBuilder.append(milliStr)
+        }
+
+        return stringBuilder.toString()
     }
 
-    fun formatTimeNumber(number: Long, length: Int): String {
-        val fillSize = length - number.toString().length
+    fun fillString(number: Any, formatStr: String): String {
+        val content = number.toString()
+        val fillSize = formatStr.length - content.length
         val result = StringBuilder()
-        for (i in 1..fillSize) {
-            result.append('0')
+        repeat(fillSize) {
+            result.append(formatStr[it])
         }
-        result.append(number)
+        result.append(content)
         return result.toString()
     }
 }
