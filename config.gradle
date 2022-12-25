@@ -3,12 +3,12 @@ ext {
             minSdk     : 23,
             targetSdk  : 31,
             compileSdk : 31,
-            versionCode: 17,
-            versionName: "1.4.4",
+            versionCode: 18,
+            versionName: "1.4.5",
     ]
     publishConfig = [
             groupId       : "com.bonepeople.android.lib",
             artifactId    : "AndroidWidget",
-            publishVersion: "1.4.4",
+            publishVersion: "1.4.5",
     ]
 }
