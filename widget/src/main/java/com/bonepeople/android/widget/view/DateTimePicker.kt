@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.databinding.DialogDateTimePickerBinding
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.singleClick
@@ -35,7 +36,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         }
         views.numberPickerMonth.minValue = 1
         views.numberPickerMonth.maxValue = 12
-        views.numberPickerMonth.value = calendar[Calendar.MONTH]
+        views.numberPickerMonth.value = calendar[Calendar.MONTH] + 1
         views.numberPickerMonth.setOnValueChangedListener { _, _, newVal ->
             updateMaxDay(views.numberPickerYear.value, newVal)
         }
@@ -109,6 +110,18 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         fun create(activity: FragmentActivity) = DateTimePicker(activity.supportFragmentManager)
         fun create(fragment: Fragment) = DateTimePicker(fragment.childFragmentManager)
         fun create(fragmentManager: FragmentManager) = DateTimePicker(fragmentManager)
+
+        /**
+         * 展示日期时间选择对话框
+         * @param time 用于初始化对话框展示的时间
+         * @param action 用户点击确定后的动作，返回的[Calendar]可以使用[Calendar.getTimeInMillis]方法获取时间戳
+         */
+        fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
+            val activity = ActivityHolder.getTopActivity()
+            if (activity is FragmentActivity) {
+                create(activity).show(time, action)
+            }
+        }
 
         fun showSystemDialog(activity: Activity, time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
             val calendar = Calendar.getInstance()
