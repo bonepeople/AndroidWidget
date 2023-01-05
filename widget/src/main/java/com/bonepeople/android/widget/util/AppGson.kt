@@ -11,13 +11,17 @@ import java.util.*
  * Gson数据转换工具类
  */
 object AppGson {
+    var defaultGson = GsonBuilder().disableHtmlEscaping().create()
+
+    @Deprecated("使用defaultGson替代")
     var gson: Gson = GsonBuilder().disableHtmlEscaping().create()
 
     /**
      * 将对象转换成json字符串
      */
     @CheckResult
-    fun toJson(data: Any?): String {
+    @JvmOverloads
+    fun toJson(data: Any?, gson: Gson = defaultGson): String {
         return gson.toJson(data)
     }
 
@@ -25,7 +29,8 @@ object AppGson {
      * 将json字符串转换成对象
      */
     @CheckResult
-    inline fun <reified R> toObject(json: String?): R {
+    @JvmOverloads
+    inline fun <reified R> toObject(json: String?, gson: Gson = defaultGson): R {
         return if (R::class.java.typeParameters.isNotEmpty()) {
             gson.fromJson(json, object : TypeToken<R>() {}.type) ?: throw IllegalStateException("Empty JSON string for decode '$json'")
         } else {
@@ -36,7 +41,7 @@ object AppGson {
     /**
      * 为gson添加一个可以去除空值的适配器
      * + 该适配器可以在解析的过程中去掉json字符串中的null，防止空指针的发生
-     * @param originGson 需要添加适配器的gson，可以是[AppGson.gson]，去掉null之后将使用此gson进行解析
+     * @param originGson 需要添加适配器的gson，可以是[AppGson.defaultGson]，去掉null之后将使用此gson进行解析
      * @return 返回一个已经添加了适配器的gson，可以使用返回的gson进行解析
      */
     @CheckResult
