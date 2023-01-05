@@ -1,6 +1,11 @@
 package com.bonepeople.android.widget.util
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.core.content.ContextCompat
 import com.bonepeople.android.widget.ApplicationHolder
@@ -48,24 +53,80 @@ class AppPermission private constructor() {
     }
 
     companion object {
+        interface Intercepter {
+            fun check(permission: String)
+            suspend fun request(permission: String)
+        }
+
+        class NormalPermission : Intercepter {
+            override fun check(permission: String) {
+                if (ContextCompat.checkSelfPermission(ApplicationHolder.instance, permission) == PackageManager.PERMISSION_GRANTED) {
+                    permissionResult[it] = true
+                } else {
+                    permissionResult[it] = false
+                    requestList.add(it)
+                }
+            }
+
+            override suspend fun request(permission: String) {
+
+            }
+        }
+
+        /**
+         * 同步的权限申请，需要在协程内发起
+         */
+        suspend fun requestEqueen(vararg permissions: String) {
+
+        }
+
         /**
          * 发起权限申请
          */
         fun request(vararg permissions: String): AppPermission {
             return AppPermission().apply {
-                val requestList = LinkedList<String>()
+                val requestList = HashSet<String>()
                 permissions.forEach {
-                    if (ContextCompat.checkSelfPermission(ApplicationHolder.instance, it) == PackageManager.PERMISSION_GRANTED) {
-                        permissionResult[it] = true
+                    NormalPermission().check(it)
+                    if (it == android.Manifest.permission.MANAGE_EXTERNAL_STORAGE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if (Environment.isExternalStorageManager()) {
+                                permissionResult[it] = true
+                            } else {
+                                permissionResult[it] = false
+                                requestList.add(it)
+                            }
+                        } else {
+                            permissionResult[it] = false
+                        }
                     } else {
-                        permissionResult[it] = false
-                        requestList.add(it)
+                        if (ContextCompat.checkSelfPermission(ApplicationHolder.instance, it) == PackageManager.PERMISSION_GRANTED) {
+                            permissionResult[it] = true
+                        } else {
+                            permissionResult[it] = false
+                            requestList.add(it)
+                        }
                     }
                 }
                 if (requestList.isEmpty()) { //所有权限均已授予
                     finished = true
                 } else { //申请未授予的权限
-                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, requestList.toTypedArray()).launch()
+                    val normalPermission = HashSet<String>()
+                    requestList.forEach {
+                        if (it == android.Manifest.permission.MANAGE_EXTERNAL_STORAGE) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                    .setData(Uri.parse("package:${ApplicationHolder.getPackageName()}"))
+                                    .launch()
+                                    .onResult { _ ->
+                                        permissionResult[it] = Environment.isExternalStorageManager()
+                                    }
+                            }
+                        } else {
+                            normalPermission.add(it)
+                        }
+                    }
+                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, normalPermission.toTypedArray()).launch()
                         .onResult { result ->
                             permissionResult.putAll(RequestMultiplePermissions().parseResult(result.resultCode, result.data))
                             val granted = permissionResult.values.all { it }
