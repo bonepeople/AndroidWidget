@@ -4,6 +4,7 @@ import android.util.Base64
 import androidx.annotation.Size
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.io.OutputStream
 import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
@@ -35,11 +36,11 @@ object AppEncrypt {
     fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String {
         val messageDigest = MessageDigest.getInstance("MD5")
         val buffer = ByteArray(blockSize)
-        var i: Int
+        var length: Int
         var count = 0L
-        while (inputStream.read(buffer, 0, buffer.size).also { i = it } != -1) {
-            count += i
-            messageDigest.update(buffer, 0, i)
+        while (inputStream.read(buffer, 0, buffer.size).also { length = it } != -1) {
+            messageDigest.update(buffer, 0, length)
+            count += length
             onProgress?.invoke(count)
         }
         return convertByteArrayToString(messageDigest.digest())
@@ -71,6 +72,30 @@ object AppEncrypt {
     }
 
     /**
+     * 根据传入的密钥对数据进行AES加密
+     * + 模式：AES/CBC/PKCS5Padding
+     * + 返回的数据并未进行Base64编码
+     */
+    fun <T : OutputStream> encryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
+        val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv)
+        inputStream.use { input ->
+            val buffer = ByteArray(cipher.blockSize)
+            var length: Int
+            var count = 0L
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.update(buffer, 0, length))
+                count += length
+                onProgress?.invoke(count)
+            }
+            outputStream.write(cipher.doFinal())
+        }
+        return outputStream
+    }
+
+    /**
      * 根据传入的密钥对数据进行AES解密
      * + 模式：AES/CBC/PKCS5Padding
      */
@@ -81,6 +106,30 @@ object AppEncrypt {
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
         val decrypted = cipher.doFinal(Base64.decode(data, base64Flag))
         return String(decrypted)
+    }
+
+    /**
+     * 根据传入的密钥对数据进行AES解密
+     * + 模式：AES/CBC/PKCS5Padding
+     * + 传入的数据不需要进行Base64编码
+     */
+    fun <T : OutputStream> decryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
+        val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
+        inputStream.use { input ->
+            val buffer = ByteArray(cipher.blockSize)
+            var length: Int
+            var count = 0L
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.update(buffer, 0, length))
+                count += length
+                onProgress?.invoke(count)
+            }
+            outputStream.write(cipher.doFinal())
+        }
+        return outputStream
     }
 
     /**
@@ -96,9 +145,9 @@ object AppEncrypt {
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.ENCRYPT_MODE, key)
             val buffer = ByteArray(cipher.blockSize)
-            var i: Int
-            while (stream.read(buffer, 0, buffer.size).also { i = it } != -1) {
-                outputStream.write(cipher.doFinal(buffer, 0, i))
+            var length: Int
+            while (stream.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, length))
             }
         }
         return Base64.encodeToString(outputStream.toByteArray(), base64Flag)
@@ -117,9 +166,9 @@ object AppEncrypt {
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.DECRYPT_MODE, key)
             val buffer = ByteArray(cipher.blockSize)
-            var i: Int
-            while (stream.read(buffer, 0, buffer.size).also { i = it } != -1) {
-                outputStream.write(cipher.doFinal(buffer, 0, i))
+            var length: Int
+            while (stream.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, length))
             }
         }
         return outputStream.toString()
