@@ -141,16 +141,36 @@ object AppEncrypt {
      */
     fun encryptByRSA(data: String, key: Key, base64Flag: Int = Base64.NO_WRAP): String {
         val outputStream = ByteArrayOutputStream()
-        data.byteInputStream().use { stream ->
+        data.byteInputStream().use { input ->
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.ENCRYPT_MODE, key)
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
-            while (stream.read(buffer, 0, buffer.size).also { length = it } != -1) {
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
                 outputStream.write(cipher.doFinal(buffer, 0, length))
             }
         }
         return Base64.encodeToString(outputStream.toByteArray(), base64Flag)
+    }
+
+    /**
+     * 使用RSA算法对传入的数据进行加密
+     * + 模式：PKCS#8
+     */
+    fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
+        inputStream.use { input ->
+            val cipher = Cipher.getInstance("RSA")
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            val buffer = ByteArray(cipher.blockSize)
+            var length: Int
+            var count = 0L
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, length))
+                count += length
+                onProgress?.invoke(count)
+            }
+        }
+        return outputStream
     }
 
     /**
@@ -162,16 +182,36 @@ object AppEncrypt {
      */
     fun decryptByRSA(data: String, key: Key, base64Flag: Int = Base64.NO_WRAP): String {
         val outputStream = ByteArrayOutputStream()
-        Base64.decode(data, base64Flag).inputStream().use { stream ->
+        Base64.decode(data, base64Flag).inputStream().use { input ->
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.DECRYPT_MODE, key)
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
-            while (stream.read(buffer, 0, buffer.size).also { length = it } != -1) {
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
                 outputStream.write(cipher.doFinal(buffer, 0, length))
             }
         }
         return outputStream.toString()
+    }
+
+    /**
+     * 使用RSA算法对传入的数据进行解密
+     * + 模式：PKCS#8
+     */
+    fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
+        inputStream.use { input ->
+            val cipher = Cipher.getInstance("RSA")
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            val buffer = ByteArray(cipher.blockSize)
+            var length: Int
+            var count = 0L
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                outputStream.write(cipher.doFinal(buffer, 0, length))
+                count += length
+                onProgress?.invoke(count)
+            }
+        }
+        return outputStream
     }
 
     /**
