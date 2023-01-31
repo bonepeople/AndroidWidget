@@ -15,6 +15,7 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * 加解密工具类
  */
+@Suppress("UNUSED")
 object AppEncrypt {
 
     /**
@@ -38,10 +39,12 @@ object AppEncrypt {
         val buffer = ByteArray(blockSize)
         var length: Int
         var count = 0L
-        while (inputStream.read(buffer, 0, buffer.size).also { length = it } != -1) {
-            messageDigest.update(buffer, 0, length)
-            count += length
-            onProgress?.invoke(count)
+        inputStream.buffered().use { input ->
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                messageDigest.update(buffer, 0, length)
+                count += length
+                onProgress?.invoke(count)
+            }
         }
         return convertByteArrayToString(messageDigest.digest())
     }
@@ -81,16 +84,18 @@ object AppEncrypt {
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv)
-        inputStream.use { input ->
+        inputStream.buffered().use { input ->
+            val output = outputStream.buffered()
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
             var count = 0L
             while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
-                outputStream.write(cipher.update(buffer, 0, length))
+                output.write(cipher.update(buffer, 0, length))
                 count += length
                 onProgress?.invoke(count)
             }
-            outputStream.write(cipher.doFinal())
+            output.write(cipher.doFinal())
+            output.flush()
         }
         return outputStream
     }
@@ -118,16 +123,18 @@ object AppEncrypt {
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
-        inputStream.use { input ->
+        inputStream.buffered().use { input ->
+            val output = outputStream.buffered()
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
             var count = 0L
             while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
-                outputStream.write(cipher.update(buffer, 0, length))
+                output.write(cipher.update(buffer, 0, length))
                 count += length
                 onProgress?.invoke(count)
             }
-            outputStream.write(cipher.doFinal())
+            output.write(cipher.doFinal())
+            output.flush()
         }
         return outputStream
     }
@@ -158,17 +165,19 @@ object AppEncrypt {
      * + 模式：PKCS#8
      */
     fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
-        inputStream.use { input ->
+        inputStream.buffered().use { input ->
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.ENCRYPT_MODE, key)
+            val output = outputStream.buffered()
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
             var count = 0L
             while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
-                outputStream.write(cipher.doFinal(buffer, 0, length))
+                output.write(cipher.doFinal(buffer, 0, length))
                 count += length
                 onProgress?.invoke(count)
             }
+            output.flush()
         }
         return outputStream
     }
@@ -199,17 +208,19 @@ object AppEncrypt {
      * + 模式：PKCS#8
      */
     fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
-        inputStream.use { input ->
+        inputStream.buffered().use { input ->
             val cipher = Cipher.getInstance("RSA")
             cipher.init(Cipher.DECRYPT_MODE, key)
+            val output = outputStream.buffered()
             val buffer = ByteArray(cipher.blockSize)
             var length: Int
             var count = 0L
             while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
-                outputStream.write(cipher.doFinal(buffer, 0, length))
+                output.write(cipher.doFinal(buffer, 0, length))
                 count += length
                 onProgress?.invoke(count)
             }
+            output.flush()
         }
         return outputStream
     }
