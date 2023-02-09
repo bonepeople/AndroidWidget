@@ -48,10 +48,10 @@ class ContractActivity : AppCompatActivity() {
                     Intent(this, ResultActivity::class.java).launch()
                         .onSuccess {
                             val result = it?.getIntExtra("result", 0)
-                            AppLog.print("RESULT_OK - $result @ $ActivityResult")
+                            AppLog.info("RESULT_OK - $result @ $ActivityResult")
                         }
                         .onFailure {
-                            AppLog.print("RESULT_CANCEL @ $ActivityResult")
+                            AppLog.info("RESULT_CANCEL @ $ActivityResult")
                         }
                 }
             }
@@ -64,10 +64,10 @@ class ContractActivity : AppCompatActivity() {
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.print("permission result2 = granted @ $ActivityResult")
+                            AppLog.info("permission result2 = granted @ $ActivityResult")
                         }
                         .onResult { _, permissionResult ->
-                            AppLog.print("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
+                            AppLog.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
                         }
                 }
             }
@@ -80,13 +80,13 @@ class ContractActivity : AppCompatActivity() {
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.print("permission result3 = granted @ $ActivityResult")
+                            AppLog.info("permission result3 = granted @ $ActivityResult")
                             Intent(MediaStore.ACTION_IMAGE_CAPTURE).launch()
                                 .onSuccess {
-                                    AppLog.print("TAKE_PICTURE_OK @ $ActivityResult")
+                                    AppLog.info("TAKE_PICTURE_OK @ $ActivityResult")
                                 }
                                 .onFailure {
-                                    AppLog.print("TAKE_PICTURE_CANCEL @ $ActivityResult")
+                                    AppLog.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
                                 }
                         }
                 }
@@ -105,16 +105,16 @@ class ContractActivity : AppCompatActivity() {
             REQ_1 -> {
                 if (resultCode == RESULT_OK) {
                     val result = data?.getIntExtra("result", 0)
-                    AppLog.print("RESULT_OK - $result @ $Normal")
+                    AppLog.info("RESULT_OK - $result @ $Normal")
                 } else {
-                    AppLog.print("RESULT_CANCEL @ $Normal")
+                    AppLog.info("RESULT_CANCEL @ $Normal")
                 }
             }
             REQ_4 -> {
                 if (resultCode == RESULT_OK) {
-                    AppLog.print("TAKE_PICTURE_OK @ $Normal")
+                    AppLog.info("TAKE_PICTURE_OK @ $Normal")
                 } else {
-                    AppLog.print("TAKE_PICTURE_CANCEL @ $Normal")
+                    AppLog.info("TAKE_PICTURE_CANCEL @ $Normal")
                 }
             }
         }
@@ -124,10 +124,10 @@ class ContractActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQ_2 -> {
-                AppLog.print("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
+                AppLog.info("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
             }
             REQ_3 -> {
-                AppLog.print("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
+                AppLog.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(intent, REQ_4)

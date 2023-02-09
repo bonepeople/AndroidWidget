@@ -6,6 +6,7 @@ import com.bonepeople.android.widget.ApplicationHolder
 /**
  * 日志输出工具类
  */
+@Suppress("UNUSED")
 object AppLog {
     /**
      * 默认日志TAG
@@ -17,27 +18,37 @@ object AppLog {
      */
     var enable = ApplicationHolder.debug
 
-    /**
-     * 打印debug日志
-     */
-    fun debug(content: Any?) {
-        if (enable) {
-            Log.d(tag, content.toString())
-        }
-    }
-
-    /**
-     * 打印info日志
-     */
+    @Deprecated("使用info方法代替", replaceWith = ReplaceWith("info"))
     fun print(content: Any?) {
         if (enable) {
             Log.i(tag, content.toString())
         }
     }
 
-    /**
-     * 输出错误日志
-     */
+    fun verbose(message: Any?, throwable: Throwable? = null) {
+        if (enable) {
+            Log.v(tag, message.toString(), throwable)
+        }
+    }
+
+    fun debug(message: Any?, throwable: Throwable? = null) {
+        if (enable) {
+            Log.d(tag, message.toString(), throwable)
+        }
+    }
+
+    fun info(message: Any?, throwable: Throwable? = null) {
+        if (enable) {
+            Log.i(tag, message.toString(), throwable)
+        }
+    }
+
+    fun warn(message: Any?, throwable: Throwable? = null) {
+        if (enable) {
+            Log.w(tag, message.toString(), throwable)
+        }
+    }
+
     fun error(message: Any?, throwable: Throwable? = null) {
         if (enable) {
             Log.e(tag, message.toString(), throwable)
