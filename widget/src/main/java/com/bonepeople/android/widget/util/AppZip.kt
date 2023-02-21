@@ -68,6 +68,7 @@ object AppZip {
 
     /**
      * 解压缩文件至目录
+     * + 解压非UTF-8编码的文件时会抛出异常
      * @param inputStream 压缩包数据流
      * @param parentFile 目标目录地址
      */
