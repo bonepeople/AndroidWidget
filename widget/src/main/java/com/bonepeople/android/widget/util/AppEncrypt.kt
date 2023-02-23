@@ -26,12 +26,11 @@ object AppEncrypt {
      */
     fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String {
         val messageDigest = MessageDigest.getInstance("MD5")
-        val output = ByteArrayOutputStream()
-        readStream(inputStream, output, blockSize, { buffer, offset, length ->
-            messageDigest.update(buffer, offset, length)
-            null
-        }, messageDigest::digest, onProgress)
-        return convertByteArrayToString(output.toByteArray())
+        var md5 = ""
+        readStream(inputStream, blockSize, messageDigest::update, {
+            md5 = convertByteArrayToString(messageDigest.digest())
+        }, onProgress)
+        return md5
     }
 
     fun encryptByMD5(content: String): String = encryptByMD5(content.byteInputStream())
@@ -58,7 +57,7 @@ object AppEncrypt {
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv)
-        readStream(inputStream, outputStream, cipher.blockSize, cipher::update, cipher::doFinal, onProgress)
+        updateStream(inputStream, outputStream, cipher.blockSize, cipher::update, cipher::doFinal, onProgress)
         return outputStream
     }
 
@@ -74,7 +73,7 @@ object AppEncrypt {
         val keySpec = SecretKeySpec(secret.toByteArray(), "AES")
         val iv = IvParameterSpec(salt.toByteArray()) //使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
-        readStream(inputStream, outputStream, cipher.blockSize, cipher::update, cipher::doFinal, onProgress)
+        updateStream(inputStream, outputStream, cipher.blockSize, cipher::update, cipher::doFinal, onProgress)
         return outputStream
     }
 
@@ -88,7 +87,7 @@ object AppEncrypt {
     fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
         val cipher = Cipher.getInstance("RSA")
         cipher.init(Cipher.ENCRYPT_MODE, key)
-        readStream(inputStream, outputStream, cipher.blockSize, cipher::doFinal, null, onProgress)
+        updateStream(inputStream, outputStream, cipher.blockSize, cipher::doFinal, null, onProgress)
         return outputStream
     }
 
@@ -102,7 +101,7 @@ object AppEncrypt {
     fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T {
         val cipher = Cipher.getInstance("RSA")
         cipher.init(Cipher.DECRYPT_MODE, key)
-        readStream(inputStream, outputStream, cipher.blockSize, cipher::doFinal, null, onProgress)
+        updateStream(inputStream, outputStream, cipher.blockSize, cipher::doFinal, null, onProgress)
         return outputStream
     }
 
@@ -141,8 +140,22 @@ object AppEncrypt {
         return arrayOf(public, private)
     }
 
-    private fun readStream(inputStream: InputStream, outputStream: OutputStream, blockSize: Int, onUpdate: (input: ByteArray, inputOffset: Int, inputLen: Int) -> ByteArray?, onFinal: (() -> ByteArray)? = null, onProgress: ((Long) -> Unit)? = null) {
-        inputStream.buffered().use { input ->
+    private fun readStream(inputStream: InputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> Unit, onFinal: (() -> Unit)? = null, onProgress: ((Long) -> Unit)? = null) {
+        inputStream.buffered().let { input ->
+            val buffer = ByteArray(blockSize)
+            var length: Int
+            var count = 0L
+            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
+                onUpdate(buffer, 0, length)
+                count += length
+                onProgress?.invoke(count)
+            }
+            onFinal?.invoke()
+        }
+    }
+
+    private fun updateStream(inputStream: InputStream, outputStream: OutputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> ByteArray?, onFinal: (() -> ByteArray)? = null, onProgress: ((Long) -> Unit)? = null) {
+        inputStream.buffered().let { input ->
             val output = outputStream.buffered()
             val buffer = ByteArray(blockSize)
             var length: Int
