@@ -3,6 +3,9 @@ package com.bonepeople.android.widget.util
 import com.bonepeople.android.widget.ApplicationHolder
 import com.tencent.mmkv.MMKV
 import com.tencent.mmkv.MMKVLogLevel
+import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 
 /**
  * App数据存储工具类
@@ -15,6 +18,42 @@ object AppStorage {
         MMKV.initialize(ApplicationHolder.instance)
         MMKV.setLogLevel(MMKVLogLevel.LevelNone)
         MMKV.defaultMMKV().apply { trim() }
+    }
+
+    /**
+     * 移除指定字段
+     */
+    fun remove(key: String) {
+        storage.removeValueForKey(key)
+    }
+
+    /**
+     * 备份所有数据至文件
+     */
+    fun backup(target: OutputStream) {
+        val file = File(ApplicationHolder.instance.cacheDir, "AppStorage.backup")
+        file.mkdirs()
+        storage.sync()
+        MMKV.backupAllToDirectory(file.absolutePath)
+        AppZip.zipFiles(target, file)
+        file.listFiles()?.forEach {
+            it.delete()
+        }
+        file.delete()
+    }
+
+    /**
+     * 从文件恢复所有数据
+     */
+    fun restore(source: InputStream) {
+        val file = File(ApplicationHolder.instance.cacheDir, "AppStorage.backup")
+        AppZip.unzipFile(source, file.parentFile!!)
+        storage.sync()
+        MMKV.restoreAllFromDirectory(file.absolutePath)
+        file.listFiles()?.forEach {
+            it.delete()
+        }
+        file.delete()
     }
 
     /**
