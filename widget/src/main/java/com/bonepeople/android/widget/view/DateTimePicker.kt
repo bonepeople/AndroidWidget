@@ -1,6 +1,5 @@
 package com.bonepeople.android.widget.view
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.bonepeople.android.widget.ActivityHolder
@@ -21,7 +19,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
     private var closing = false
     private val views by lazy { DialogDateTimePickerBinding.inflate(layoutInflater) }
     private val calendar = Calendar.getInstance()
-    private var listener: (calendar: Calendar) -> Unit = {}
+    private var action: (calendar: Calendar) -> Unit = {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = views.root
 
@@ -77,7 +75,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
     private fun onTimeSet() {
         calendar.set(views.numberPickerYear.value, views.numberPickerMonth.value - 1, views.numberPickerDay.value, views.numberPickerHour.value, views.numberPickerMinute.value, views.numberPickerSecond.value)
         calendar[Calendar.MILLISECOND] = 0
-        listener.invoke(calendar)
+        action.invoke(calendar)
         dismiss()
     }
 
@@ -93,7 +91,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
     fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
         if (isAdded) return
         if (time > 0) calendar.timeInMillis = time
-        listener = action
+        this.action = action
         closing = false
         show(manager, null)
     }
@@ -106,11 +104,8 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         }
     }
 
+    @Suppress("UNUSED")
     companion object {
-        fun create(activity: FragmentActivity) = DateTimePicker(activity.supportFragmentManager)
-        fun create(fragment: Fragment) = DateTimePicker(fragment.childFragmentManager)
-        fun create(fragmentManager: FragmentManager) = DateTimePicker(fragmentManager)
-
         /**
          * 展示日期时间选择对话框
          * @param time 用于初始化对话框展示的时间
@@ -119,11 +114,12 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
             val activity = ActivityHolder.getTopActivity()
             if (activity is FragmentActivity) {
-                create(activity).show(time, action)
+                DateTimePicker(activity.supportFragmentManager).show(time, action)
             }
         }
 
-        fun showSystemDialog(activity: Activity, time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
+        fun showSystemDialog(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
+            val activity = ActivityHolder.getTopActivity() ?: return
             val calendar = Calendar.getInstance()
             if (time > 0) calendar.timeInMillis = time
             val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->

@@ -30,6 +30,8 @@ class SimpleLoadingDialog(activity: Activity) : AlertDialog(activity) {
                 setColor(0x80000000.toInt())
             }
             setBackgroundDrawable(drawable)
+            // 弹窗中有输入框的时候需要清除对应的标志位才能弹出软键盘，适用于直接继承AlertDialog的情况
+            // clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
         }
     }
 }
