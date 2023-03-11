@@ -6,12 +6,13 @@ import java.util.Calendar
 /**
  * 时间转换工具类
  */
+@Suppress("UNUSED")
 object AppTime {
     private val calendar: Calendar by lazy { Calendar.getInstance() }
 
     /**
      * 将13位的时间戳格式化为"2021/1/1 12:33:33"形式的字符串
-     * @param withMillis 返回的字符串中包含毫秒数
+     * @param withMillis 返回的字符串中包含毫秒数，默认为**false**
      */
     fun getDateTimeString(timestamp: Long, withMillis: Boolean = false): String {
         calendar.timeInMillis = timestamp

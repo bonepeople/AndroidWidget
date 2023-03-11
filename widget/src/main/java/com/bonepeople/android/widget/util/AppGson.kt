@@ -10,11 +10,9 @@ import java.util.*
 /**
  * Gson数据转换工具类
  */
+@Suppress("UNUSED")
 object AppGson {
     var defaultGson = GsonBuilder().disableHtmlEscaping().create()
-
-    @Deprecated("使用defaultGson替代")
-    var gson: Gson = GsonBuilder().disableHtmlEscaping().create()
 
     /**
      * 将对象转换成json字符串

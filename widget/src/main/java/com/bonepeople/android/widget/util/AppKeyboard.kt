@@ -10,6 +10,7 @@ import androidx.core.view.postDelayed
 /**
  * 软键盘工具类
  */
+@Suppress("UNUSED")
 object AppKeyboard {
     /**
      * 根据触摸事件判断是否需要隐藏软键盘

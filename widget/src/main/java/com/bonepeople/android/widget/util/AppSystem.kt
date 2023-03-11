@@ -12,6 +12,7 @@ import com.bonepeople.android.widget.ApplicationHolder
 /**
  * 系统相关参数的获取工具
  */
+@Suppress("UNUSED")
 object AppSystem {
     val batteryManager: BatteryManager by lazy { ApplicationHolder.instance.getSystemService(AppCompatActivity.BATTERY_SERVICE) as BatteryManager }
     val androidId: String by lazy { Settings.System.getString(ApplicationHolder.instance.contentResolver, Settings.Secure.ANDROID_ID) }

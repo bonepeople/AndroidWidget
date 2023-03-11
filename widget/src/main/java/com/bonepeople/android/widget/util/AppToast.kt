@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 /**
  * Toast工具类
  */
+@Suppress("UNUSED")
 object AppToast {
     /**
      * 展示短时间的toast

@@ -13,6 +13,7 @@ import com.bonepeople.android.dimensionutil.DimensionUtil
 /**
  * 富文本拼接工具类
  */
+@Suppress("UNUSED")
 open class AppSpan : SpannableStringBuilder() {
     /**
      * 添加一段文本，可以附加多个Span效果

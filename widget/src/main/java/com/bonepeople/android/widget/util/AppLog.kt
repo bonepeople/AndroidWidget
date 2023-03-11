@@ -18,13 +18,6 @@ object AppLog {
      */
     var enable = ApplicationHolder.debug
 
-    @Deprecated("使用info方法代替", replaceWith = ReplaceWith("info"))
-    fun print(content: Any?) {
-        if (enable) {
-            Log.i(tag, content.toString())
-        }
-    }
-
     fun verbose(message: Any?, throwable: Throwable? = null) {
         if (enable) {
             Log.v(tag, message.toString(), throwable)
