@@ -8,7 +8,7 @@ import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.simple.databinding.ActivityMainBinding
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.SimpleLoadingDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

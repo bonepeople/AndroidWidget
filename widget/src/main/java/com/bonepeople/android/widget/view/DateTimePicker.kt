@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.databinding.DialogDateTimePickerBinding
 import com.bonepeople.android.widget.util.AppTime
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 import java.util.Calendar
 
 class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bonepeople.android.widget.simple.databinding.ActivityResultBinding
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class ResultActivity : AppCompatActivity() {
     private val views: ActivityResultBinding by lazy { ActivityResultBinding.inflate(layoutInflater) }

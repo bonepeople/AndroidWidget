@@ -12,7 +12,7 @@ import com.bonepeople.android.widget.simple.databinding.ActivityContractBinding
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppPermission
-import com.bonepeople.android.widget.util.singleClick
+import com.bonepeople.android.widget.util.AppView.singleClick
 
 class ContractActivity : AppCompatActivity() {
     private val views: ActivityContractBinding by lazy { ActivityContractBinding.inflate(layoutInflater) }
