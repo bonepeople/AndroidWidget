@@ -4,13 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
         app:constraint_referenced_ids="linearLayoutDate,linearLayoutTime"
         app:flow_wrapMode="chain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
