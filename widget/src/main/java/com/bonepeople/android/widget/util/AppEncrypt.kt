@@ -2,6 +2,7 @@ package com.bonepeople.android.widget.util
 
 import android.util.Base64
 import androidx.annotation.Size
+import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.OutputStream
@@ -134,9 +135,9 @@ object AppEncrypt {
     fun generateRSAKeys(): Array<String> {
         val keyPairGenerator = KeyPairGenerator.getInstance("RSA")
         keyPairGenerator.initialize(2048)
-        val keyPair = keyPairGenerator.generateKeyPair()
-        val public = Base64.encodeToString(keyPair.public.encoded, Base64.DEFAULT)
-        val private = Base64.encodeToString(keyPair.private.encoded, Base64.DEFAULT)
+        val keyPair: KeyPair = keyPairGenerator.generateKeyPair()
+        val public: String = Base64.encodeToString(keyPair.public.encoded, Base64.DEFAULT)
+        val private: String = Base64.encodeToString(keyPair.private.encoded, Base64.DEFAULT)
         return arrayOf(public, private)
     }
 
@@ -156,7 +157,7 @@ object AppEncrypt {
 
     private fun updateStream(inputStream: InputStream, outputStream: OutputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> ByteArray?, onFinal: (() -> ByteArray)? = null, onProgress: ((Long) -> Unit)? = null) {
         inputStream.buffered().let { input ->
-            val output = outputStream.buffered()
+            val output: BufferedOutputStream = outputStream.buffered()
             val buffer = ByteArray(blockSize)
             var length: Int
             var count = 0L
@@ -165,7 +166,7 @@ object AppEncrypt {
                 count += length
                 onProgress?.invoke(count)
             }
-            onFinal?.invoke().let { output.write(it) }
+            onFinal?.invoke()?.let { output.write(it) }
             output.flush()
         }
     }
