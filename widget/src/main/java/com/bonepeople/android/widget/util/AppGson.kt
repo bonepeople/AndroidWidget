@@ -12,7 +12,7 @@ import java.util.*
  */
 @Suppress("UNUSED")
 object AppGson {
-    var defaultGson = GsonBuilder().disableHtmlEscaping().create()
+    var defaultGson: Gson = GsonBuilder().disableHtmlEscaping().create()
 
     /**
      * 将对象转换成json字符串
@@ -25,6 +25,8 @@ object AppGson {
 
     /**
      * 将json字符串转换成对象
+     * @throws JsonSyntaxException json字符串格式错误
+     * @throws IllegalStateException json字符串为空
      */
     @CheckResult
     @JvmOverloads
@@ -64,7 +66,7 @@ object AppGson {
         private fun searchInObject(obj: JsonObject) {
             val nullKey = LinkedList<String>()
             obj.keySet().forEach {
-                val element = obj.get(it)
+                val element: JsonElement = obj.get(it)
                 when {
                     element.isJsonNull -> nullKey.add(it)
                     element.isJsonObject -> searchInObject(element.asJsonObject)
