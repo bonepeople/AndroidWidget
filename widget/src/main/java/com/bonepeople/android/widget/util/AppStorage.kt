@@ -14,10 +14,26 @@ import java.io.OutputStream
  */
 @Suppress("UNUSED")
 object AppStorage {
-    private val storage: MMKV by lazy {
-        MMKV.initialize(ApplicationHolder.instance)
-        MMKV.setLogLevel(MMKVLogLevel.LevelNone)
-        MMKV.defaultMMKV().apply { trim() }
+    private val storage: MMKV by lazy { init() }
+
+    private fun init(): MMKV {
+        MMKV.initialize(ApplicationHolder.instance, MMKVLogLevel.LevelNone)
+        val secret: String = AppEncrypt.encryptByMD5(ApplicationHolder.getPackageName())
+        var mmkv: MMKV? = null
+        var version = 0
+        val master = MMKV.mmkvWithID("AppStorage", MMKV.SINGLE_PROCESS_MODE, secret)
+        version = master.getInt("AppStorage.version", version)
+        if (version == 0) {
+            mmkv = MMKV.defaultMMKV(MMKV.SINGLE_PROCESS_MODE, null)
+            mmkv?.reKey(secret)
+            version = 1
+        }
+        if (mmkv == null) {
+            mmkv = MMKV.defaultMMKV(MMKV.SINGLE_PROCESS_MODE, secret)
+        }
+        master.encode("AppStorage.version", version)
+        mmkv!!.trim()
+        return mmkv
     }
 
     /**
