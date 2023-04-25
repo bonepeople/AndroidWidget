@@ -1,10 +1,14 @@
 package com.bonepeople.android.widget.util
 
+import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresPermission
 import com.bonepeople.android.widget.ApplicationHolder
@@ -17,6 +21,7 @@ import java.net.SocketException
  * 系统相关参数的获取工具
  */
 @Suppress("UNUSED")
+@SuppressLint("PrivateApi", "DiscouragedPrivateApi")
 object AppSystem {
     val batteryManager: BatteryManager by lazy { ApplicationHolder.instance.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }
     val androidId: String by lazy { Settings.System.getString(ApplicationHolder.instance.contentResolver, Settings.Secure.ANDROID_ID) }
@@ -26,6 +31,27 @@ object AppSystem {
      * + 取值范围1..100
      */
     val batteryPercent: Int = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+    /**
+     * 当前进程的名称
+     * + 未成功获取进程名称的时候为空字符串
+     */
+    val processName: String by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Application.getProcessName()
+        } else {
+            kotlin.runCatching {
+                Class.forName("android.app.ActivityThread").getDeclaredMethod("currentProcessName").invoke(null) as String
+            }.getOrDefault("").ifBlank {
+                kotlin.runCatching {
+                    (ApplicationHolder.instance.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).let { manager ->
+                        val pid: Int = android.os.Process.myPid()
+                        manager.runningAppProcesses.firstOrNull { it.pid == pid }?.processName
+                    }
+                }.getOrNull() ?: ""
+            }
+        }
+    }
 
     /**
      * 添加电量变化的监听函数
