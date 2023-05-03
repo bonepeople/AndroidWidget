@@ -23,8 +23,8 @@ import java.net.SocketException
 @Suppress("UNUSED")
 @SuppressLint("PrivateApi", "DiscouragedPrivateApi")
 object AppSystem {
-    val batteryManager: BatteryManager by lazy { ApplicationHolder.instance.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }
-    val androidId: String by lazy { Settings.System.getString(ApplicationHolder.instance.contentResolver, Settings.Secure.ANDROID_ID) }
+    val batteryManager: BatteryManager by lazy { ApplicationHolder.app.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }
+    val androidId: String by lazy { Settings.System.getString(ApplicationHolder.app.contentResolver, Settings.Secure.ANDROID_ID) }
 
     /**
      * 当前电池电量
@@ -44,7 +44,7 @@ object AppSystem {
                 Class.forName("android.app.ActivityThread").getDeclaredMethod("currentProcessName").invoke(null) as String
             }.getOrDefault("").ifBlank {
                 kotlin.runCatching {
-                    (ApplicationHolder.instance.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).let { manager ->
+                    (ApplicationHolder.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).let { manager ->
                         val pid: Int = android.os.Process.myPid()
                         manager.runningAppProcesses.firstOrNull { it.pid == pid }?.processName
                     }

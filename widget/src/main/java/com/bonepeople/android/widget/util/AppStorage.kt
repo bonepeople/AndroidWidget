@@ -17,7 +17,7 @@ object AppStorage {
     private val storage: MMKV by lazy { init() }
 
     private fun init(): MMKV {
-        MMKV.initialize(ApplicationHolder.instance, MMKVLogLevel.LevelNone)
+        MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
         val secret: String = AppEncrypt.encryptByMD5(ApplicationHolder.getPackageName())
         var mmkv: MMKV? = null
         var version = 0
@@ -47,7 +47,7 @@ object AppStorage {
      * 备份所有数据至文件
      */
     fun backup(target: OutputStream) {
-        val file = File(ApplicationHolder.instance.cacheDir, "AppStorage.backup")
+        val file = File(ApplicationHolder.app.cacheDir, "AppStorage.backup")
         file.mkdirs()
         storage.sync()
         MMKV.backupAllToDirectory(file.absolutePath)
@@ -62,7 +62,7 @@ object AppStorage {
      * 从文件恢复所有数据
      */
     fun restore(source: InputStream) {
-        val file = File(ApplicationHolder.instance.cacheDir, "AppStorage.backup")
+        val file = File(ApplicationHolder.app.cacheDir, "AppStorage.backup")
         AppZip.unzipFile(source, file.parentFile!!)
         storage.sync()
         MMKV.restoreAllFromDirectory(file.absolutePath)

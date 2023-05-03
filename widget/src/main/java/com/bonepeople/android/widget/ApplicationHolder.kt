@@ -11,27 +11,38 @@ import com.bonepeople.android.widget.activity.result.IntentLauncher
 /**
  * Application状态保存器
  */
+@Suppress("UNUSED")
 object ApplicationHolder {
+    private var application: Application? = null
+
     /**
      * 当前App的Application实例
      */
-    lateinit var instance: Application
+    @Deprecated("使用app代替")
+    val instance: Application
+        get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
+
+    /**
+     * 当前App的Application实例
+     */
+    val app: Application
+        get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
 
     /**
      * 当前App的PackageInfo
      */
-    val packageInfo: PackageInfo by lazy { instance.packageManager.getPackageInfo(getPackageName(), 0) }
+    val packageInfo: PackageInfo by lazy { app.packageManager.getPackageInfo(getPackageName(), 0) }
 
     /**
      * 当前App的debug标志
      */
-    val debug: Boolean by lazy { instance.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 }
+    val debug: Boolean by lazy { app.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 }
 
     /**
      * 获取当前App的包名
      */
     fun getPackageName(): String {
-        return instance.packageName
+        return app.packageName
     }
 
     /**
@@ -54,9 +65,9 @@ object ApplicationHolder {
     class StartUp : Initializer<ApplicationHolder> {
         override fun create(context: Context): ApplicationHolder {
             if (context is Application) {
-                instance = context
-                instance.registerActivityLifecycleCallbacks(ActivityHolder)
-                instance.registerActivityLifecycleCallbacks(IntentLauncher.Registry)
+                application = context
+                app.registerActivityLifecycleCallbacks(ActivityHolder)
+                app.registerActivityLifecycleCallbacks(IntentLauncher.Registry)
             }
             return ApplicationHolder
         }

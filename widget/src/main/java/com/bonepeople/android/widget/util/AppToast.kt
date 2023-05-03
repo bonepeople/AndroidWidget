@@ -24,7 +24,7 @@ object AppToast {
     fun show(content: CharSequence?, duration: Int) {
         if (content.isNullOrBlank()) return
         CoroutinesHolder.main.launch {
-            Toast.makeText(ApplicationHolder.instance, content, duration).show()
+            Toast.makeText(ApplicationHolder.app, content, duration).show()
         }
     }
 }

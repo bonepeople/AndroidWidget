@@ -55,7 +55,7 @@ class AppPermission private constructor() {
             return AppPermission().apply {
                 val requestList = LinkedList<String>()
                 permissions.forEach {
-                    if (ContextCompat.checkSelfPermission(ApplicationHolder.instance, it) == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(ApplicationHolder.app, it) == PackageManager.PERMISSION_GRANTED) {
                         permissionResult[it] = true
                     } else {
                         permissionResult[it] = false
@@ -65,7 +65,7 @@ class AppPermission private constructor() {
                 if (requestList.isEmpty()) { //所有权限均已授予
                     finished = true
                 } else { //申请未授予的权限
-                    RequestMultiplePermissions().createIntent(ApplicationHolder.instance, requestList.toTypedArray()).launch()
+                    RequestMultiplePermissions().createIntent(ApplicationHolder.app, requestList.toTypedArray()).launch()
                         .onResult { result ->
                             permissionResult.putAll(RequestMultiplePermissions().parseResult(result.resultCode, result.data))
                             val granted = permissionResult.values.all { it }
