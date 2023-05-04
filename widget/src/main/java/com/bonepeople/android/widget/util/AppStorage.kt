@@ -16,20 +16,27 @@ import java.io.OutputStream
 object AppStorage {
     private val storage: MMKV by lazy { init() }
 
+    /**
+     * 多进程支持
+     * + 在使用[AppStorage]前通过修改此项来调整多进程支持，默认为启用
+     */
+    var multiProcess = true
+
     private fun init(): MMKV {
         MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
+        val mode = if (multiProcess) MMKV.MULTI_PROCESS_MODE else MMKV.SINGLE_PROCESS_MODE
         val secret: String = AppEncrypt.encryptByMD5(ApplicationHolder.getPackageName())
         var mmkv: MMKV? = null
         var version = 0
-        val master = MMKV.mmkvWithID("AppStorage", MMKV.SINGLE_PROCESS_MODE, secret)
+        val master = MMKV.mmkvWithID("AppStorage", mode, secret)
         version = master.getInt("AppStorage.version", version)
         if (version == 0) {
-            mmkv = MMKV.defaultMMKV(MMKV.SINGLE_PROCESS_MODE, null)
+            mmkv = MMKV.defaultMMKV(mode, null)
             mmkv?.reKey(secret)
             version = 1
         }
         if (mmkv == null) {
-            mmkv = MMKV.defaultMMKV(MMKV.SINGLE_PROCESS_MODE, secret)
+            mmkv = MMKV.defaultMMKV(mode, secret)
         }
         master.encode("AppStorage.version", version)
         mmkv!!.trim()
