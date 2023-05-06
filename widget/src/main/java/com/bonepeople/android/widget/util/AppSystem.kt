@@ -28,9 +28,10 @@ object AppSystem {
 
     /**
      * 当前电池电量
-     * + 取值范围1..100
+     * + 取值范围0..100
      */
-    val batteryPercent: Int = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+    val batteryPercent: Int
+        get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
     /**
      * 当前进程的名称
