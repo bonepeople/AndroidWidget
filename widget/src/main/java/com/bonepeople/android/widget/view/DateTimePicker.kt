@@ -86,6 +86,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
             updateTitle()
         }
 
+        views.buttonCancel.singleClick { dismiss() }
         views.buttonOk.singleClick { submit() }
         updateTitle()
     }
