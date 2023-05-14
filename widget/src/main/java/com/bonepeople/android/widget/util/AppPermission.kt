@@ -13,6 +13,7 @@ import kotlin.collections.LinkedHashMap
  *
  * 采用ActivityResultContract方式申请权限
  */
+@Suppress("UNUSED")
 class AppPermission private constructor() {
     private val permissionResult = LinkedHashMap<String, Boolean>()
     private var resultAction: (Boolean, LinkedHashMap<String, Boolean>) -> Unit = { _, _ -> }
@@ -48,6 +49,18 @@ class AppPermission private constructor() {
     }
 
     companion object {
+        /**
+         * 检查权限授予情况
+         */
+        fun check(vararg permissions: String): AppPermission {
+            return AppPermission().apply {
+                permissions.forEach {
+                    permissionResult[it] = ContextCompat.checkSelfPermission(ApplicationHolder.app, it) == PackageManager.PERMISSION_GRANTED
+                }
+                finished = true
+            }
+        }
+
         /**
          * 发起权限申请
          */
