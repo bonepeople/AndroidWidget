@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.databinding.DialogDateTimePickerBinding
+import com.bonepeople.android.widget.util.AppText
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.gone
 import com.bonepeople.android.widget.util.AppView.show
@@ -64,7 +65,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
 
         views.numberPickerHour.minValue = 0
         views.numberPickerHour.maxValue = 23
-        views.numberPickerHour.setFormatter { AppTime.fillString(it, "00") }
+        views.numberPickerHour.setFormatter { AppText.completeStart(it, "00") }
         views.numberPickerHour.value = calendar[Calendar.HOUR_OF_DAY]
         views.numberPickerHour.setOnValueChangedListener { _, _, _ ->
             updateTitle()
@@ -72,7 +73,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
 
         views.numberPickerMinute.minValue = 0
         views.numberPickerMinute.maxValue = 59
-        views.numberPickerMinute.setFormatter { AppTime.fillString(it, "00") }
+        views.numberPickerMinute.setFormatter { AppText.completeStart(it, "00") }
         views.numberPickerMinute.value = calendar[Calendar.MINUTE]
         views.numberPickerMinute.setOnValueChangedListener { _, _, _ ->
             updateTitle()
@@ -80,7 +81,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
 
         views.numberPickerSecond.minValue = 0
         views.numberPickerSecond.maxValue = 59
-        views.numberPickerSecond.setFormatter { AppTime.fillString(it, "00") }
+        views.numberPickerSecond.setFormatter { AppText.completeStart(it, "00") }
         views.numberPickerSecond.value = calendar[Calendar.SECOND]
         views.numberPickerSecond.setOnValueChangedListener { _, _, _ ->
             updateTitle()

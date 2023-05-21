@@ -19,10 +19,10 @@ object AppTime {
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH] + 1
         val day = calendar[Calendar.DAY_OF_MONTH]
-        val hour = fillString(calendar[Calendar.HOUR_OF_DAY], "00")
-        val minute = fillString(calendar[Calendar.MINUTE], "00")
-        val second = fillString(calendar[Calendar.SECOND], "00")
-        val millisecond = fillString(calendar[Calendar.MILLISECOND], "000")
+        val hour = AppText.completeStart(calendar[Calendar.HOUR_OF_DAY], "00")
+        val minute = AppText.completeStart(calendar[Calendar.MINUTE], "00")
+        val second = AppText.completeStart(calendar[Calendar.SECOND], "00")
+        val millisecond = AppText.completeStart(calendar[Calendar.MILLISECOND], "000")
 
         return if (withMillis) {
             "$year/$month/$day $hour:$minute:$second.$millisecond"
@@ -41,10 +41,10 @@ object AppTime {
         val minutes = seconds / 60
         val hours = minutes / 60
 
-        val milliStr = fillString(milliseconds % 1000, "000")
-        val secondStr = fillString(seconds % 60, "00")
-        val minuteStr = fillString(minutes % 60, "00")
-        val hourStr = fillString(hours, "00")
+        val milliStr = AppText.completeStart(milliseconds % 1000, "000")
+        val secondStr = AppText.completeStart(seconds % 60, "00")
+        val minuteStr = AppText.completeStart(minutes % 60, "00")
+        val hourStr = AppText.completeStart(hours, "00")
 
         val stringBuilder = StringBuilder()
         if (hours != 0L || fullTimeString) {
@@ -66,16 +66,5 @@ object AppTime {
         }
 
         return stringBuilder.toString()
-    }
-
-    fun fillString(number: Any, formatStr: String): String {
-        val content = number.toString()
-        val fillSize = formatStr.length - content.length
-        val result = StringBuilder()
-        repeat(fillSize) {
-            result.append(formatStr[it])
-        }
-        result.append(content)
-        return result.toString()
     }
 }
