@@ -12,7 +12,7 @@ import java.util.*
  */
 @Suppress("UNUSED")
 object AppGson {
-    var defaultGson: Gson = GsonBuilder().disableHtmlEscaping().create()
+    val defaultGson: Gson by lazy { addNotNullAdapter(GsonBuilder().disableHtmlEscaping().create()) }
 
     /**
      * 将对象转换成json字符串
