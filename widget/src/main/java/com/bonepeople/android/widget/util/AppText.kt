@@ -84,4 +84,30 @@ object AppText {
             paragraph.chunked(length).joinToString(separator)
         }
     }
+
+    /**
+     * 将字节数组转为十六进制字符串
+     */
+    @CheckResult
+    fun byteArrayToString(data: ByteArray): String {
+        val buffer = StringBuffer()
+        data.map { byte: Byte ->
+            val hexStr: String = Integer.toHexString(byte.toInt() and 0xFF)
+            if (hexStr.length < 2) {
+                buffer.append(0)
+            }
+            buffer.append(hexStr)
+        }
+        return buffer.toString()
+    }
+
+    /**
+     * 将十六进制字符串转为字节数组
+     */
+    @CheckResult
+    fun stringToByteArray(data: String): ByteArray {
+        return data.chunked(2).map {
+            it.toInt(16).toUByte().toByte()
+        }.toByteArray()
+    }
 }

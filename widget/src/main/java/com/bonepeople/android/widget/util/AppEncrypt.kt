@@ -30,24 +30,12 @@ object AppEncrypt {
         val messageDigest: MessageDigest = MessageDigest.getInstance("MD5")
         var md5 = ""
         readStream(inputStream, blockSize, messageDigest::update, {
-            md5 = convertByteArrayToString(messageDigest.digest())
+            md5 = AppText.byteArrayToString(messageDigest.digest())
         }, onProgress)
         return md5
     }
 
     fun encryptByMD5(content: String): String = encryptByMD5(content.byteInputStream())
-
-    fun convertByteArrayToString(bytes: ByteArray): String {
-        val buffer = StringBuffer()
-        bytes.map { byte: Byte ->
-            val hexStr: String = Integer.toHexString(byte.toInt() and 0xFF)
-            if (hexStr.length < 2) {
-                buffer.append(0)
-            }
-            buffer.append(hexStr)
-        }
-        return buffer.toString()
-    }
 
     /**
      * 根据传入的密钥对数据进行AES加密
