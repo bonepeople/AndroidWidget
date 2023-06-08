@@ -25,7 +25,7 @@ object AppStorage {
     private fun init(): MMKV {
         MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
         val mode = if (multiProcess) MMKV.MULTI_PROCESS_MODE else MMKV.SINGLE_PROCESS_MODE
-        val secret: String = AppEncrypt.encryptByMD5(ApplicationHolder.getPackageName())
+        val secret: String = AppMessageDigest.md5(ApplicationHolder.getPackageName())
         var mmkv: MMKV? = null
         var version = 0
         val master = MMKV.mmkvWithID("AppStorage", mode, secret)

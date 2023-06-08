@@ -7,7 +7,12 @@ import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.OutputStream
-import java.security.*
+import java.security.Key
+import java.security.KeyFactory
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.PrivateKey
+import java.security.PublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -19,23 +24,11 @@ import javax.crypto.spec.SecretKeySpec
  */
 @Suppress("UNUSED")
 object AppEncrypt {
-    /**
-     * 计算输入流中数据的MD5值并将结果转换为字符串返回
-     * + 待完善：添加终止计算的逻辑
-     * @param inputStream 输入流
-     * @param blockSize 缓冲区大小，通常配合[onProgress]使用，控制回调频率
-     * @param onProgress 计算进度的回调，返回当前已处理内容的大小
-     */
-    fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String {
-        val messageDigest: MessageDigest = MessageDigest.getInstance("MD5")
-        var md5 = ""
-        readStream(inputStream, blockSize, messageDigest::update, {
-            md5 = AppText.byteArrayToString(messageDigest.digest())
-        }, onProgress)
-        return md5
-    }
+    @Deprecated("此方法已迁移至新的工具类", ReplaceWith("AppMessageDigest.md5(inputStream, blockSize, onProgress)"))
+    fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String = AppMessageDigest.md5(inputStream, blockSize, onProgress)
 
-    fun encryptByMD5(content: String): String = encryptByMD5(content.byteInputStream())
+    @Deprecated("此方法已迁移至新的工具类", ReplaceWith("AppMessageDigest.md5(content)"))
+    fun encryptByMD5(content: String): String = AppMessageDigest.md5(content)
 
     /**
      * 根据传入的密钥对数据进行AES加密
@@ -194,20 +187,6 @@ object AppEncrypt {
         val public: String = Base64.encodeToString(keyPair.public.encoded, Base64.NO_WRAP)
         val private: String = Base64.encodeToString(keyPair.private.encoded, Base64.NO_WRAP)
         return arrayOf(public, private)
-    }
-
-    private fun readStream(inputStream: InputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> Unit, onFinal: (() -> Unit)? = null, onProgress: ((Long) -> Unit)? = null) {
-        inputStream.buffered().let { input: BufferedInputStream ->
-            val buffer = ByteArray(blockSize)
-            var length: Int
-            var count = 0L
-            while (input.read(buffer, 0, buffer.size).also { length = it } != -1) {
-                onUpdate(buffer, 0, length)
-                count += length
-                onProgress?.invoke(count)
-            }
-            onFinal?.invoke()
-        }
     }
 
     private fun updateStream(inputStream: InputStream, outputStream: OutputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> ByteArray?, onFinal: (() -> ByteArray)? = null, onProgress: ((Long) -> Unit)? = null) {
