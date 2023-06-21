@@ -7,3 +7,6 @@ navEditor.xml
 assetWizardSettings.xml
 misc.xml
 deploymentTargetDropDown.xml
+gradle.xml
+compiler.xml
+kotlinc.xml
