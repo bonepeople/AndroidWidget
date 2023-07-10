@@ -70,7 +70,7 @@ object AppEncrypt {
     ): T {
         val cipher: Cipher = Cipher.getInstance(transformation)
         val keySpec = SecretKeySpec(secret.padEnd(16).take(16).toByteArray(), "AES")
-        val iv: IvParameterSpec? = salt?.padEnd(16)?.take(16)?.toByteArray()?.let { IvParameterSpec(it) }  //使
+        val iv: IvParameterSpec? = salt?.padEnd(16)?.take(16)?.toByteArray()?.let { IvParameterSpec(it) }
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv)
         updateStream(inputStream, outputStream, cipher.blockSize, cipher::update, cipher::doFinal, onProgress)
         return outputStream

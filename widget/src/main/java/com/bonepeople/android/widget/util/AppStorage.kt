@@ -217,7 +217,7 @@ object AppStorage {
                     data = (originStorage.decodeString(key, default) ?: default) as T
                     putDataInternal(key, data)
                 } else {
-                    if (keyStorage.decodeInt(key) == TYPE_STRING) {
+                    if (keyStorage.decodeInt(key, TYPE_STRING) == TYPE_STRING) {
                         data = (dataStorage.decodeString(key, default) ?: default) as T
                     } else {
                         throw IllegalArgumentException("数据类型错误")
@@ -230,7 +230,7 @@ object AppStorage {
                     data = originStorage.decodeBool(key, default) as T
                     putDataInternal(key, data)
                 } else {
-                    if (keyStorage.decodeInt(key) == TYPE_BOOLEAN) {
+                    if (keyStorage.decodeInt(key, TYPE_BOOLEAN) == TYPE_BOOLEAN) {
                         data = dataStorage.decodeBool(key, default) as T
                     } else {
                         throw IllegalArgumentException("数据类型错误")
@@ -243,7 +243,7 @@ object AppStorage {
                     data = originStorage.decodeInt(key, default) as T
                     putDataInternal(key, data)
                 } else {
-                    if (keyStorage.decodeInt(key) == TYPE_INT) {
+                    if (keyStorage.decodeInt(key, TYPE_INT) == TYPE_INT) {
                         data = dataStorage.decodeInt(key, default) as T
                     } else {
                         throw IllegalArgumentException("数据类型错误")
@@ -256,7 +256,7 @@ object AppStorage {
                     data = originStorage.decodeLong(key, default) as T
                     putDataInternal(key, data)
                 } else {
-                    if (keyStorage.decodeInt(key) == TYPE_LONG) {
+                    if (keyStorage.decodeInt(key, TYPE_LONG) == TYPE_LONG) {
                         data = dataStorage.decodeLong(key, default) as T
                     } else {
                         throw IllegalArgumentException("数据类型错误")
@@ -269,7 +269,7 @@ object AppStorage {
                     data = originStorage.decodeFloat(key, default) as T
                     putDataInternal(key, data)
                 } else {
-                    if (keyStorage.decodeInt(key) == TYPE_FLOAT) {
+                    if (keyStorage.decodeInt(key, TYPE_FLOAT) == TYPE_FLOAT) {
                         data = dataStorage.decodeFloat(key, default) as T
                     } else {
                         throw IllegalArgumentException("数据类型错误")
