@@ -32,20 +32,38 @@ object AppView {
      * 设置[View]为[View.VISIBLE]
      */
     fun <T : View> T.show(): T = apply {
-        visibility = View.VISIBLE
+        if (visibility != View.VISIBLE) visibility = View.VISIBLE
     }
 
     /**
      * 设置[View]为[View.INVISIBLE]
      */
     fun <T : View> T.hide(): T = apply {
-        visibility = View.INVISIBLE
+        if (visibility != View.INVISIBLE) visibility = View.INVISIBLE
     }
 
     /**
      * 设置[View]为[View.GONE]
      */
     fun <T : View> T.gone(): T = apply {
-        visibility = View.GONE
+        if (visibility != View.GONE) visibility = View.GONE
+    }
+
+    /**
+     * 设置[View]的可见性
+     * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.GONE]中切换
+     * @param visible 是否可见
+     */
+    fun <T : View> T.switchShow(visible: Boolean): T = apply {
+        if (visible) show() else gone()
+    }
+
+    /**
+     * 设置[View]的可见性
+     * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.INVISIBLE]中切换
+     * @param visible 是否可见
+     */
+    fun <T : View> T.switchVisible(visible: Boolean): T = apply {
+        if (visible) show() else hide()
     }
 }
