@@ -11,6 +11,7 @@ android {
     defaultConfig {
         minSdk rootProject.androidConfig.minSdk
         targetSdk rootProject.androidConfig.targetSdk
+        buildConfigField("String", "VERSION", """ "${rootProject.androidConfig.versionName}" """)
 
         consumerProguardFiles "consumer-rules.pro"
     }
