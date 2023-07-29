@@ -29,4 +29,13 @@ object AppRandom {
     fun randomInt(range: IntRange): Int {
         return if (range.isEmpty()) 0 else range.random(seed)
     }
+
+    /**
+     * 通过洗牌算法将一个集合中的数据打乱
+     * @return 返回一个新的已打乱的列表
+     * @see Iterable.shuffled
+     */
+    fun <T> shuffleList(list: Iterable<T>): MutableList<T> {
+        return list.toMutableList().apply { shuffle(seed) }
+    }
 }
