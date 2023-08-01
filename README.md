@@ -37,14 +37,19 @@ dependencies {
     //...
 
     // AndroidWidget https://github.com/bonepeople/AndroidWidget
-    implementation 'com.github.bonepeople:AndroidWidget:1.5.3'
+    implementation 'com.github.bonepeople:AndroidWidget:1.5.7'
 }
 ```
 
 ### 初始化
-+ 该项目使用了`AppStartup`技术，会在APP打开的时候自动初始化，默认情况下不需要用户进行任何处理。
+
++ 该项目使用了`AppStartup`技术，会在APP打开的时候自动初始化，**默认情况下不需要用户进行任何处理**。
+
+### 多进程支持
+
 + 由于`AppStartup`技术不支持多进程自动初始化的功能，在客户端设计多进程的时候需要手动进行初始化。
 + 我对手动初始化的逻辑进行了处理，用户仅需在`Application.onCreate`的方法中调用初始化函数即可。
+
 ```kotlin
 import android.app.Application
 import androidx.startup.StartupHelper
@@ -57,6 +62,7 @@ class App : Application() {
     }
 }
 ```
+
 > 为确保基础组件在使用前完成初始化操作，请确保此函数提前调用。  
 > 依赖库中大部分组件使用懒加载技术，仅在首次使用的时候进行实例化，初始化操作不会影响启动速度。  
 > 重复调用此方法不会导致多次初始化。
