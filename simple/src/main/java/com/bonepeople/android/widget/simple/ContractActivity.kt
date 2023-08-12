@@ -22,7 +22,6 @@ class ContractActivity : AppCompatActivity() {
         setContentView(views.root)
         title = "ActivityResultContract"
         initView()
-        initData(savedInstanceState)
     }
 
     private fun initView() {
@@ -92,10 +91,6 @@ class ContractActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun initData(savedInstanceState: Bundle?) {
-
     }
 
     @Deprecated("Deprecated in Java")

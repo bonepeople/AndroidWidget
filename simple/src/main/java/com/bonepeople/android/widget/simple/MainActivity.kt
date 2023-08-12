@@ -22,16 +22,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         initView()
-        initData()
     }
 
     private fun initView() {
         views.buttonTest.singleClick { startTest() }
         views.buttonContract.singleClick { Intent(this, ContractActivity::class.java).launch() }
-    }
-
-    private fun initData() {
-
     }
 
     private fun startTest() {

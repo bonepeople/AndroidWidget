@@ -14,7 +14,6 @@ class ResultActivity : AppCompatActivity() {
         setContentView(views.root)
         title = "ActivityResult"
         initView()
-        initData(savedInstanceState)
     }
 
     private fun initView() {
@@ -29,9 +28,5 @@ class ResultActivity : AppCompatActivity() {
             setResult(RESULT_CANCELED)
             finishAfterTransition()
         }
-    }
-
-    private fun initData(savedInstanceState: Bundle?) {
-
     }
 }
