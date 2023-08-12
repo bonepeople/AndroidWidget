@@ -6,7 +6,7 @@ import com.bonepeople.android.widget.ApplicationHolder
 /**
  * 日志输出工具类
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 class AppLog(val tag: String) {
     /**
      * 日志输出开关

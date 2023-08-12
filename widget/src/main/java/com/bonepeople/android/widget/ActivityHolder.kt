@@ -8,6 +8,7 @@ import kotlin.collections.HashMap
 /**
  * Activity状态保存器
  */
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object ActivityHolder : DefaultActivityLifecycleCallbacks {
     private val activityData = HashMap<Activity, HashMap<String, Any>>()
 

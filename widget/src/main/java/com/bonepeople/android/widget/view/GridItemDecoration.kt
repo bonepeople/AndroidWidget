@@ -13,6 +13,7 @@ import kotlin.math.roundToInt
  *
  * 适用于GridLayoutManager和StaggeredGridLayoutManager
  */
+@Suppress("UNUSED")
 class GridItemDecoration(horizontal: Float, vertical: Float) : RecyclerView.ItemDecoration() {
     private var horizontalSpacing = 0
     private var verticalSpacing = 0

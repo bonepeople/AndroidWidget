@@ -11,7 +11,7 @@ import com.bonepeople.android.widget.activity.result.IntentLauncher
 /**
  * Application状态保存器
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
     private var application: Application? = null
 

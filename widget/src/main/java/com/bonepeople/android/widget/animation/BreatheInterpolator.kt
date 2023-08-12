@@ -7,6 +7,7 @@ import android.animation.TimeInterpolator
  *
  * 输入[0,1]区间的浮点数字，返回[0,1]区间的浮点数字。
  */
+@Suppress("UNUSED")
 class BreatheInterpolator() : TimeInterpolator {
     /**
      *

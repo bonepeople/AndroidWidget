@@ -6,7 +6,7 @@ import com.bonepeople.android.widget.R
 /**
  * View工具类
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppView {
     /**
      * 单击防抖函数的默认时间间隔

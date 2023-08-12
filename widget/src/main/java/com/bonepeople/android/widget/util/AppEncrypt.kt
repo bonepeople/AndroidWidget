@@ -22,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * 加解密工具类
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppEncrypt {
     @Deprecated("此方法已迁移至新的工具类", ReplaceWith("AppMessageDigest.md5(inputStream, blockSize, onProgress)"))
     fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String = AppMessageDigest.md5(inputStream, blockSize, onProgress)
@@ -145,16 +145,20 @@ object AppEncrypt {
     }
 
     @Deprecated("请使用新版加密方法", ReplaceWith("AppEncrypt.encryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)"))
-    fun <T : OutputStream> encryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T = encryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
+    fun <T : OutputStream> encryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
+        encryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
 
     @Deprecated("请使用新版解密方法", ReplaceWith("AppEncrypt.decryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)"))
-    fun <T : OutputStream> decryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T = decryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
+    fun <T : OutputStream> decryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
+        decryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
 
     @Deprecated("请使用新版加密方法", ReplaceWith("AppEncrypt.encryptByRSA(inputStream, outputStream, key, \"RSA\", onProgress = onProgress)"))
-    fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T = encryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
+    fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
+        encryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
 
     @Deprecated("请使用新版解密方法", ReplaceWith("AppEncrypt.decryptByRSA(inputStream, outputStream, key, \"RSA\", onProgress = onProgress)"))
-    fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T = decryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
+    fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
+        decryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
 
     /**
      * 获取RSA公钥
@@ -189,7 +193,14 @@ object AppEncrypt {
         return arrayOf(public, private)
     }
 
-    private fun updateStream(inputStream: InputStream, outputStream: OutputStream, blockSize: Int, onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> ByteArray?, onFinal: (() -> ByteArray)? = null, onProgress: ((Long) -> Unit)? = null) {
+    private fun updateStream(
+        inputStream: InputStream,
+        outputStream: OutputStream,
+        blockSize: Int,
+        onUpdate: (buffer: ByteArray, offset: Int, length: Int) -> ByteArray?,
+        onFinal: (() -> ByteArray)? = null,
+        onProgress: ((Long) -> Unit)? = null
+    ) {
         inputStream.buffered().let { input: BufferedInputStream ->
             val output: BufferedOutputStream = outputStream.buffered()
             val buffer = ByteArray(blockSize)

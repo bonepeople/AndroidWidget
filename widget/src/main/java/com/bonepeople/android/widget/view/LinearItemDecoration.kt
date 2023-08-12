@@ -15,6 +15,7 @@ import kotlin.math.roundToInt
  *
  * 适用于LinearLayoutManager
  */
+@Suppress("UNUSED")
 class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
     private var spacing = 0
     private var startPadding = 0

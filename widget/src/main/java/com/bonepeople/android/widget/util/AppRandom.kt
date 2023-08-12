@@ -6,7 +6,7 @@ import kotlin.random.Random
  * 随机数工具类
  * + 提供一个随机数种子和一些封装好的快捷方法
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppRandom {
     /**
      * 用于生成随机数的种子

@@ -20,7 +20,7 @@ import java.net.SocketException
 /**
  * 系统相关参数的获取工具
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 @SuppressLint("PrivateApi", "DiscouragedPrivateApi")
 object AppSystem {
     val batteryManager: BatteryManager by lazy { ApplicationHolder.app.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }

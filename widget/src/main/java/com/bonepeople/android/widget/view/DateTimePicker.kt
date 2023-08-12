@@ -18,6 +18,10 @@ import com.bonepeople.android.widget.util.AppView.show
 import com.bonepeople.android.widget.util.AppView.singleClick
 import java.util.Calendar
 
+/**
+ * 日期时间选择对话框
+ */
+@Suppress("UNUSED")
 class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
     private var closing = false
     private val views by lazy { DialogDateTimePickerBinding.inflate(layoutInflater) }
@@ -105,7 +109,14 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
     }
 
     private fun updateTitle() {
-        calendar.set(views.numberPickerYear.value, views.numberPickerMonth.value - 1, views.numberPickerDay.value, views.numberPickerHour.value, views.numberPickerMinute.value, views.numberPickerSecond.value)
+        calendar.set(
+            views.numberPickerYear.value,
+            views.numberPickerMonth.value - 1,
+            views.numberPickerDay.value,
+            views.numberPickerHour.value,
+            views.numberPickerMinute.value,
+            views.numberPickerSecond.value
+        )
         val title = AppTime.getDateTimeString(calendar.timeInMillis).split(' ')
         views.textViewDate.text = title[0]
         views.textViewTime.text = title[1]
@@ -142,7 +153,6 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         }
     }
 
-    @Suppress("UNUSED")
     companion object {
         /**
          * 展示日期时间选择对话框
