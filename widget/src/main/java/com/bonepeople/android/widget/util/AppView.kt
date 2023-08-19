@@ -1,6 +1,10 @@
 package com.bonepeople.android.widget.util
 
 import android.view.View
+import androidx.core.view.marginBottom
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
+import androidx.core.view.marginTop
 import com.bonepeople.android.widget.R
 
 /**
@@ -65,5 +69,81 @@ object AppView {
      */
     fun <T : View> T.switchVisible(visible: Boolean): T = apply {
         if (visible) show() else hide()
+    }
+
+    /**
+     * 解析测算参数，计算指定View可以占用的最大空间
+     * + 通常在onMeasure函数中调用，用于解析MeasureSpec
+     * @param view 需要计算的View
+     * @param widthMeasureSpec 父控件的宽度测算规格
+     * @param heightMeasureSpec 父控件的高度测算规格
+     * @return 一个包含测量参数的对象，用于测量自定义View
+     */
+    fun resolveMeasureParameter(view: View, widthMeasureSpec: Int, heightMeasureSpec: Int): MeasureParameter = MeasureParameter().apply {
+        widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
+        widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
+        heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
+        heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
+
+        when (widthMode) {
+            View.MeasureSpec.EXACTLY -> {
+                widthModeName = "EXACTLY"
+                maxWidth = widthSize
+                targetWidth = widthSize
+            }
+
+            View.MeasureSpec.AT_MOST -> {
+                widthModeName = "AT_MOST"
+                maxWidth = widthSize - view.marginStart - view.marginEnd
+            }
+
+            View.MeasureSpec.UNSPECIFIED -> {
+                widthModeName = "UNSPECIFIED"
+                maxWidth = Int.MAX_VALUE
+            }
+        }
+        when (heightMode) {
+            View.MeasureSpec.EXACTLY -> {
+                heightModeName = "EXACTLY"
+                maxHeight = heightSize
+                targetHeight = heightSize
+            }
+
+            View.MeasureSpec.AT_MOST -> {
+                heightModeName = "AT_MOST"
+                maxHeight = heightSize - view.marginTop - view.marginBottom
+            }
+
+            View.MeasureSpec.UNSPECIFIED -> {
+                heightModeName = "UNSPECIFIED"
+                maxHeight = Int.MAX_VALUE
+            }
+        }
+    }
+
+    /**
+     * 测算参数
+     * + 包含解析得到的测算数据，可用于计算View的最大尺寸
+     */
+    class MeasureParameter {
+        // 通过解析widthMeasureSpec得到的参数
+        @Transient
+        var widthMode: Int = 0
+        var widthModeName: String = ""
+        var widthSize: Int = 0
+
+        // 通过解析heightMeasureSpec得到的参数
+        @Transient
+        var heightMode: Int = 0
+        var heightModeName: String = ""
+        var heightSize: Int = 0
+
+        // 测算View在父布局中可占用的最大宽高
+        var maxWidth: Int = 0
+        var maxHeight: Int = 0
+
+        // 父布局指定的宽高，若未指定则为null
+        var targetWidth: Int? = null
+        var targetHeight: Int? = null
     }
 }
