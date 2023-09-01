@@ -18,13 +18,6 @@ object ApplicationHolder {
     /**
      * 当前App的Application实例
      */
-    @Deprecated("使用app代替")
-    val instance: Application
-        get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
-
-    /**
-     * 当前App的Application实例
-     */
     val app: Application
         get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
 

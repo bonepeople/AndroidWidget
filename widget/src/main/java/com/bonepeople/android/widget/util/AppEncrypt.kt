@@ -1,7 +1,6 @@
 package com.bonepeople.android.widget.util
 
 import android.util.Base64
-import androidx.annotation.Size
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -24,12 +23,6 @@ import javax.crypto.spec.SecretKeySpec
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppEncrypt {
-    @Deprecated("此方法已迁移至新的工具类", ReplaceWith("AppMessageDigest.md5(inputStream, blockSize, onProgress)"))
-    fun encryptByMD5(inputStream: InputStream, blockSize: Int = 1024, onProgress: ((Long) -> Unit)? = null): String = AppMessageDigest.md5(inputStream, blockSize, onProgress)
-
-    @Deprecated("此方法已迁移至新的工具类", ReplaceWith("AppMessageDigest.md5(content)"))
-    fun encryptByMD5(content: String): String = AppMessageDigest.md5(content)
-
     /**
      * 根据传入的密钥对数据进行AES加密
      * + 返回的数据并未进行Base64编码
@@ -143,22 +136,6 @@ object AppEncrypt {
     fun decryptByRSA(data: String, key: Key, transformation: String = "RSA/ECB/PKCS1Padding", blockSize: Int = 0): String {
         return decryptByRSA(Base64.decode(data, Base64.NO_WRAP).inputStream(), ByteArrayOutputStream(), key, transformation, blockSize).toString()
     }
-
-    @Deprecated("请使用新版加密方法", ReplaceWith("AppEncrypt.encryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)"))
-    fun <T : OutputStream> encryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
-        encryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
-
-    @Deprecated("请使用新版解密方法", ReplaceWith("AppEncrypt.decryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)"))
-    fun <T : OutputStream> decryptByAES(inputStream: InputStream, @Size(16) secret: String, @Size(16) salt: String, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
-        decryptByAES(inputStream, outputStream, secret, salt, onProgress = onProgress)
-
-    @Deprecated("请使用新版加密方法", ReplaceWith("AppEncrypt.encryptByRSA(inputStream, outputStream, key, \"RSA\", onProgress = onProgress)"))
-    fun <T : OutputStream> encryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
-        encryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
-
-    @Deprecated("请使用新版解密方法", ReplaceWith("AppEncrypt.decryptByRSA(inputStream, outputStream, key, \"RSA\", onProgress = onProgress)"))
-    fun <T : OutputStream> decryptByRSA(inputStream: InputStream, key: Key, outputStream: T, onProgress: ((Long) -> Unit)? = null): T =
-        decryptByRSA(inputStream, outputStream, key, "RSA", onProgress = onProgress)
 
     /**
      * 获取RSA公钥

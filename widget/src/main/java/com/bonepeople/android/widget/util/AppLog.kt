@@ -49,9 +49,6 @@ class AppLog(val tag: String) {
          */
         var defaultTag = "AppLog"
 
-        @Deprecated("use defaultTag instead", ReplaceWith("AppLog.defaultTag"))
-        var tag = defaultTag
-
         /**
          * 全局日志输出开关
          */

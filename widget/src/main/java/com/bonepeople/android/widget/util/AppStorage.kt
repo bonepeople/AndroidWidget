@@ -42,15 +42,6 @@ object AppStorage {
         }
     }
 
-    /**
-     * 多进程支持
-     * + 在使用[AppStorage]前通过修改此项来调整多进程支持，默认为启用
-     * + 在某些特殊情况下可能会无效，已于1.5.5版本标记为废弃
-     * + 预计于1.6.0版本，移除
-     */
-    @Deprecated("multiProcess在某些特殊情况下可能会无效，现在全部的数据实例均采用多进程方式初始化")
-    var multiProcess = true
-
     private fun init(): MMKV {
         MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
         val secret: String = AppMessageDigest.md5(ApplicationHolder.getPackageName())
