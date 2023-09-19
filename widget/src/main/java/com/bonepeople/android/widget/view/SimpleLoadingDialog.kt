@@ -32,6 +32,8 @@ class SimpleLoadingDialog(activity: Activity) : AlertDialog(activity) {
             setBackgroundDrawable(drawable)
             // 弹窗中有输入框的时候需要清除对应的标志位才能弹出软键盘，适用于直接继承AlertDialog的情况
             // clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+            // 使用以下方法可以清除背景变暗的效果，在清除的同时不会导致状态栏文字变为白色
+            // clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
     }
 }
