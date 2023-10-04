@@ -7,9 +7,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Point
 import android.os.BatteryManager
 import android.os.Build
 import android.provider.Settings
+import android.view.WindowManager
 import androidx.annotation.RequiresPermission
 import com.bonepeople.android.widget.ApplicationHolder
 import java.net.Inet4Address
@@ -20,8 +22,8 @@ import java.net.SocketException
 /**
  * 系统相关参数的获取工具
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
-@SuppressLint("PrivateApi", "DiscouragedPrivateApi")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
+@SuppressLint("PrivateApi", "DiscouragedPrivateApi", "InternalInsetResource")
 object AppSystem {
     val batteryManager: BatteryManager by lazy { ApplicationHolder.app.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }
     val androidId: String by lazy { Settings.System.getString(ApplicationHolder.app.contentResolver, Settings.Secure.ANDROID_ID) }
@@ -133,5 +135,55 @@ object AppSystem {
             }
         }
         return null
+    }
+
+    /**
+     * 获取状态栏高度
+     * @return 返回状态栏高度，单位为px，未获取到的情况下返回0
+     */
+    fun getStatusBarHeight(): Int {
+        val resource = ApplicationHolder.app.resources
+        val resourceId = resource.getIdentifier("status_bar_height", "dimen", "android")
+        return if (resourceId > 0) {
+            resource.getDimensionPixelSize(resourceId)
+        } else {
+            0
+        }
+    }
+
+    /**
+     * 获取导航栏高度
+     * @return 返回导航栏高度，单位为px，未获取到的情况下返回0
+     */
+    fun getNavigationBarHeight(): Int {
+        val resource = ApplicationHolder.app.resources
+        val resourceId = resource.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resourceId > 0) {
+            resource.getDimensionPixelSize(resourceId)
+        } else {
+            0
+        }
+    }
+
+    /**
+     * 获取屏幕宽度
+     * @return 返回屏幕宽度，单位为px
+     */
+    fun getScreenWidth(): Int {
+        val point = Point()
+        val manager = ApplicationHolder.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        manager.defaultDisplay.getRealSize(point)
+        return point.x
+    }
+
+    /**
+     * 获取屏幕高度
+     * @return 返回屏幕高度，单位为px
+     */
+    fun getScreenHeight(): Int {
+        val point = Point()
+        val manager = ApplicationHolder.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        manager.defaultDisplay.getRealSize(point)
+        return point.y
     }
 }
