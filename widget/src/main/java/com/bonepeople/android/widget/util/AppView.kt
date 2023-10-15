@@ -57,18 +57,22 @@ object AppView {
      * 设置[View]的可见性
      * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.GONE]中切换
      * @param visible 是否可见
+     * @param action 可见时需要执行的操作
      */
-    fun <T : View> T.switchShow(visible: Boolean): T = apply {
+    fun <T : View> T.switchShow(visible: Boolean, action: (view: T) -> Unit = {}): T = apply {
         if (visible) show() else gone()
+        if (visible) action(this)
     }
 
     /**
      * 设置[View]的可见性
      * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.INVISIBLE]中切换
      * @param visible 是否可见
+     * @param action 可见时需要执行的操作
      */
-    fun <T : View> T.switchVisible(visible: Boolean): T = apply {
+    fun <T : View> T.switchVisible(visible: Boolean, action: (view: T) -> Unit = {}): T = apply {
         if (visible) show() else hide()
+        if (visible) action(this)
     }
 
     /**
