@@ -24,7 +24,9 @@ import java.util.Calendar
  * 日期时间选择对话框
  */
 @Suppress("UNUSED")
-class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
+class DateTimePicker : DialogFragment() {
+    private var dialogFragmentManager: FragmentManager? = null
+    private var dialogFragmentTag: String = ""
     private var closing = false
     private val views by lazy { DialogDateTimePickerBinding.inflate(layoutInflater) }
     private val calendar = Calendar.getInstance()
@@ -152,13 +154,27 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         views.numberPickerDay.maxValue = dayRange
     }
 
+    /**
+     * 设置用于显示Dialog的FragmentManager及Tag
+     */
+    fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
+        dialogFragmentManager = manager
+        dialogFragmentTag = tag
+    }
+
+    /**
+     * 显示Dialog
+     * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
+     * + 在显示之前需要调用[setFragmentManagerAndTag]方法设置FragmentManager
+     */
     fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
+        require(dialogFragmentManager != null) { "需要通过setFragmentManagerAndTag方法设置FragmentManager及Tag" }
         if (isAdded) return
         if (time > 0) calendar.timeInMillis = time
         calendar[Calendar.MILLISECOND] = 0
         this.action = action
         closing = false
-        show(manager, null)
+        show(dialogFragmentManager!!, dialogFragmentTag)
     }
 
     override fun dismiss() {
@@ -178,7 +194,7 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
         fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
             val activity = ActivityHolder.getTopActivity()
             if (activity is FragmentActivity) {
-                DateTimePicker(activity.supportFragmentManager).show(time, action)
+                DateTimePicker().setFragmentManagerAndTag(activity.supportFragmentManager, "DateTimePicker").show(time, action)
             }
         }
 
