@@ -12,21 +12,63 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutTitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorSecondary"
-        android:paddingVertical="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/design_default_color_secondary">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/viewBackgroundTop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.6"
+            android:background="?colorSecondary"
+            app:layout_constraintBottom_toTopOf="@id/viewIndicator"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/design_default_color_secondary" />
+
+        <View
+            android:id="@+id/viewBackgroundLeft"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.6"
+            android:background="?colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/viewIndicator"
+            app:layout_constraintEnd_toStartOf="@id/viewIndicator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/viewIndicator"
+            tools:background="@color/design_default_color_secondary" />
+
+        <View
+            android:id="@+id/viewBackgroundRight"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.6"
+            android:background="?colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/viewIndicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewIndicator"
+            app:layout_constraintTop_toTopOf="@id/viewIndicator"
+            tools:background="@color/design_default_color_secondary" />
+
+        <View
+            android:id="@+id/viewIndicator"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:alpha="0.6"
+            android:background="@drawable/date_time_indicator"
+            android:backgroundTint="?colorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewDate"
+            app:layout_constraintStart_toStartOf="@id/textViewDate"
+            tools:backgroundTint="@color/design_default_color_secondary" />
 
         <TextView
             android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp"
             android:text="2023-01-09"
             android:textColor="?colorOnSecondary"
             android:textSize="18sp"
@@ -43,7 +85,8 @@
             android:layout_height="wrap_content"
             android:alpha="0.5"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp"
             android:text="19:33:01"
             android:textColor="?colorOnSecondary"
             android:textSize="18sp"

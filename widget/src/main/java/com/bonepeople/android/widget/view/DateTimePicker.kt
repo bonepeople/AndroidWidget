@@ -3,9 +3,11 @@ package com.bonepeople.android.widget.view
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -37,12 +39,26 @@ class DateTimePicker(private val manager: FragmentManager) : DialogFragment() {
             views.linearLayoutDate.show()
             views.textViewDate.alpha = 1f
             views.textViewTime.alpha = 0.5f
+            TransitionManager.beginDelayedTransition(views.constraintLayoutTitle)
+            ConstraintSet().also {
+                it.clone(views.constraintLayoutTitle)
+                it.connect(views.viewIndicator.id, ConstraintSet.START, views.textViewDate.id, ConstraintSet.START)
+                it.connect(views.viewIndicator.id, ConstraintSet.END, views.textViewDate.id, ConstraintSet.END)
+                it.applyTo(views.constraintLayoutTitle)
+            }
         }
         views.textViewTime.singleClick {
             views.linearLayoutDate.gone()
             views.linearLayoutTime.show()
             views.textViewDate.alpha = 0.5f
             views.textViewTime.alpha = 1f
+            TransitionManager.beginDelayedTransition(views.constraintLayoutTitle)
+            ConstraintSet().also {
+                it.clone(views.constraintLayoutTitle)
+                it.connect(views.viewIndicator.id, ConstraintSet.START, views.textViewTime.id, ConstraintSet.START)
+                it.connect(views.viewIndicator.id, ConstraintSet.END, views.textViewTime.id, ConstraintSet.END)
+                it.applyTo(views.constraintLayoutTitle)
+            }
         }
         views.numberPickerYear.minValue = 1900
         views.numberPickerYear.maxValue = 2099
