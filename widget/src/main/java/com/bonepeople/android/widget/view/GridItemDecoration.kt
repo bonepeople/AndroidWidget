@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bonepeople.android.dimensionutil.DimensionUtil
+import com.bonepeople.android.widget.util.AppDensity
 import kotlin.math.roundToInt
 
 /**
@@ -23,8 +23,8 @@ class GridItemDecoration(horizontal: Float, vertical: Float) : RecyclerView.Item
     private var verticalSpacing = 0
 
     init {
-        horizontalSpacing = DimensionUtil.getPx(horizontal)
-        verticalSpacing = DimensionUtil.getPx(vertical)
+        horizontalSpacing = AppDensity.getPx(horizontal)
+        verticalSpacing = AppDensity.getPx(vertical)
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

@@ -7,7 +7,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bonepeople.android.dimensionutil.DimensionUtil
+import com.bonepeople.android.widget.util.AppDensity
 import kotlin.math.roundToInt
 
 /**
@@ -29,7 +29,7 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
     private val bounds: Rect = Rect()
 
     init {
-        spacing = DimensionUtil.getPx(space)
+        spacing = AppDensity.getPx(space)
     }
 
     fun setColor(@ColorInt color: Int) = apply {
@@ -37,8 +37,8 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
     }
 
     fun setPadding(start: Float, end: Float) = apply {
-        startPadding = DimensionUtil.getPx(start)
-        endPadding = DimensionUtil.getPx(end)
+        startPadding = AppDensity.getPx(start)
+        endPadding = AppDensity.getPx(end)
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

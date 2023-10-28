@@ -8,7 +8,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.TypedValue
 import androidx.annotation.ColorInt
-import com.bonepeople.android.dimensionutil.DimensionUtil
 
 /**
  * 富文本拼接工具类
@@ -56,7 +55,7 @@ open class AppSpan : SpannableStringBuilder() {
      * 添加一段文本并设置这段文本的文字大小
      */
     fun textSize(content: CharSequence, size: Float) = apply {
-        append(content, AbsoluteSizeSpan(DimensionUtil.getPx(TypedValue.COMPLEX_UNIT_SP, size)), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+        append(content, AbsoluteSizeSpan(AppDensity.getPx(size, TypedValue.COMPLEX_UNIT_SP)), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     /**
