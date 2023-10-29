@@ -20,9 +20,10 @@ class IntentLauncher private constructor() : ActivityResultCallback<ActivityResu
     private var intentResult: IntentResult? = null
 
     internal fun launch(intent: Intent): IntentResult {
-        intentResult = IntentResult()
+        val tempResult = IntentResult()
+        intentResult = tempResult
         launcher?.launch(intent)
-        return intentResult!!
+        return tempResult
     }
 
     internal fun ready() = intentResult == null
