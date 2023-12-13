@@ -76,6 +76,43 @@ object AppView {
     }
 
     /**
+     * 将指定的Key-Value数据存储在View中
+     * + 数据会被存入HashMap中
+     * + 存储过程完成后会将存储的数据返回
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> View.putExtra(key: Any, value: T): T {
+        (getTag(R.id.viewExtra) as? HashMap<Any, Any>)?.let { map ->
+            map[key] = value
+        } ?: run {
+            val map = HashMap<Any, Any>()
+            map[key] = value
+            setTag(R.id.viewExtra, map)
+        }
+        return value
+    }
+
+    /**
+     * 获取View中存储的Key-Value
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> View.getExtra(key: Any, default: T): T {
+        return (getTag(R.id.viewExtra) as? HashMap<Any, Any>)?.let { map ->
+            map[key] as? T
+        } ?: default
+    }
+
+    /**
+     * 移除View中存储的Key-Value并将数据返回，没有相应字段的情况下会返回空指针
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> View.removeExtra(key: Any): T? {
+        return (getTag(R.id.viewExtra) as? HashMap<Any, Any>)?.let { map ->
+            map.remove(key) as? T
+        }
+    }
+
+    /**
      * 解析测算参数，计算指定View可以占用的最大空间
      * + 通常在onMeasure函数中调用，用于解析MeasureSpec
      * @param view 需要计算的View
