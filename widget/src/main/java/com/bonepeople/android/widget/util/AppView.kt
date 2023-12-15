@@ -22,11 +22,11 @@ object AppView {
      * @param interval 两次点击的间隔
      */
     fun <T : View> T.singleClick(interval: Long = singleClickInterval, action: (T) -> Unit): T = apply {
-        setOnClickListener {
+        setOnClickListener { view: View ->
             val now = System.currentTimeMillis()
-            val lastClickTime = getTag(R.id.lastClickTime) as? Long ?: 0
+            val lastClickTime: Long = view.getExtra("com.bonepeople.android.widget.keys.AppView.lastClickTime", 0)
             if (now - lastClickTime > interval) {
-                setTag(R.id.lastClickTime, now)
+                view.putExtra("com.bonepeople.android.widget.keys.AppView.lastClickTime", now)
                 action.invoke(this)
             }
         }
