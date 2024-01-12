@@ -8,7 +8,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.bonepeople.android.widget.ActivityHolder.putExtra
+import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.DefaultActivityLifecycleCallbacks
 
 /**
@@ -65,7 +65,7 @@ class IntentLauncher private constructor() : ActivityResultCallback<ActivityResu
                     intentLauncher.launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult(), intentLauncher)
                     launcherList.add(intentLauncher)
                 }
-                activity.putExtra("com.bonepeople.android.widget.activity.result.IntentLauncher", launcherList)
+                ActivityHolder.putData(activity, "com.bonepeople.android.widget.activity.result.IntentLauncher", launcherList)
             }
         }
     }
