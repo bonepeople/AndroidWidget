@@ -56,6 +56,9 @@ dependencies {
     // MMKV https://github.com/tencent/mmkv
     implementation 'com.tencent:mmkv:1.2.14'
 
+    // DataStore https://developer.android.com/topic/libraries/architecture/datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     // AppStartup https://developer.android.google.cn/topic/libraries/app-startup?hl=zh-cn
     implementation("androidx.startup:startup-runtime:1.1.1")
 }
