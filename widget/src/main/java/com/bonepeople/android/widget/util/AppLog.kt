@@ -67,14 +67,9 @@ class AppLog(val tag: String) {
 
     companion object {
         /**
-         * 全局的默认TAG
-         */
-        var defaultTag = "AppLog"
-
-        /**
          * 全局默认日志输出对象
          */
-        val defaultLog: AppLog get() = tag(defaultTag)
+        val defaultLog: AppLog get() = tag("AppLog")
 
         /**
          * 全局日志输出开关
