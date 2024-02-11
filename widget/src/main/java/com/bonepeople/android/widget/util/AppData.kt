@@ -12,7 +12,9 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.bonepeople.android.widget.ApplicationHolder
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
@@ -29,53 +31,40 @@ class AppData private constructor(name: String) {
         }
     }
 
-    suspend fun putString(key: String, value: String) {
-        putData(stringPreferencesKey(key), value)
-    }
+    suspend fun putString(key: String, value: String) = putData(stringPreferencesKey(key), value)
+    suspend fun putInt(key: String, value: Int) = putData(intPreferencesKey(key), value)
+    suspend fun putLong(key: String, value: Long) = putData(longPreferencesKey(key), value)
+    suspend fun putFloat(key: String, value: Float) = putData(floatPreferencesKey(key), value)
+    suspend fun putDouble(key: String, value: Double) = putData(doublePreferencesKey(key), value)
+    suspend fun putBoolean(key: String, value: Boolean) = putData(booleanPreferencesKey(key), value)
 
-    suspend fun putInt(key: String, value: Int) {
-        putData(intPreferencesKey(key), value)
-    }
+    fun putStringSync(key: String, value: String) = runBlocking { putString(key, value) }
+    fun putIntSync(key: String, value: Int) = runBlocking { putInt(key, value) }
+    fun putLongSync(key: String, value: Long) = runBlocking { putLong(key, value) }
+    fun putFloatSync(key: String, value: Float) = runBlocking { putFloat(key, value) }
+    fun putDoubleSync(key: String, value: Double) = runBlocking { putDouble(key, value) }
+    fun putBooleanSync(key: String, value: Boolean) = runBlocking { putBoolean(key, value) }
 
-    suspend fun putLong(key: String, value: Long) {
-        putData(longPreferencesKey(key), value)
-    }
+    suspend fun getString(key: String, default: String = ""): String = getStringFlow(key, default).first()
+    suspend fun getInt(key: String, default: Int = 0): Int = getIntFlow(key, default).first()
+    suspend fun getLong(key: String, default: Long = 0): Long = getLongFlow(key, default).first()
+    suspend fun getFloat(key: String, default: Float = 0f): Float = getFloatFlow(key, default).first()
+    suspend fun getDouble(key: String, default: Double = 0.0): Double = getDoubleFlow(key, default).first()
+    suspend fun getBoolean(key: String, default: Boolean = false): Boolean = getBooleanFlow(key, default).first()
 
-    suspend fun putFloat(key: String, value: Float) {
-        putData(floatPreferencesKey(key), value)
-    }
+    fun getStringSync(key: String, default: String = ""): String = runBlocking { getString(key, default) }
+    fun getIntSync(key: String, default: Int = 0): Int = runBlocking { getInt(key, default) }
+    fun getLongSync(key: String, default: Long = 0): Long = runBlocking { getLong(key, default) }
+    fun getFloatSync(key: String, default: Float = 0f): Float = runBlocking { getFloat(key, default) }
+    fun getDoubleSync(key: String, default: Double = 0.0): Double = runBlocking { getDouble(key, default) }
+    fun getBooleanSync(key: String, default: Boolean = false): Boolean = runBlocking { getBoolean(key, default) }
 
-    suspend fun putDouble(key: String, value: Double) {
-        putData(doublePreferencesKey(key), value)
-    }
-
-    suspend fun putBoolean(key: String, value: Boolean) {
-        putData(booleanPreferencesKey(key), value)
-    }
-
-    suspend fun getString(key: String, default: String = ""): String {
-        return getData(stringPreferencesKey(key), default)
-    }
-
-    suspend fun getInt(key: String, default: Int = 0): Int {
-        return getData(intPreferencesKey(key), default)
-    }
-
-    suspend fun getLong(key: String, default: Long = 0): Long {
-        return getData(longPreferencesKey(key), default)
-    }
-
-    suspend fun getFloat(key: String, default: Float = 0f): Float {
-        return getData(floatPreferencesKey(key), default)
-    }
-
-    suspend fun getDouble(key: String, default: Double = 0.0): Double {
-        return getData(doublePreferencesKey(key), default)
-    }
-
-    suspend fun getBoolean(key: String, default: Boolean = false): Boolean {
-        return getData(booleanPreferencesKey(key), default)
-    }
+    fun getStringFlow(key: String, default: String = ""): Flow<String> = getDataFlow(stringPreferencesKey(key), default)
+    fun getIntFlow(key: String, default: Int = 0): Flow<Int> = getDataFlow(intPreferencesKey(key), default)
+    fun getLongFlow(key: String, default: Long = 0): Flow<Long> = getDataFlow(longPreferencesKey(key), default)
+    fun getFloatFlow(key: String, default: Float = 0f): Flow<Float> = getDataFlow(floatPreferencesKey(key), default)
+    fun getDoubleFlow(key: String, default: Double = 0.0): Flow<Double> = getDataFlow(doublePreferencesKey(key), default)
+    fun getBooleanFlow(key: String, default: Boolean = false): Flow<Boolean> = getDataFlow(booleanPreferencesKey(key), default)
 
     suspend fun remove(key: String) {
         dataStore.edit { it.remove(stringPreferencesKey(key)) }
@@ -85,8 +74,8 @@ class AppData private constructor(name: String) {
         dataStore.edit { it[key] = value }
     }
 
-    private suspend fun <T> getData(key: Preferences.Key<T>, default: T): T {
-        return dataStore.data.first()[key] ?: default
+    private fun <T> getDataFlow(key: Preferences.Key<T>, default: T): Flow<T> {
+        return dataStore.data.map { it[key] ?: default }
     }
 
     companion object {
