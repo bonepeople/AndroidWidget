@@ -47,9 +47,6 @@ dependencies {
     // 本地广播 https://github.com/bonepeople/LocalBroadcastUtil
     api 'com.github.bonepeople:LocalBroadcastUtil:1.4.1'
 
-    // 尺寸转换 https://github.com/bonepeople/DimensionUtil
-    api 'com.github.bonepeople:DimensionUtil:1.3.2'
-
     // gson https://github.com/google/gson
     api 'com.google.code.gson:gson:2.9.1'
 
