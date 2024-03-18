@@ -5,8 +5,8 @@ import android.content.Intent
 import androidx.activity.result.ActivityResult
 
 /**
- * Intent结果
- * + 接收并处理[Activity]返回的数据
+ * Intent Result
+ * + Handles and processes data returned by an [Activity].
  */
 class IntentResult {
     private var resultAction: ((ActivityResult) -> Unit)? = null
@@ -25,7 +25,7 @@ class IntentResult {
     }
 
     /**
-     * 设置收到Activity的返回结果时执行的动作
+     * Sets the action to be executed when the result is received from the [Activity].
      */
     fun onResult(action: (ActivityResult) -> Unit) = apply {
         resultAction = action
@@ -33,9 +33,9 @@ class IntentResult {
     }
 
     /**
-     * 设置Activity的返回结果为[Activity.RESULT_OK]时的动作
+     * Sets the action to be executed when the [Activity] returns a result with [Activity.RESULT_OK].
      *
-     * 附带参数为返回的[Intent]
+     * The parameter provides the returned [Intent].
      */
     fun onSuccess(action: (Intent?) -> Unit) = apply {
         successAction = action
@@ -47,7 +47,7 @@ class IntentResult {
     }
 
     /**
-     * 设置Activity的返回结果不为[Activity.RESULT_OK]时的动作
+     * Sets the action to be executed when the [Activity] returns a result other than [Activity.RESULT_OK].
      */
     fun onFailure(action: (ActivityResult) -> Unit) = apply {
         failureAction = action

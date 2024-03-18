@@ -12,8 +12,8 @@ import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.DefaultActivityLifecycleCallbacks
 
 /**
- * Intent启动器
- * + 在每个[ComponentActivity]创建的时候都会配套创建[IntentLauncher]，用于启动用户指定的[Intent]
+ * Intent Launcher
+ * + An [IntentLauncher] is created for each [ComponentActivity], allowing the user to launch a specified [Intent].
  */
 class IntentLauncher private constructor() : ActivityResultCallback<ActivityResult> {
     private var hostName: String = ""
@@ -41,14 +41,14 @@ class IntentLauncher private constructor() : ActivityResultCallback<ActivityResu
         private val launchRecord = LinkedHashMap<IntentLauncher, String>()
 
         /**
-         * IntentLauncher的初始化数量
-         * + 该变量用于控制在每个Activity中初始化IntentLauncher的数量
-         * + 过多的初始化IntentLauncher会造成资源的浪费，请根据需求进行调整
+         * Initial number of [IntentLauncher] instances.
+         * + This variable controls how many [IntentLauncher] instances are initialized for each activity.
+         * + Initializing too many instances may waste resources, so adjust this value as needed.
          */
         var initialCapacity = 1
 
         /**
-         * 获取IntentLauncher调用栈
+         * Retrieves the call stack for the [IntentLauncher].
          */
         fun stackTraceToString(): String {
             return launchRecord.values.reversed().joinToString(separator = "\n")
