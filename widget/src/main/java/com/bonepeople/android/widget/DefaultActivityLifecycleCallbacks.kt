@@ -5,7 +5,11 @@ import android.app.Application
 import android.os.Bundle
 
 /**
- * 附带空实现的ActivityLifecycleCallbacks
+ * ActivityLifecycleCallbacks with empty default implementations.
+ *
+ * This interface provides no-op (empty) implementations for all methods of
+ * [Application.ActivityLifecycleCallbacks]. It can be used as a base interface
+ * for subclasses to override only the methods they need.
  */
 interface DefaultActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}

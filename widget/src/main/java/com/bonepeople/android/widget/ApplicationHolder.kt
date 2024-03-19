@@ -9,51 +9,54 @@ import androidx.startup.Initializer
 import com.bonepeople.android.widget.activity.result.IntentLauncher
 
 /**
- * Application状态保存器
+ * Application State Holder
+ *
+ * Provides a centralized place to access and manage the application instance and related information.
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
     private var application: Application? = null
 
     /**
-     * 当前App的Application实例
+     * The current application's [Application] instance.
+     * Throws an [IllegalStateException] if not successfully initialized.
      */
     val app: Application
-        get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
+        get() = application ?: throw IllegalStateException("Initialization failed. Please call StartupHelper.initializeAll to initialize.")
 
     /**
-     * 当前App的PackageInfo
+     * The current application's [PackageInfo].
      */
     val packageInfo: PackageInfo by lazy { app.packageManager.getPackageInfo(getPackageName(), 0) }
 
     /**
-     * 当前App的debug标志
+     * Indicates whether the current application is in debug mode.
      */
     val debug: Boolean by lazy { app.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 }
 
     /**
-     * 获取当前App的包名
+     * Retrieves the package name of the current application.
      */
     fun getPackageName(): String {
         return app.packageName
     }
 
     /**
-     * 获取当前App的版本号
+     * Retrieves the version code of the current application.
      */
     fun getVersionCode(): Long {
         return PackageInfoCompat.getLongVersionCode(packageInfo)
     }
 
     /**
-     * 获取当前App的版本名称
+     * Retrieves the version name of the current application.
      */
     fun getVersionName(): String {
         return packageInfo.versionName
     }
 
     /**
-     * ApplicationHolder的初始化逻辑
+     * Initialization logic for [ApplicationHolder].
      */
     class StartUp : Initializer<ApplicationHolder> {
         override fun create(context: Context): ApplicationHolder {

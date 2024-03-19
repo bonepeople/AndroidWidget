@@ -4,16 +4,17 @@ import android.app.Application
 import android.content.Context
 
 /**
- * Startup初始化辅助工具类
- *
- * + Startup默认仅在主进程启动的时候进行自动初始化，对于有多个进程的程序可以通过此工具类手动触发初始化逻辑
+ * Helper utility class for Startup initialization.
+ * + By default, Startup performs automatic initialization only in the main process.
+ *   For applications with multiple processes, this utility class can be used to manually trigger the initialization logic.
  */
 @Suppress("UNUSED")
 object StartupHelper {
     /**
-     * 初始化所有定义的[Initializer]
-     * + 重复调用不会影响已经初始化的对象
-     * + 推荐在[Application.onCreate]方法中调用，以确保初始化工作在使用之前完成
+     * Initializes all defined [Initializer] instances.
+     * + Repeated calls will not affect already initialized objects.
+     * + It is recommended to call this method in [Application.onCreate]
+     *   to ensure that initialization is completed before usage.
      */
     fun initializeAll(context: Context) {
         AppInitializer.getInstance(context).discoverAndInitialize()

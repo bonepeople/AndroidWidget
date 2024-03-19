@@ -6,30 +6,33 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Coroutines状态保存器
+ * Coroutines State Holder
+ *
+ * Provides global coroutine singletons for different dispatchers to manage coroutine contexts efficiently.
  */
 @Suppress("UNUSED")
 object CoroutinesHolder {
     /**
-     * 默认线程的全局协程单例
-     * + 适用于CPU密集型任务
-     * + 使用共享的后台线程池，线程数为CPU核心数
+     * Global singleton coroutine scope for the Default dispatcher.
+     * + Suitable for CPU-intensive tasks.
+     * + Uses a shared background thread pool with the number of threads equal to the number of CPU cores.
      */
     val default: CoroutineScope = object : CoroutineScope {
         override val coroutineContext: CoroutineContext = Dispatchers.Default + Job()
     }
 
     /**
-     * 主线程的全局协程单例
+     * Global singleton coroutine scope for the Main dispatcher.
+     * + Executes coroutines on the main thread.
      */
     val main: CoroutineScope = object : CoroutineScope {
         override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
     }
 
     /**
-     * IO线程的全局协程单例
-     * + 适用于IO密集型任务
-     * + 基于线程的协程调度器，会根据需要自动调整线程池的大小
+     * Global singleton coroutine scope for the IO dispatcher.
+     * + Suitable for IO-intensive tasks.
+     * + Based on a thread pool coroutine dispatcher that automatically adjusts the pool size as needed.
      */
     val io: CoroutineScope = object : CoroutineScope {
         override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
