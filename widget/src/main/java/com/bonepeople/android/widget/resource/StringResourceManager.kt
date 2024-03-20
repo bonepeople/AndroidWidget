@@ -3,57 +3,64 @@ package com.bonepeople.android.widget.resource
 import java.util.Locale
 
 /**
- * 字符串资源管理器
- * + 使用方法：
- * 1. 定义字符串模版，继承自[StringTemplate]，并实现[StringTemplate.templateClass]属性，此模版可定义为抽象类或接口，可以为不同模块或页面定义不同的字符串模版，在模版中定义需要被子类实现的变量
- * 2. 定义字符串实例，继承自字符串模版，实现具体的字符串内容，同一个模版可以定义多个不同语言版本的字符串实例
- * 3. 在使用字符串之前，调用[register]方法注册字符串实例
- * 4. 在需要使用字符串的地方，调用[get]方法获取字符串实例
+ * String Resource Manager
+ *
+ * + Usage:
+ * 1. Define a string template by inheriting from [StringTemplate] and implementing the [StringTemplate.templateClass] property.
+ *    - Templates can be abstract classes or interfaces.
+ *    - Different modules or pages can define distinct string templates, specifying variables to be implemented by subclasses.
+ * 2. Define string instances by inheriting from a string template and implementing specific string content.
+ *    - A single template can have multiple language-specific string instances.
+ * 3. Before using a string, register string instances using the [register] method.
+ * 4. Retrieve string instances in your code by calling the [get] method.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object StringResourceManager {
     private val localStrings = HashMap<String, LinkedHashMap<String, LinkedHashMap<String, StringTemplate>>>()
 
     /**
-     * 注册字符串实例
-     * + 以先后顺序关系确定默认展示的字符串，在未找到匹配的字符串时优先展示先注册的字符串
-     * @param strings 字符串实例
-     * @param locales 语言环境，可传入多个语言环境，将同一字符串实例注册到多个语言环境中，`Locale.US`
+     * Registers string instances.
+     * + The order of registration determines the default string to display when no match is found.
+     * @param strings The string instance to register.
+     * @param locales One or more locales. The string instance will be registered for each specified locale (e.g., `Locale.US`).
      */
     fun register(strings: StringTemplate, vararg locales: Locale) {
         locales.forEach { locale: Locale ->
-            //获取字符串模版的类名，用于创建对应的容器
+            // Retrieve the class name of the string template to create a corresponding container
             val className: String = strings.templateClass.name
-            //根据类名获取对应的语言容器
+            // Get or create a language container for the template class
             val languageMap: LinkedHashMap<String, LinkedHashMap<String, StringTemplate>> = localStrings.getOrPut(className) { LinkedHashMap() }
-            //根据语言获取对应的国家容器
+            // Get or create a country-specific container for the language
             val countryMap: LinkedHashMap<String, StringTemplate> = languageMap.getOrPut(locale.language) { LinkedHashMap() }
-            //将字符串实例注册到国家容器中
+            // Register the string instance in the country container
             countryMap[locale.country] = strings
         }
     }
 
     /**
-     * 获取指定语言环境对应的字符串实例
-     * + 未找到指定语言环境的字符串实例时，将返回注册的第一个语言环境的第一个字符串实例
-     * @param templateClass 字符串模版类型，`StringTemplate::class.java`
-     * @param locale 语言环境，默认为系统语言环境，`Locale.US`
+     * Retrieves the string instance for a specified locale.
+     * + If no match is found for the specified locale, the first registered string instance is returned.
+     * @param templateClass The string template type (e.g., `StringTemplate::class.java`).
+     * @param locale The locale to retrieve the string instance for (default is the system's default locale, e.g., `Locale.US`).
+     * @return The string instance matching the given locale or a fallback instance if no exact match is found.
      */
     @Suppress("unchecked_cast")
     fun <T : StringTemplate> get(templateClass: Class<T>, locale: Locale = Locale.getDefault()): T {
-        require(localStrings.isNotEmpty()) { "未注册任何字符串实例，请注册后再使用" }
-        //获取字符串模版的类名，用于查询对应的容器
+        require(localStrings.isNotEmpty()) { "No string instances have been registered. Please register instances before use." }
+        // Retrieve the class name of the string template to query the corresponding container
         val className: String = templateClass.name
-        //查询类名对应的语言容器
+        // Query the language container for the specified template class
         val languageMap: LinkedHashMap<String, LinkedHashMap<String, StringTemplate>> = localStrings.getOrPut(className) { LinkedHashMap() }
-        require(languageMap.isNotEmpty()) { "未注册任何语言，请注册后再使用" }
-        //查询语言对应的国家容器
+        require(languageMap.isNotEmpty()) { "No languages have been registered. Please register languages before use." }
+        // Query the country container for the specified language
         val countryMap: LinkedHashMap<String, StringTemplate> = languageMap.getOrPut(locale.language) { LinkedHashMap() }
-        //查询国家对应的字符串实例
+        // Retrieve the string instance for the specified country
         val strings: StringTemplate? = countryMap[locale.country]
-        return strings as? T ?: if (countryMap.isEmpty()) { //语言维度未找到，返回注册的第一个语言的第一个字符串实例
+        return strings as? T ?: if (countryMap.isEmpty()) {
+            // If no match is found for the language dimension, return the first registered string instance
             languageMap.values.first().values.first() as T
-        } else { //国家维度未找到，返回同语言字符串实例
+        } else {
+            // If no match is found for the country dimension, return a string instance from the same language
             countryMap.values.first() as T
         }
     }
