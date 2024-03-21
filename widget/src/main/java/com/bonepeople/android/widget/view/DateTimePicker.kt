@@ -21,7 +21,7 @@ import com.bonepeople.android.widget.util.AppView.singleClick
 import java.util.Calendar
 
 /**
- * 日期时间选择对话框
+ * Date and Time Picker Dialog
  */
 @Suppress("UNUSED")
 class DateTimePicker : DialogFragment() {
@@ -155,7 +155,7 @@ class DateTimePicker : DialogFragment() {
     }
 
     /**
-     * 设置用于显示Dialog的FragmentManager及Tag
+     * Sets the FragmentManager and tag for displaying the dialog.
      */
     fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
         dialogFragmentManager = manager
@@ -163,12 +163,12 @@ class DateTimePicker : DialogFragment() {
     }
 
     /**
-     * 显示Dialog
-     * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
-     * + 在显示之前需要调用[setFragmentManagerAndTag]方法设置FragmentManager
+     * Displays the dialog.
+     * + If the dialog is already displayed, subsequent calls will do nothing.
+     * + [setFragmentManagerAndTag] must be called to set the FragmentManager before displaying the dialog.
      */
     fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
-        require(dialogFragmentManager != null) { "需要通过setFragmentManagerAndTag方法设置FragmentManager及Tag" }
+        require(dialogFragmentManager != null) { "FragmentManager and tag must be set using setFragmentManagerAndTag before showing the dialog." }
         if (isAdded) return
         if (time > 0) calendar.timeInMillis = time
         calendar[Calendar.MILLISECOND] = 0
@@ -187,9 +187,9 @@ class DateTimePicker : DialogFragment() {
 
     companion object {
         /**
-         * 展示日期时间选择对话框
-         * @param time 用于初始化对话框展示的时间
-         * @param action 用户点击确定后的动作，返回的[Calendar]可以使用[Calendar.getTimeInMillis]方法获取时间戳
+         * Shows the date and time picker dialog.
+         * @param time The initial time to display in the dialog.
+         * @param action Action to perform when the user confirms, providing the selected [Calendar].
          */
         fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
             val activity = ActivityHolder.getTopActivity()

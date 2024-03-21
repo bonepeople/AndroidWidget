@@ -6,14 +6,18 @@ import android.widget.FrameLayout
 import com.bonepeople.android.widget.util.AppSystem
 
 /**
- * 导航栏占位控件
- * + 可以把这个控件放在界面的布局中，宽高设置为wrap_content，这样会出现一个宽高都是导航栏高度的方块，
- * + 其他的布局根据这个控件的位置就可以方便的空出导航栏的空间。使用这个控件也可以解决布局中无法引用导航栏高度的问题。
+ * Navigation Bar Placeholder
+ *
+ * + This widget can be added to a layout with its width and height set to `wrap_content`.
+ * + It creates a square block with both width and height equal to the height of the navigation bar.
+ * + By positioning this widget in the layout, it helps reserve space for the navigation bar conveniently.
+ * + Additionally, this widget resolves issues where the navigation bar height cannot be directly referenced in layouts.
  */
 class NavigationBarHolder @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val navigationBarHeight = AppSystem.getNavigationBarHeight()
+        // Sets the dimensions of this view to match the navigation bar's height
         setMeasuredDimension(navigationBarHeight, navigationBarHeight)
     }
 }

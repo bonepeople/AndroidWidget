@@ -11,14 +11,17 @@ import com.bonepeople.android.widget.util.AppDensity
 import kotlin.math.roundToInt
 
 /**
- * 线性布局RecyclerView的分割线
- * + 适用于[LinearLayoutManager]
- * + 已知问题：
- * + 在使用DiffUtil更新列表或手动调用notifyItemInserted、notifyItemRemoved方法时，会出现分割线未更新的情况
- * + 这种异常情况是由于添加删除条目时列表的其他元素并未刷新，导致分割线的尺寸也没有刷新
- * + 解决方案：
- * + 可以在列表更新后手动调用notifyItemRangeChanged(0, 2)进行刷新，这样可以成功更新前两项的分割线尺寸
- * + 若添加的条目较多时，可适当调整更新参数，增加需要刷新的数量
+ * Divider for a linear-layout RecyclerView
+ *
+ * + Suitable for [LinearLayoutManager].
+ *
+ * ## Known Issue:
+ * When updating the list using `DiffUtil` or manually calling `notifyItemInserted`/`notifyItemRemoved`,
+ * the dividers might not update correctly.
+ *
+ * - **Reason**: Adding or removing items doesn’t refresh the dimensions of dividers for other elements in the list.
+ * - **Solution**: After updating the list, manually call `notifyItemRangeChanged(0, 2)` to refresh the first two items.
+ *   If multiple items are added, adjust the range to include all affected items.
  */
 @Suppress("unused")
 class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
@@ -32,10 +35,21 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
         spacing = AppDensity.getPx(space)
     }
 
+    /**
+     * Sets the color of the divider.
+     * @param color The color value in ARGB format.
+     * @return The current instance for chaining calls.
+     */
     fun setColor(@ColorInt color: Int) = apply {
         paint.color = color
     }
 
+    /**
+     * Sets the padding for the divider.
+     * @param start Padding at the start of the divider (in dp).
+     * @param end Padding at the end of the divider (in dp).
+     * @return The current instance for chaining calls.
+     */
     fun setPadding(start: Float, end: Float) = apply {
         startPadding = AppDensity.getPx(start)
         endPadding = AppDensity.getPx(end)
@@ -46,9 +60,9 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
         if (layoutManager is LinearLayoutManager && parent.getChildLayoutPosition(view) != 0) {
             when (layoutManager.orientation) {
                 RecyclerView.HORIZONTAL -> {
-                    if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { //从左至右布局
+                    if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { // Left-to-right layout
                         outRect.set(spacing, 0, 0, 0)
-                    } else { //从右至左布局
+                    } else { // Right-to-left layout
                         outRect.set(0, 0, spacing, 0)
                     }
                 }
@@ -82,10 +96,10 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
         var right: Int
 
         if (parent.clipToPadding) {
-            if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { //从左至右布局
+            if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { // Left-to-right layout
                 left = parent.paddingStart
                 right = parent.width - parent.paddingEnd
-            } else {
+            } else { // Right-to-left layout
                 left = parent.paddingEnd
                 right = parent.width - parent.paddingStart
             }
@@ -95,10 +109,10 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
             right = parent.width
         }
 
-        if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { //从左至右布局
+        if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { // Left-to-right layout
             left += startPadding
             right -= endPadding
-        } else {
+        } else { // Right-to-left layout
             left += endPadding
             right - +startPadding
         }
@@ -123,9 +137,9 @@ class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
         if (parent.clipToPadding) {
             top = parent.paddingTop
             bottom = parent.height - parent.paddingBottom
-            if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) {
+            if (parent.layoutDirection == View.LAYOUT_DIRECTION_LTR) { // Left-to-right layout
                 canvas.clipRect(parent.paddingStart, top, parent.width - parent.paddingEnd, bottom)
-            } else {
+            } else { // Right-to-left layout
                 canvas.clipRect(parent.paddingEnd, top, parent.width - parent.paddingStart, bottom)
             }
         } else {
