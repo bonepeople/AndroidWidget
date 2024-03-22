@@ -1,56 +1,69 @@
 package com.bonepeople.android.widget.util
 
+import android.app.Activity
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.ApplicationHolder
 
 /**
- * Android像素密度转换工具类
+ * Android Pixel Density Conversion Utility
+ *
+ * Provides methods to convert between various unit types (px, dp, sp) using screen density parameters.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object AppDensity {
     /**
-     * 全局的屏幕参数
-     * + 在转换时未提供屏幕参数的情况下使用
+     * Global screen metrics
+     * Used as a fallback when no specific metrics are provided during conversion.
      */
     var defaultMetrics: DisplayMetrics? = null
 
     /**
-     * 获取px单位数值
-     * + 将指定单位的数值转换为px单位的数值
-     * @param value 被转换数值
-     * @param unit  转换单位，参照[TypedValue]的单位定义，默认为[TypedValue.COMPLEX_UNIT_DIP]
-     * @return 转换后的数值，单位为px
+     * Converts a value to pixels (px).
+     * Transforms a value from the specified unit to px, defaulting to [TypedValue.COMPLEX_UNIT_DIP].
+     * @param value The value to convert.
+     * @param unit  The unit of the value to be converted. Based on [TypedValue] unit definitions.
+     *   Defaults to [TypedValue.COMPLEX_UNIT_DIP].
+     * @param metrics Optional screen metrics to use for the conversion. Defaults to global or current screen metrics.
+     * @return The converted value in pixels (px).
      */
     fun getPx(value: Float, unit: Int = TypedValue.COMPLEX_UNIT_DIP, metrics: DisplayMetrics? = null): Int {
         return TypedValue.applyDimension(unit, value, getCurrentMetrics(metrics)).toInt()
     }
 
     /**
-     * 获取dp单位数值
-     * + 将px单位的数值转换为dp单位的数值
-     * @param px 被转换数值，单位为px
-     * @return 转换后的数值，单位为dp
+     * Converts a pixel (px) value to density-independent pixels (dp).
+     *
+     * @param px The value in pixels to convert.
+     * @param metrics Optional screen metrics to use for the conversion. Defaults to global or current screen metrics.
+     * @return The converted value in dp.
      */
     fun getDp(px: Int, metrics: DisplayMetrics? = null): Float {
         return px / getCurrentMetrics(metrics).density
     }
 
     /**
-     * 获取sp单位数值
-     * + 将px单位的数值转换为sp单位的数值
-     * @param px 被转换数值，单位为px
-     * @return 转换后的数值，单位为sp
+     * Converts a pixel (px) value to scale-independent pixels (sp).
+     *
+     * @param px The value in pixels to convert.
+     * @param metrics Optional screen metrics to use for the conversion. Defaults to global or current screen metrics.
+     * @return The converted value in sp.
      */
     fun getSp(px: Int, metrics: DisplayMetrics? = null): Float {
         return px / getCurrentMetrics(metrics).scaledDensity
     }
 
     /**
-     * 获取当前屏幕参数
-     * + 根据优先级返回当前可用的屏幕参数
-     * + 优先级：传入的参数 > 全局参数 > 当前Activity的屏幕参数 > Application的屏幕参数
+     * Retrieves the current screen metrics.
+     * Determines the most applicable screen metrics based on the following priority:
+     * - Provided [metrics] parameter
+     * - [defaultMetrics] if set
+     * - Metrics from the top [Activity] in [ActivityHolder]
+     * - Metrics from the [ApplicationHolder]'s application resources
+     *
+     * @param metrics Optional screen metrics to use. If null, a suitable fallback is selected.
+     * @return The selected [DisplayMetrics].
      */
     fun getCurrentMetrics(metrics: DisplayMetrics? = null): DisplayMetrics {
         return metrics ?: defaultMetrics ?: ActivityHolder.getTopActivity()?.resources?.displayMetrics ?: ApplicationHolder.app.resources.displayMetrics

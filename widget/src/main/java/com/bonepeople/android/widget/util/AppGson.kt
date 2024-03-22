@@ -8,14 +8,22 @@ import java.lang.reflect.Type
 import java.util.*
 
 /**
- * Gson数据转换工具类
+ * Utility class for JSON serialization and deserialization using Gson.
  */
 @Suppress("UNUSED")
 object AppGson {
+    /**
+     * Default Gson instance with custom configuration:
+     * - Disables HTML escaping.
+     * - Includes a custom adapter to filter out null values during deserialization.
+     */
     val defaultGson: Gson by lazy { addNotNullAdapter(GsonBuilder().disableHtmlEscaping().create()) }
 
     /**
-     * 将对象转换成json字符串
+     * Converts an object into a JSON string.
+     * @param data The object to convert.
+     * @param gson An optional custom [Gson] instance; defaults to [defaultGson].
+     * @return JSON representation of the object.
      */
     @CheckResult
     @JvmOverloads
@@ -24,9 +32,11 @@ object AppGson {
     }
 
     /**
-     * 将json字符串转换成对象
-     * @throws JsonSyntaxException json字符串格式错误
-     * @throws IllegalStateException json字符串为空
+     * Converts a JSON string into an object of the specified type.
+     * @param json The JSON string to parse.
+     * @param gson An optional custom [Gson] instance; defaults to [defaultGson].
+     * @throws JsonSyntaxException if the JSON string has invalid syntax.
+     * @throws IllegalStateException if the JSON string is null or empty.
      */
     @CheckResult
     @JvmOverloads
@@ -39,16 +49,18 @@ object AppGson {
     }
 
     /**
-     * 为gson添加一个可以去除空值的适配器
-     * + 该适配器可以在解析的过程中去掉json字符串中的null，防止空指针的发生
-     * @param originGson 需要添加适配器的gson，可以是[AppGson.defaultGson]，去掉null之后将使用此gson进行解析
-     * @return 返回一个已经添加了适配器的gson，可以使用返回的gson进行解析
+     * Adds a custom adapter to a [Gson] instance to filter out null values during deserialization.
+     * @param originGson The original [Gson] instance to enhance.
+     * @return A new [Gson] instance with the null-removal adapter.
      */
     @CheckResult
     fun addNotNullAdapter(originGson: Gson): Gson {
         return originGson.newBuilder().registerTypeAdapterFactory(GsonFactory(originGson)).create()
     }
 
+    /**
+     * Factory for creating Gson adapters that handle null removal.
+     */
     private class GsonFactory(private val originGson: Gson) : TypeAdapterFactory {
         private val adapter = GsonAdapter()
         override fun <T : Any?> create(gson: Gson, type: TypeToken<T>): TypeAdapter<T>? {
@@ -56,6 +68,10 @@ object AppGson {
         }
     }
 
+    /**
+     * Adapter for handling serialization and deserialization.
+     * - During deserialization, removes null values from objects and arrays.
+     */
     private class GsonAdapter : JsonDeserializer<Any>, JsonSerializer<Any> {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Any {
             if (json.isJsonObject) searchInObject(json.asJsonObject)
