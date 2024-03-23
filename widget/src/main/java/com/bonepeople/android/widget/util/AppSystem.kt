@@ -20,7 +20,7 @@ import java.net.NetworkInterface
 import java.net.SocketException
 
 /**
- * 系统相关参数的获取工具
+ * System-related utility class for retrieving system parameters and information.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("PrivateApi", "DiscouragedPrivateApi", "InternalInsetResource")
@@ -29,15 +29,14 @@ object AppSystem {
     val androidId: String by lazy { Settings.System.getString(ApplicationHolder.app.contentResolver, Settings.Secure.ANDROID_ID) }
 
     /**
-     * 当前电池电量
-     * + 取值范围0..100
+     * Retrieves the current battery percentage (0..100).
      */
     val batteryPercent: Int
         get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
     /**
-     * 当前进程的名称
-     * + 未成功获取进程名称的时候为空字符串
+     * Retrieves the current process name.
+     * Returns an empty string if the process name cannot be determined.
      */
     val processName: String by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -57,10 +56,10 @@ object AppSystem {
     }
 
     /**
-     * 添加电量变化的监听函数
-     * + 电量改变时会将计算得到的百分比数据回调到传入的函数中
-     * + 方法会返回监听使用的[BroadcastReceiver]，用于在不需要监听的时候注销监听
-     * + 注销时所使用的[Context]要与注册时一致
+     * Adds a listener for battery level changes.
+     * @param context The context to register the listener.
+     * @param onChange Callback invoked with the battery percentage when it changes.
+     * @return The [BroadcastReceiver] used for listening, which must be unregistered when no longer needed.
      */
     fun registerBatteryChanged(context: Context, onChange: (percent: Int) -> Unit): BroadcastReceiver {
         val receiver = object : BroadcastReceiver() {
@@ -84,9 +83,9 @@ object AppSystem {
     }
 
     /**
-     * 获取当前设备所有网络连接的IPv4地址
-     * @return 返回当前已激活的IPv4地址列表
-     * @throws SocketException
+     * Retrieves all active IPv4 addresses on the device.
+     * @return A list of IPv4 addresses.
+     * @throws SocketException if there is an error accessing the network interfaces.
      */
     @RequiresPermission(android.Manifest.permission.INTERNET)
     fun getIpAddressV4(): List<String> {
@@ -102,9 +101,9 @@ object AppSystem {
     }
 
     /**
-     * 获取当前设备所有网络连接的IPv6地址
-     * @return 返回当前已激活的IPv6地址列表
-     * @throws SocketException
+     * Retrieves all active IPv6 addresses on the device.
+     * @return A list of IPv6 addresses.
+     * @throws SocketException if there is an error accessing the network interfaces.
      */
     @RequiresPermission(android.Manifest.permission.INTERNET)
     fun getIpAddressV6(): List<String> {
@@ -120,9 +119,9 @@ object AppSystem {
     }
 
     /**
-     * 获取当前设备的IPv4广播地址
-     * @return 返回广播地址，未获取到的情况下返回null
-     * @throws SocketException
+     * Retrieves the broadcast address for the current network.
+     * @return The broadcast address, or null if unavailable.
+     * @throws SocketException if there is an error accessing the network interfaces.
      */
     @RequiresPermission(android.Manifest.permission.INTERNET)
     fun getBroadcastAddress(): String? {
@@ -138,8 +137,8 @@ object AppSystem {
     }
 
     /**
-     * 获取状态栏高度
-     * @return 返回状态栏高度，单位为px，未获取到的情况下返回0
+     * Retrieves the status bar height.
+     * @return The height of the status bar in pixels, or 0 if not available.
      */
     fun getStatusBarHeight(): Int {
         val resource = ApplicationHolder.app.resources
@@ -152,8 +151,8 @@ object AppSystem {
     }
 
     /**
-     * 获取导航栏高度
-     * @return 返回导航栏高度，单位为px，未获取到的情况下返回0
+     * Retrieves the navigation bar height.
+     * @return The height of the navigation bar in pixels, or 0 if not available.
      */
     fun getNavigationBarHeight(): Int {
         val resource = ApplicationHolder.app.resources
@@ -166,8 +165,7 @@ object AppSystem {
     }
 
     /**
-     * 获取屏幕宽度
-     * @return 返回屏幕宽度，单位为px
+     * Retrieves the screen width in pixels.
      */
     fun getScreenWidth(): Int {
         val point = Point()
@@ -177,8 +175,7 @@ object AppSystem {
     }
 
     /**
-     * 获取屏幕高度
-     * @return 返回屏幕高度，单位为px
+     * Retrieves the screen height in pixels.
      */
     fun getScreenHeight(): Int {
         val point = Point()

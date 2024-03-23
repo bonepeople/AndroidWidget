@@ -6,20 +6,20 @@ import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.launch
 
 /**
- * Toast工具类
+ * Utility class for displaying Toast messages
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppToast {
     /**
-     * 展示短时间的toast
+     * Displays a Toast for a short duration.
      */
     fun show(content: CharSequence?) {
         show(content, Toast.LENGTH_SHORT)
     }
 
     /**
-     * 展示指定时间的toast
-     * @param duration toast的展示时间：[android.widget.Toast.LENGTH_SHORT]或[android.widget.Toast.LENGTH_LONG]
+     * Displays a Toast for a specified duration.
+     * @param duration Duration of the Toast: [android.widget.Toast.LENGTH_SHORT] or [android.widget.Toast.LENGTH_LONG]
      */
     fun show(content: CharSequence?, duration: Int) {
         if (content.isNullOrBlank()) return
