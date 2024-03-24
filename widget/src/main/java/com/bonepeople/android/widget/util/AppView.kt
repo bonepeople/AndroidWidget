@@ -8,18 +8,18 @@ import androidx.core.view.marginTop
 import com.bonepeople.android.widget.R
 
 /**
- * View工具类
+ * Utility class for managing View operations
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppView {
     /**
-     * 单击防抖函数的默认时间间隔
+     * Default interval for debounce function for single clicks
      */
     var singleClickInterval = 800L
 
     /**
-     * 单击防抖函数，确保固定时间内仅响应首次点击事件，每个控件独立判断
-     * @param interval 两次点击的间隔
+     * Ensures that a click action is triggered only once within the specified interval, unique for each view.
+     * @param interval Interval between consecutive clicks
      */
     fun <T : View> T.singleClick(interval: Long = singleClickInterval, action: (T) -> Unit): T = apply {
         setOnClickListener { view: View ->
@@ -33,31 +33,30 @@ object AppView {
     }
 
     /**
-     * 设置[View]为[View.VISIBLE]
+     * Sets the [View] to [View.VISIBLE]
      */
     fun <T : View> T.show(): T = apply {
         if (visibility != View.VISIBLE) visibility = View.VISIBLE
     }
 
     /**
-     * 设置[View]为[View.INVISIBLE]
+     * Sets the [View] to [View.INVISIBLE]
      */
     fun <T : View> T.hide(): T = apply {
         if (visibility != View.INVISIBLE) visibility = View.INVISIBLE
     }
 
     /**
-     * 设置[View]为[View.GONE]
+     * Sets the [View] to [View.GONE]
      */
     fun <T : View> T.gone(): T = apply {
         if (visibility != View.GONE) visibility = View.GONE
     }
 
     /**
-     * 设置[View]的可见性
-     * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.GONE]中切换
-     * @param visible 是否可见
-     * @param action 可见时需要执行的操作
+     * Toggles the visibility of the [View] between [View.VISIBLE] and [View.GONE].
+     * @param visible Whether the view should be visible
+     * @param action Action to perform if the view becomes visible
      */
     fun <T : View> T.switchShow(visible: Boolean, action: (view: T) -> Unit = {}): T = apply {
         if (visible) show() else gone()
@@ -65,10 +64,9 @@ object AppView {
     }
 
     /**
-     * 设置[View]的可见性
-     * + View的可见性会根据[visible]的值在[View.VISIBLE]或[View.INVISIBLE]中切换
-     * @param visible 是否可见
-     * @param action 可见时需要执行的操作
+     * Toggles the visibility of the [View] between [View.VISIBLE] and [View.INVISIBLE].
+     * @param visible Whether the view should be visible
+     * @param action Action to perform if the view becomes visible
      */
     fun <T : View> T.switchVisible(visible: Boolean, action: (view: T) -> Unit = {}): T = apply {
         if (visible) show() else hide()
@@ -76,9 +74,9 @@ object AppView {
     }
 
     /**
-     * 将指定的Key-Value数据存储在View中
-     * + 数据会被存入HashMap中
-     * + 存储过程完成后会将存储的数据返回
+     * Stores a key-value pair in the View.
+     * + Data is stored in a HashMap.
+     * + Returns the stored value.
      */
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> View.putExtra(key: Any, value: T): T {
@@ -93,7 +91,7 @@ object AppView {
     }
 
     /**
-     * 获取View中存储的Key-Value
+     * Retrieves a key-value pair stored in the View.
      */
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> View.getExtra(key: Any, default: T): T {
@@ -103,7 +101,7 @@ object AppView {
     }
 
     /**
-     * 移除View中存储的Key-Value并将数据返回，没有相应字段的情况下会返回空指针
+     * Removes a key-value pair from the View and returns the value. Returns null if the key doesn't exist.
      */
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> View.removeExtra(key: Any): T? {
@@ -113,12 +111,12 @@ object AppView {
     }
 
     /**
-     * 解析测算参数，计算指定View可以占用的最大空间
-     * + 通常在onMeasure函数中调用，用于解析MeasureSpec
-     * @param view 需要计算的View
-     * @param widthMeasureSpec 父控件的宽度测算规格
-     * @param heightMeasureSpec 父控件的高度测算规格
-     * @return 一个包含测量参数的对象，用于测量自定义View
+     * Resolves measurement parameters to calculate the maximum space a View can occupy.
+     * + Typically called in the onMeasure function for custom Views.
+     * @param view The target View
+     * @param widthMeasureSpec Width measurement spec from the parent
+     * @param heightMeasureSpec Height measurement spec from the parent
+     * @return A parameter object containing measurement data
      */
     fun resolveMeasureParameter(view: View, widthMeasureSpec: Int, heightMeasureSpec: Int): MeasureParameter = MeasureParameter().apply {
         widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
@@ -163,27 +161,27 @@ object AppView {
     }
 
     /**
-     * 测算参数
-     * + 包含解析得到的测算数据，可用于计算View的最大尺寸
+     * Measurement parameters
+     * + Contains data parsed from MeasureSpec for calculating the maximum dimensions of a View.
      */
     class MeasureParameter {
-        // 通过解析widthMeasureSpec得到的参数
+        // Parameters derived from widthMeasureSpec
         @Transient
         var widthMode: Int = 0
         var widthModeName: String = ""
         var widthSize: Int = 0
 
-        // 通过解析heightMeasureSpec得到的参数
+        // Parameters derived from heightMeasureSpec
         @Transient
         var heightMode: Int = 0
         var heightModeName: String = ""
         var heightSize: Int = 0
 
-        // 测算View在父布局中可占用的最大宽高
+        // Maximum width and height the View can occupy in the parent layout
         var maxWidth: Int = 0
         var maxHeight: Int = 0
 
-        // 父布局指定的宽高，若未指定则为null
+        // Width and height explicitly specified by the parent layout, null if not specified
         var targetWidth: Int? = null
         var targetHeight: Int? = null
     }

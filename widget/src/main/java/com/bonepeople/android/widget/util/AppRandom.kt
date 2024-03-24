@@ -3,36 +3,36 @@ package com.bonepeople.android.widget.util
 import kotlin.random.Random
 
 /**
- * 随机数工具类
- * + 提供一个随机数种子和一些封装好的快捷方法
+ * Utility class for generating random numbers
+ * + Provides a random seed and several convenient methods
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppRandom {
     /**
-     * 用于生成随机数的种子
-     * + 该种子使用系统当前时间的时间戳初始化
+     * Seed used for generating random numbers.
+     * + The seed is initialized with the current system timestamp.
      */
     val seed: Random by lazy { Random(System.currentTimeMillis()) }
     private val charSet by lazy { mutableSetOf<Char>().apply { addAll(('0'..'9'));addAll(('a'..'z'));addAll(('A'..'Z')) } }
 
     /**
-     * 生成指定长度的随机字符串
-     * + 字符串由26个英文字母的大小写字符及数字组成
+     * Generates a random string of the specified length.
+     * + The string consists of uppercase and lowercase English letters and digits.
      */
     fun randomString(@androidx.annotation.IntRange(from = 1) length: Int): String {
         return (1..length).map { charSet.random(seed) }.toCharArray().concatToString()
     }
 
     /**
-     * 从指定的数字区间中生成一个随机的数字
+     * Generates a random number within the specified range.
      */
     fun randomInt(range: IntRange): Int {
         return if (range.isEmpty()) 0 else range.random(seed)
     }
 
     /**
-     * 通过洗牌算法将一个集合中的数据打乱
-     * @return 返回一个新的已打乱的列表
+     * Shuffles the elements of a collection using the Fisher-Yates algorithm.
+     * @return A new list with elements shuffled.
      * @see Iterable.shuffled
      */
     fun <T> shuffleList(list: Iterable<T>): MutableList<T> {

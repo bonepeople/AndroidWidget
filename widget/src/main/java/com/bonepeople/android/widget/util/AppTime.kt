@@ -11,16 +11,16 @@ import java.util.Calendar
 import java.util.TimeZone
 
 /**
- * 时间转换工具类
+ * Utility class for time conversion
  */
 @Suppress("UNUSED")
 object AppTime {
     private val calendar: Calendar by lazy { Calendar.getInstance() }
 
     /**
-     * 将13位的时间戳格式化为"2021/1/1 12:33:33"形式的字符串
-     * @param withMillis 返回的字符串中包含毫秒数，默认为**false**
-     * @param timeZone 时区，默认为系统当前时区，可通过[TimeZone.getTimeZone]获取，`TimeZone.getTimeZone("GMT+2")`表示东二区
+     * Formats a 13-digit timestamp into a string of the form "2021/1/1 12:33:33".
+     * @param withMillis Includes milliseconds in the returned string, default is **false**.
+     * @param timeZone The timezone, default is the current system timezone. Use [TimeZone.getTimeZone], e.g., `TimeZone.getTimeZone("GMT+2")` for GMT+2.
      */
     fun getDateTimeString(timestamp: Long, withMillis: Boolean = false, timeZone: TimeZone = TimeZone.getDefault()): String {
         calendar.timeZone = timeZone
@@ -41,13 +41,13 @@ object AppTime {
     }
 
     /**
-     * 按照指定格式将时间戳格式化为字符串
-     * @param timestamp 13位时间戳
-     * @param pattern 格式化模版，例如"yyyy-MM-dd HH:mm:ss.SSS"
-     * @param timeZone 时区，默认为系统当前时区，可通过[TimeZone.getTimeZone]获取，`TimeZone.getTimeZone("GMT+2")`表示东二区
-     * @return 格式化后的字符串
-     * @throws DateTimeException 时间格式化异常
-     * @throws IllegalArgumentException 模版不合法
+     * Formats a timestamp into a string using a specified pattern.
+     * @param timestamp A 13-digit timestamp.
+     * @param pattern Formatting template, e.g., "yyyy-MM-dd HH:mm:ss.SSS".
+     * @param timeZone The timezone, default is the current system timezone. Use [TimeZone.getTimeZone], e.g., `TimeZone.getTimeZone("GMT+2")` for GMT+2.
+     * @return The formatted string.
+     * @throws DateTimeException If the time format is invalid.
+     * @throws IllegalArgumentException If the pattern is invalid.
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun formatTime(timestamp: Long, pattern: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getDefault()): String {
@@ -55,9 +55,9 @@ object AppTime {
     }
 
     /**
-     * 将时间戳格式化为"102:04:59.999"形式的字符串
-     * @param fullTimeString 时间不足小时或分钟的时候以**00**补全，默认为**false**
-     * @param withMillis 显示毫秒数，默认为**true**
+     * Formats a timestamp into a string of the form "102:04:59.999".
+     * @param fullTimeString Pads hours or minutes with **00** when absent, default is **false**.
+     * @param withMillis Includes milliseconds in the output, default is **true**.
      */
     fun getTimeString(milliseconds: Long, fullTimeString: Boolean = false, withMillis: Boolean = true): String {
         val seconds = milliseconds / 1000
