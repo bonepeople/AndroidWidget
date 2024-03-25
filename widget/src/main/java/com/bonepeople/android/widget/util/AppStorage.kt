@@ -8,12 +8,12 @@ import java.io.InputStream
 import java.io.OutputStream
 
 /**
- * App数据存储工具类
+ * App data storage utility class
  *
- * 基于MMKV
+ * Based on MMKV
  */
 @Suppress("UNUSED")
-@Deprecated("数据存储的底层实现由MMKV转换为DataStore，请将数据迁移至AppData，后续将会移除AppStorage")
+@Deprecated("The underlying storage implementation has migrated from MMKV to DataStore. Please migrate your data to AppData. This class will be removed in version 1.7.0.")
 object AppStorage {
     private const val TYPE_STRING = 1
     private const val TYPE_BOOLEAN = 2
@@ -22,10 +22,10 @@ object AppStorage {
     private const val TYPE_FLOAT = 5
 
     /**
-     * 原始存储实例
-     * + 该实例用于将旧数据迁移至新的存储实例中，从1.5.5版本，开始过渡阶段
-     * + 预计于1.6.0版本，移除
-     * + 过渡阶段会从该实例中读取数据，但不会写入
+     * Original storage instance
+     * + Used to migrate old data to the new storage instance, starting from version 1.5.5
+     * + Planned removal in version 1.6.0
+     * + Data will be read from this instance during the transition phase but not written to it
      */
     private val originStorage: MMKV by lazy { init() }
     private val dataStorage: MMKV by lazy {
@@ -65,7 +65,7 @@ object AppStorage {
     }
 
     /**
-     * 移除指定字段
+     * Remove a specific key
      */
     fun remove(key: String) {
         originStorage.removeValueForKey(key)
@@ -74,7 +74,7 @@ object AppStorage {
     }
 
     /**
-     * 备份所有数据至文件
+     * Backup all data to a file
      */
     fun backup(target: OutputStream) {
         val file = File(ApplicationHolder.app.cacheDir, "AppStorage.backup")
@@ -88,7 +88,7 @@ object AppStorage {
     }
 
     /**
-     * 从文件恢复所有数据
+     * Restore all data from a file
      */
     fun restore(source: InputStream) {
         val file = File(ApplicationHolder.app.cacheDir, "AppStorage.backup")
@@ -101,70 +101,70 @@ object AppStorage {
     }
 
     /**
-     * 存放字符串
+     * Save a string
      */
     fun putString(key: String, value: String?) {
         putDataInternal(key, value.toString())
     }
 
     /**
-     * 取出字符串，默认为空字符串
+     * Retrieve a string, default is an empty string
      */
     fun getString(key: String, default: String = ""): String {
         return getDataInternal(key, default)
     }
 
     /**
-     * 存放布尔数据
+     * Save a boolean value
      */
     fun putBoolean(key: String, value: Boolean) {
         putDataInternal(key, value)
     }
 
     /**
-     * 取出布尔数据，默认为false
+     * Retrieve a boolean value, default is false
      */
     fun getBoolean(key: String, default: Boolean = false): Boolean {
         return getDataInternal(key, default)
     }
 
     /**
-     * 存放整型数字
+     * Save an integer value
      */
     fun putInt(key: String, value: Int) {
         putDataInternal(key, value)
     }
 
     /**
-     * 取出整型数字，默认为0
+     * Retrieve an integer value, default is 0
      */
     fun getInt(key: String, default: Int = 0): Int {
         return getDataInternal(key, default)
     }
 
     /**
-     * 存放长整型数字
+     * Save a long value
      */
     fun putLong(key: String, value: Long) {
         putDataInternal(key, value)
     }
 
     /**
-     * 取出长整型数字，默认为0
+     * Retrieve a long value, default is 0
      */
     fun getLong(key: String, default: Long = 0): Long {
         return getDataInternal(key, default)
     }
 
     /**
-     * 存放浮点型数字
+     * Save a float value
      */
     fun putFloat(key: String, value: Float) {
         putDataInternal(key, value)
     }
 
     /**
-     * 取出浮点型数字，默认为0
+     * Retrieve a float value, default is 0
      */
     fun getFloat(key: String, default: Float = 0f): Float {
         return getDataInternal(key, default)
@@ -212,7 +212,7 @@ object AppStorage {
                     if (keyStorage.decodeInt(key, TYPE_STRING) == TYPE_STRING) {
                         data = (dataStorage.decodeString(key, default) ?: default) as T
                     } else {
-                        throw IllegalArgumentException("数据类型错误")
+                        throw IllegalArgumentException("Incorrect data type")
                     }
                 }
             }
@@ -225,7 +225,7 @@ object AppStorage {
                     if (keyStorage.decodeInt(key, TYPE_BOOLEAN) == TYPE_BOOLEAN) {
                         data = dataStorage.decodeBool(key, default) as T
                     } else {
-                        throw IllegalArgumentException("数据类型错误")
+                        throw IllegalArgumentException("Incorrect data type")
                     }
                 }
             }
@@ -238,7 +238,7 @@ object AppStorage {
                     if (keyStorage.decodeInt(key, TYPE_INT) == TYPE_INT) {
                         data = dataStorage.decodeInt(key, default) as T
                     } else {
-                        throw IllegalArgumentException("数据类型错误")
+                        throw IllegalArgumentException("Incorrect data type")
                     }
                 }
             }
@@ -251,7 +251,7 @@ object AppStorage {
                     if (keyStorage.decodeInt(key, TYPE_LONG) == TYPE_LONG) {
                         data = dataStorage.decodeLong(key, default) as T
                     } else {
-                        throw IllegalArgumentException("数据类型错误")
+                        throw IllegalArgumentException("Incorrect data type")
                     }
                 }
             }
@@ -264,7 +264,7 @@ object AppStorage {
                     if (keyStorage.decodeInt(key, TYPE_FLOAT) == TYPE_FLOAT) {
                         data = dataStorage.decodeFloat(key, default) as T
                     } else {
-                        throw IllegalArgumentException("数据类型错误")
+                        throw IllegalArgumentException("Incorrect data type")
                     }
                 }
             }

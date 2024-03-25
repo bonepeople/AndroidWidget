@@ -10,15 +10,15 @@ import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 /**
- * 文件压缩工具类
+ * Utility class for file compression and decompression
  */
 @Suppress("UNUSED")
 object AppZip {
     /**
-     * 压缩单个文件
-     * @param fileName 待压缩文件的文件名
-     * @param inputStream 输入流
-     * @param outputStream 输出流
+     * Compresses a single file.
+     * @param fileName The name of the file to be compressed
+     * @param inputStream Input stream of the file
+     * @param outputStream Output stream for the compressed data
      */
     fun zipFile(fileName: String, inputStream: InputStream, outputStream: OutputStream) {
         val output = ZipOutputStream(outputStream)
@@ -31,9 +31,9 @@ object AppZip {
     }
 
     /**
-     * 压缩多个文件或文件夹
-     * @param outputStream 输出流
-     * @param files 待压缩文件或文件夹
+     * Compresses multiple files or directories.
+     * @param outputStream Output stream for the compressed data
+     * @param files Files or directories to be compressed
      */
     fun zipFiles(outputStream: OutputStream, vararg files: File) {
         val output = ZipOutputStream(outputStream)
@@ -67,10 +67,10 @@ object AppZip {
     }
 
     /**
-     * 解压缩文件至目录
-     * + 解压非UTF-8编码的文件时会抛出异常
-     * @param inputStream 压缩包数据流
-     * @param parentFile 目标目录地址
+     * Extracts a compressed file to a specified directory.
+     * + Throws an exception when extracting files with non-UTF-8 encoding.
+     * @param inputStream Input stream of the compressed file
+     * @param parentFile Target directory for extraction
      */
     fun unzipFile(inputStream: InputStream, parentFile: File) {
         parentFile.mkdirs()
