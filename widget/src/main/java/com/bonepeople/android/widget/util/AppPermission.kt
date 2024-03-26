@@ -9,9 +9,9 @@ import java.util.*
 import kotlin.collections.LinkedHashMap
 
 /**
- * 权限申请工具类
+ * Permission request utility class
  *
- * 采用ActivityResultContract方式申请权限
+ * Utilizes ActivityResultContract to request permissions
  */
 @Suppress("UNUSED")
 class AppPermission private constructor() {
@@ -21,7 +21,7 @@ class AppPermission private constructor() {
     private var finished = false
 
     /**
-     * 设置权限全部授予时的动作
+     * Sets the action to perform when all permissions are granted
      */
     fun onGranted(action: () -> Unit) = apply {
         if (finished) {
@@ -34,10 +34,11 @@ class AppPermission private constructor() {
     }
 
     /**
-     * 设置获取权限申请结果后的动作
+     * Sets the action to perform when permission request results are obtained
      *
-     * allGranted - 是否全部授予权限
-     * permissionResult - 每一项权限及其所对应的申请结果
+     * @param action a lambda with:
+     * - allGranted: whether all permissions are granted
+     * - permissionResult: a map of each permission and its corresponding result
      */
     fun onResult(action: (allGranted: Boolean, permissionResult: LinkedHashMap<String, Boolean>) -> Unit) = apply {
         if (finished) {
@@ -50,7 +51,7 @@ class AppPermission private constructor() {
 
     companion object {
         /**
-         * 检查权限授予情况
+         * Checks the status of specified permissions
          */
         fun check(vararg permissions: String): AppPermission {
             return AppPermission().apply {
@@ -62,7 +63,7 @@ class AppPermission private constructor() {
         }
 
         /**
-         * 发起权限申请
+         * Initiates a permission request
          */
         fun request(vararg permissions: String): AppPermission {
             return AppPermission().apply {
@@ -75,9 +76,9 @@ class AppPermission private constructor() {
                         requestList.add(it)
                     }
                 }
-                if (requestList.isEmpty()) { //所有权限均已授予
+                if (requestList.isEmpty()) { // All permissions already granted
                     finished = true
-                } else { //申请未授予的权限
+                } else { // Request permissions not yet granted
                     RequestMultiplePermissions().createIntent(ApplicationHolder.app, requestList.toTypedArray()).launch()
                         .onResult { result ->
                             permissionResult.putAll(RequestMultiplePermissions().parseResult(result.resultCode, result.data))

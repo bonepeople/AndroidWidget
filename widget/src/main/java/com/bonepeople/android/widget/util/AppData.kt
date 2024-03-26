@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 class AppData private constructor(name: String) {
     private val dataStore: DataStore<Preferences> by lazy {
         PreferenceDataStoreFactory.create {
