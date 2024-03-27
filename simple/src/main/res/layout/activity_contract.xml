@@ -14,23 +14,23 @@
         android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开新页面" />
+        android:text="open new activity" />
 
     <Button
         android:id="@+id/button_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开新页面并接收返回值" />
+        android:text="Open a new activity and receive a return value" />
 
     <Button
         android:id="@+id/button_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="申请拍照权限" />
+        android:text="Request camera permission" />
 
     <Button
         android:id="@+id/button_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="申请权限并拍照" />
+        android:text="Request permission and take a photo" />
 </LinearLayout>

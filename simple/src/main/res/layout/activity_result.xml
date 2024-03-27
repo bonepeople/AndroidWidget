@@ -9,11 +9,11 @@
         android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="成功返回" />
+        android:text="return success" />
 
     <Button
         android:id="@+id/button_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="失败返回" />
+        android:text="return failure" />
 </LinearLayout>
