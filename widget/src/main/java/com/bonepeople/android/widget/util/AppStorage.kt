@@ -21,13 +21,6 @@ object AppStorage {
     private const val TYPE_LONG = 4
     private const val TYPE_FLOAT = 5
 
-    /**
-     * Original storage instance
-     * + Used to migrate old data to the new storage instance, starting from version 1.5.5
-     * + Planned removal in version 1.6.0
-     * + Data will be read from this instance during the transition phase but not written to it
-     */
-    private val originStorage: MMKV by lazy { init() }
     private val dataStorage: MMKV by lazy {
         MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
         val secret: String = AppMessageDigest.md5(ApplicationHolder.getPackageName())
@@ -43,32 +36,10 @@ object AppStorage {
         }
     }
 
-    private fun init(): MMKV {
-        MMKV.initialize(ApplicationHolder.app, MMKVLogLevel.LevelNone)
-        val secret: String = AppMessageDigest.md5(ApplicationHolder.getPackageName())
-        var mmkv: MMKV? = null
-        var version = 0
-        val master = MMKV.mmkvWithID("AppStorage", MMKV.MULTI_PROCESS_MODE, secret)
-        version = master.getInt("AppStorage.version", version)
-        if (version == 0) {
-            mmkv = MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, null)
-        }
-        if (version == 1) {
-            mmkv = MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, secret)
-        }
-        if (mmkv == null) {
-            mmkv = MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, secret)
-        }
-        master.encode("AppStorage.version", version)
-        mmkv!!.trim()
-        return mmkv
-    }
-
     /**
      * Remove a specific key
      */
     fun remove(key: String) {
-        originStorage.removeValueForKey(key)
         dataStorage.removeValueForKey(key)
         keyStorage.removeValueForKey(key)
     }
@@ -171,7 +142,6 @@ object AppStorage {
     }
 
     private fun <T> putDataInternal(key: String, value: T) {
-        originStorage.removeValueForKey(key)
         when (value) {
             is String -> {
                 dataStorage.putString(key, value)
@@ -205,67 +175,42 @@ object AppStorage {
         var data: T = default
         when (default) {
             is String -> {
-                if (originStorage.containsKey(key)) {
-                    data = (originStorage.decodeString(key, default) ?: default) as T
-                    putDataInternal(key, data)
+                if (keyStorage.decodeInt(key, TYPE_STRING) == TYPE_STRING) {
+                    data = (dataStorage.decodeString(key, default) ?: default) as T
                 } else {
-                    if (keyStorage.decodeInt(key, TYPE_STRING) == TYPE_STRING) {
-                        data = (dataStorage.decodeString(key, default) ?: default) as T
-                    } else {
-                        throw IllegalArgumentException("Incorrect data type")
-                    }
+                    throw IllegalArgumentException("Incorrect data type")
                 }
             }
 
             is Boolean -> {
-                if (originStorage.containsKey(key)) {
-                    data = originStorage.decodeBool(key, default) as T
-                    putDataInternal(key, data)
+                if (keyStorage.decodeInt(key, TYPE_BOOLEAN) == TYPE_BOOLEAN) {
+                    data = dataStorage.decodeBool(key, default) as T
                 } else {
-                    if (keyStorage.decodeInt(key, TYPE_BOOLEAN) == TYPE_BOOLEAN) {
-                        data = dataStorage.decodeBool(key, default) as T
-                    } else {
-                        throw IllegalArgumentException("Incorrect data type")
-                    }
+                    throw IllegalArgumentException("Incorrect data type")
                 }
             }
 
             is Int -> {
-                if (originStorage.containsKey(key)) {
-                    data = originStorage.decodeInt(key, default) as T
-                    putDataInternal(key, data)
+                if (keyStorage.decodeInt(key, TYPE_INT) == TYPE_INT) {
+                    data = dataStorage.decodeInt(key, default) as T
                 } else {
-                    if (keyStorage.decodeInt(key, TYPE_INT) == TYPE_INT) {
-                        data = dataStorage.decodeInt(key, default) as T
-                    } else {
-                        throw IllegalArgumentException("Incorrect data type")
-                    }
+                    throw IllegalArgumentException("Incorrect data type")
                 }
             }
 
             is Long -> {
-                if (originStorage.containsKey(key)) {
-                    data = originStorage.decodeLong(key, default) as T
-                    putDataInternal(key, data)
+                if (keyStorage.decodeInt(key, TYPE_LONG) == TYPE_LONG) {
+                    data = dataStorage.decodeLong(key, default) as T
                 } else {
-                    if (keyStorage.decodeInt(key, TYPE_LONG) == TYPE_LONG) {
-                        data = dataStorage.decodeLong(key, default) as T
-                    } else {
-                        throw IllegalArgumentException("Incorrect data type")
-                    }
+                    throw IllegalArgumentException("Incorrect data type")
                 }
             }
 
             is Float -> {
-                if (originStorage.containsKey(key)) {
-                    data = originStorage.decodeFloat(key, default) as T
-                    putDataInternal(key, data)
+                if (keyStorage.decodeInt(key, TYPE_FLOAT) == TYPE_FLOAT) {
+                    data = dataStorage.decodeFloat(key, default) as T
                 } else {
-                    if (keyStorage.decodeInt(key, TYPE_FLOAT) == TYPE_FLOAT) {
-                        data = dataStorage.decodeFloat(key, default) as T
-                    } else {
-                        throw IllegalArgumentException("Incorrect data type")
-                    }
+                    throw IllegalArgumentException("Incorrect data type")
                 }
             }
         }
