@@ -13,6 +13,7 @@ import java.io.OutputStream
  * 基于MMKV
  */
 @Suppress("UNUSED")
+@Deprecated("数据存储的底层实现由MMKV转换为DataStore，请将数据迁移至AppData，后续将会移除AppStorage")
 object AppStorage {
     private const val TYPE_STRING = 1
     private const val TYPE_BOOLEAN = 2
