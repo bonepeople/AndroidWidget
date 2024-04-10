@@ -88,20 +88,5 @@ class AppLog(val tag: String) {
         fun tag(tag: String): AppLog {
             return instances.getOrPut(tag) { AppLog(tag) }
         }
-
-        @Deprecated("推荐使用对象的方法输出日志", ReplaceWith("AppLog.defaultLog.verbose(message, throwable)", "com.bonepeople.android.widget.util.AppLog"))
-        fun verbose(message: Any?, throwable: Throwable? = null) = defaultLog.verbose(message, throwable)
-
-        @Deprecated("推荐使用对象的方法输出日志", ReplaceWith("AppLog.defaultLog.debug(message, throwable)", "com.bonepeople.android.widget.util.AppLog"))
-        fun debug(message: Any?, throwable: Throwable? = null) = defaultLog.debug(message, throwable)
-
-        @Deprecated("推荐使用对象的方法输出日志", ReplaceWith("AppLog.defaultLog.info(message, throwable)", "com.bonepeople.android.widget.util.AppLog"))
-        fun info(message: Any?, throwable: Throwable? = null) = defaultLog.info(message, throwable)
-
-        @Deprecated("推荐使用对象的方法输出日志", ReplaceWith("AppLog.defaultLog.warn(message, throwable)", "com.bonepeople.android.widget.util.AppLog"))
-        fun warn(message: Any?, throwable: Throwable? = null) = defaultLog.warn(message, throwable)
-
-        @Deprecated("推荐使用对象的方法输出日志", ReplaceWith("AppLog.defaultLog.error(message, throwable)", "com.bonepeople.android.widget.util.AppLog"))
-        fun error(message: Any?, throwable: Throwable? = null) = defaultLog.error(message, throwable)
     }
 }

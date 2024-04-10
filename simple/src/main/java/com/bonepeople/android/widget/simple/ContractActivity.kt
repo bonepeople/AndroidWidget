@@ -32,6 +32,7 @@ class ContractActivity : AppCompatActivity() {
                     val intent = Intent(this, ResultActivity::class.java)
                     startActivity(intent)
                 }
+
                 ActivityResult -> {
                     Intent(this, ResultActivity::class.java).launch()
                 }
@@ -43,14 +44,15 @@ class ContractActivity : AppCompatActivity() {
                     val intent = Intent(this, ResultActivity::class.java)
                     startActivityForResult(intent, REQ_1)
                 }
+
                 ActivityResult -> {
                     Intent(this, ResultActivity::class.java).launch()
                         .onSuccess {
                             val result = it?.getIntExtra("result", 0)
-                            AppLog.info("RESULT_OK - $result @ $ActivityResult")
+                            AppLog.defaultLog.info("RESULT_OK - $result @ $ActivityResult")
                         }
                         .onFailure {
-                            AppLog.info("RESULT_CANCEL @ $ActivityResult")
+                            AppLog.defaultLog.info("RESULT_CANCEL @ $ActivityResult")
                         }
                 }
             }
@@ -60,13 +62,14 @@ class ContractActivity : AppCompatActivity() {
                 Normal -> {
                     ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), REQ_2)
                 }
+
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.info("permission result2 = granted @ $ActivityResult")
+                            AppLog.defaultLog.info("permission result2 = granted @ $ActivityResult")
                         }
                         .onResult { _, permissionResult ->
-                            AppLog.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
+                            AppLog.defaultLog.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
                         }
                 }
             }
@@ -76,16 +79,17 @@ class ContractActivity : AppCompatActivity() {
                 Normal -> {
                     ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), REQ_3)
                 }
+
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.info("permission result3 = granted @ $ActivityResult")
+                            AppLog.defaultLog.info("permission result3 = granted @ $ActivityResult")
                             Intent(MediaStore.ACTION_IMAGE_CAPTURE).launch()
                                 .onSuccess {
-                                    AppLog.info("TAKE_PICTURE_OK @ $ActivityResult")
+                                    AppLog.defaultLog.info("TAKE_PICTURE_OK @ $ActivityResult")
                                 }
                                 .onFailure {
-                                    AppLog.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
+                                    AppLog.defaultLog.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
                                 }
                         }
                 }
@@ -100,16 +104,17 @@ class ContractActivity : AppCompatActivity() {
             REQ_1 -> {
                 if (resultCode == RESULT_OK) {
                     val result = data?.getIntExtra("result", 0)
-                    AppLog.info("RESULT_OK - $result @ $Normal")
+                    AppLog.defaultLog.info("RESULT_OK - $result @ $Normal")
                 } else {
-                    AppLog.info("RESULT_CANCEL @ $Normal")
+                    AppLog.defaultLog.info("RESULT_CANCEL @ $Normal")
                 }
             }
+
             REQ_4 -> {
                 if (resultCode == RESULT_OK) {
-                    AppLog.info("TAKE_PICTURE_OK @ $Normal")
+                    AppLog.defaultLog.info("TAKE_PICTURE_OK @ $Normal")
                 } else {
-                    AppLog.info("TAKE_PICTURE_CANCEL @ $Normal")
+                    AppLog.defaultLog.info("TAKE_PICTURE_CANCEL @ $Normal")
                 }
             }
         }
@@ -119,10 +124,11 @@ class ContractActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQ_2 -> {
-                AppLog.info("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
+                AppLog.defaultLog.info("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
             }
+
             REQ_3 -> {
-                AppLog.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
+                AppLog.defaultLog.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(intent, REQ_4)

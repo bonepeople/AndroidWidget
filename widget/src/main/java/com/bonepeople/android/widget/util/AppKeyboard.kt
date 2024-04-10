@@ -35,13 +35,6 @@ object AppKeyboard {
      * 为一个输入框显示软键盘
      * @param editText 需要输入内容的输入框
      */
-    @Deprecated("Use showKeyboard(editText: EditText) instead", ReplaceWith("AppKeyboard.showKeyboard(editText)"))
-    fun showKeyboard(context: Context, editText: EditText) = showKeyboard(editText)
-
-    /**
-     * 为一个输入框显示软键盘
-     * @param editText 需要输入内容的输入框
-     */
     fun showKeyboard(editText: EditText) {
         editText.postDelayed(200) {
             editText.requestFocus()
@@ -49,13 +42,6 @@ object AppKeyboard {
             inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
         }
     }
-
-    /**
-     * 隐藏软键盘
-     * @param focusedView 当前获取焦点的控件
-     */
-    @Deprecated("Use hideKeyboard() instead", ReplaceWith("AppKeyboard.hideKeyboard()"))
-    fun hideKeyboard(context: Context, focusedView: View?) = hideKeyboard()
 
     /**
      * 隐藏软键盘

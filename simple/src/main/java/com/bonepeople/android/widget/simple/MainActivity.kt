@@ -34,13 +34,13 @@ class MainActivity : AppCompatActivity() {
             loading.show()
             runCatching {
                 measureTimeMillis {
-                    AppLog.debug("start test")
+                    AppLog.defaultLog.debug("start test")
                     test()
                 }.let {
-                    AppLog.debug("used ${AppTime.getTimeString(it)}")
+                    AppLog.defaultLog.debug("used ${AppTime.getTimeString(it)}")
                 }
             }.getOrElse {
-                AppLog.error("exception@MainActivity.test", it)
+                AppLog.defaultLog.error("exception@MainActivity.test", it)
             }
             loading.dismiss()
         }

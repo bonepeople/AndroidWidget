@@ -7,7 +7,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
-            AppLog.error("UncaughtException", e)
+            AppLog.defaultLog.error("UncaughtException", e)
             android.os.Process.killProcess(android.os.Process.myPid())
         }
     }
