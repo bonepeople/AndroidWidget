@@ -18,16 +18,8 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-/**
- * 加解密工具类
- */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object AppEncrypt {
-    /**
-     * 根据传入的密钥对数据进行AES加密
-     * + 返回的数据并未进行Base64编码
-     * + secret，salt不足16个字符的时候会在后面补充空格
-     */
     fun <T : OutputStream> encryptByAES(
         inputStream: InputStream,
         outputStream: T,
@@ -48,11 +40,6 @@ object AppEncrypt {
         return Base64.encodeToString(encryptByAES(data.byteInputStream(), ByteArrayOutputStream(), secret, salt, transformation).toByteArray(), Base64.NO_WRAP)
     }
 
-    /**
-     * 根据传入的密钥对数据进行AES解密
-     * + 传入的数据不需要进行Base64编码
-     * + secret，salt不足16个字符的时候会在后面补充空格
-     */
     fun <T : OutputStream> decryptByAES(
         inputStream: InputStream,
         outputStream: T,
@@ -73,13 +60,6 @@ object AppEncrypt {
         return decryptByAES(Base64.decode(data, Base64.NO_WRAP).inputStream(), ByteArrayOutputStream(), secret, salt, transformation).toString()
     }
 
-    /**
-     * 使用RSA算法对传入的数据进行加密
-     * + 模式：PKCS#8
-     * + 安卓环境下"RSA"与"RSA/ECB/PKCS1Padding"并不相同，需要注意区分
-     * @param key 加密所需的公钥或私钥，可以通过[decodeRSAPublicKey]或[decodeRSAPrivateKey]方法生成
-     * @param blockSize 分片加密时单片大小，不可超过RSA加密上限
-     */
     fun <T : OutputStream> encryptByRSA(
         inputStream: InputStream,
         outputStream: T,
@@ -105,13 +85,6 @@ object AppEncrypt {
         return Base64.encodeToString(encryptByRSA(data.byteInputStream(), ByteArrayOutputStream(), key, transformation, blockSize).toByteArray(), Base64.NO_WRAP)
     }
 
-    /**
-     * 使用RSA算法对传入的数据进行解密
-     * + 模式：PKCS#8
-     * + 安卓环境下"RSA"与"RSA/ECB/PKCS1Padding"并不相同，需要注意区分
-     * @param key 解密所需的公钥或私钥，可以通过[decodeRSAPublicKey]或[decodeRSAPrivateKey]方法生成
-     * @param blockSize 分片加密时单片大小，不可超过RSA加密上限
-     */
     fun <T : OutputStream> decryptByRSA(
         inputStream: InputStream,
         outputStream: T,
@@ -137,30 +110,18 @@ object AppEncrypt {
         return decryptByRSA(Base64.decode(data, Base64.NO_WRAP).inputStream(), ByteArrayOutputStream(), key, transformation, blockSize).toString()
     }
 
-    /**
-     * 获取RSA公钥
-     * @param key 经过Base64编码的公钥
-     */
     fun decodeRSAPublicKey(key: String): PublicKey {
         val factory: KeyFactory = KeyFactory.getInstance("RSA")
         val keySpec = X509EncodedKeySpec(Base64.decode(key, Base64.DEFAULT))
         return factory.generatePublic(keySpec)
     }
 
-    /**
-     * 获取RSA私钥
-     * @param key 经过Base64编码的私钥
-     */
     fun decodeRSAPrivateKey(key: String): PrivateKey {
         val factory: KeyFactory = KeyFactory.getInstance("RSA")
         val keySpec = PKCS8EncodedKeySpec(Base64.decode(key, Base64.DEFAULT))
         return factory.generatePrivate(keySpec)
     }
 
-    /**
-     * 生成RSA密钥对
-     * @return 生成的密钥对会放到字符串数组中返回，`[publicKey,privateKey]`
-     */
     fun generateRSAKeys(keySize: Int = 2048): Array<String> {
         val generator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA")
         generator.initialize(keySize)

@@ -8,11 +8,6 @@ import com.bonepeople.android.widget.activity.result.launch
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
-/**
- * 权限申请工具类
- *
- * 采用ActivityResultContract方式申请权限
- */
 @Suppress("UNUSED")
 class AppPermission private constructor() {
     private val permissionResult = LinkedHashMap<String, Boolean>()
@@ -20,9 +15,6 @@ class AppPermission private constructor() {
     private var grantedAction: () -> Unit = {}
     private var finished = false
 
-    /**
-     * 设置权限全部授予时的动作
-     */
     fun onGranted(action: () -> Unit) = apply {
         if (finished) {
             if (permissionResult.values.all { it }) {
@@ -33,12 +25,6 @@ class AppPermission private constructor() {
         }
     }
 
-    /**
-     * 设置获取权限申请结果后的动作
-     *
-     * allGranted - 是否全部授予权限
-     * permissionResult - 每一项权限及其所对应的申请结果
-     */
     fun onResult(action: (allGranted: Boolean, permissionResult: LinkedHashMap<String, Boolean>) -> Unit) = apply {
         if (finished) {
             val granted = permissionResult.values.all { it }
@@ -49,9 +35,6 @@ class AppPermission private constructor() {
     }
 
     companion object {
-        /**
-         * 检查权限授予情况
-         */
         fun check(vararg permissions: String): AppPermission {
             return AppPermission().apply {
                 permissions.forEach {
@@ -61,9 +44,6 @@ class AppPermission private constructor() {
             }
         }
 
-        /**
-         * 发起权限申请
-         */
         fun request(vararg permissions: String): AppPermission {
             return AppPermission().apply {
                 val requestList = LinkedList<String>()

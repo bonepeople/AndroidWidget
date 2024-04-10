@@ -2,11 +2,6 @@ package com.bonepeople.android.widget.animation
 
 import android.animation.TimeInterpolator
 
-/**
- * 呼吸节奏的插值器
- *
- * 输入[0,1]区间的浮点数字，返回[0,1]区间的浮点数字。
- */
 @Suppress("UNUSED")
 class BreatheInterpolator() : TimeInterpolator {
     /**
@@ -34,13 +29,13 @@ class BreatheInterpolator() : TimeInterpolator {
     }
 
     override fun getInterpolation(input: Float): Float {
-        return if (interpolatorMode == FROM_BOTTOM) { // 默认情况，从底部开始变化
+        return if (interpolatorMode == FROM_BOTTOM) {
             if (input < middle) {
                 ((kotlin.math.cos((input / middle + 1) * kotlin.math.PI) + 1) / 2).toFloat()
             } else {
                 ((kotlin.math.cos((input - middle) / (1 - middle) * kotlin.math.PI) + 1) / 2).toFloat()
             }
-        } else { // 从顶部开始变化，方便循环动画开始时以顶点为起点
+        } else {
             if (input < (1 - middle)) {
                 ((kotlin.math.cos(input / (1 - middle) * kotlin.math.PI) + 1) / 2).toFloat()
             } else {

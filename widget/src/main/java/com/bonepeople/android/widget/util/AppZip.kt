@@ -9,17 +9,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
-/**
- * 文件压缩工具类
- */
 @Suppress("UNUSED")
 object AppZip {
-    /**
-     * 压缩单个文件
-     * @param fileName 待压缩文件的文件名
-     * @param inputStream 输入流
-     * @param outputStream 输出流
-     */
     fun zipFile(fileName: String, inputStream: InputStream, outputStream: OutputStream) {
         val output = ZipOutputStream(outputStream)
         val entry = ZipEntry(fileName)
@@ -30,11 +21,6 @@ object AppZip {
         output.flush()
     }
 
-    /**
-     * 压缩多个文件或文件夹
-     * @param outputStream 输出流
-     * @param files 待压缩文件或文件夹
-     */
     fun zipFiles(outputStream: OutputStream, vararg files: File) {
         val output = ZipOutputStream(outputStream)
         files.forEach { file ->
@@ -66,12 +52,6 @@ object AppZip {
         }
     }
 
-    /**
-     * 解压缩文件至目录
-     * + 解压非UTF-8编码的文件时会抛出异常
-     * @param inputStream 压缩包数据流
-     * @param parentFile 目标目录地址
-     */
     fun unzipFile(inputStream: InputStream, parentFile: File) {
         parentFile.mkdirs()
         val input = ZipInputStream(inputStream)

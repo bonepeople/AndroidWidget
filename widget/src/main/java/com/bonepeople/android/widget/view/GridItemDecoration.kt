@@ -8,15 +8,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bonepeople.android.widget.util.AppDensity
 import kotlin.math.roundToInt
 
-/**
- * 网格布局RecyclerView的分割线
- * + 适用于[GridLayoutManager]和[StaggeredGridLayoutManager]
- * + 已知问题：
- * + 在使用DiffUtil更新列表或手动调用notifyItemInserted、notifyItemRemoved方法时，会出现分割线未更新的情况
- * + 这种异常情况是由于添加删除条目时列表的其他元素并未刷新，导致分割线的尺寸也没有刷新
- * + 解决方案：
- * + 可以在列表更新后手动调用notifyItemRangeChanged(0, list.size)进行刷新，这样可以成功更新所有项的分割线尺寸
- */
 @Suppress("unused")
 class GridItemDecoration(horizontal: Float, vertical: Float) : RecyclerView.ItemDecoration() {
     private var horizontalSpacing = 0

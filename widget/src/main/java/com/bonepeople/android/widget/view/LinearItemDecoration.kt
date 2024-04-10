@@ -10,16 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bonepeople.android.widget.util.AppDensity
 import kotlin.math.roundToInt
 
-/**
- * 线性布局RecyclerView的分割线
- * + 适用于[LinearLayoutManager]
- * + 已知问题：
- * + 在使用DiffUtil更新列表或手动调用notifyItemInserted、notifyItemRemoved方法时，会出现分割线未更新的情况
- * + 这种异常情况是由于添加删除条目时列表的其他元素并未刷新，导致分割线的尺寸也没有刷新
- * + 解决方案：
- * + 可以在列表更新后手动调用notifyItemRangeChanged(0, 2)进行刷新，这样可以成功更新前两项的分割线尺寸
- * + 若添加的条目较多时，可适当调整更新参数，增加需要刷新的数量
- */
 @Suppress("unused")
 class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
     private var spacing = 0

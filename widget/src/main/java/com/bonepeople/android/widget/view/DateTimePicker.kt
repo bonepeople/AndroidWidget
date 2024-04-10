@@ -20,9 +20,6 @@ import com.bonepeople.android.widget.util.AppView.show
 import com.bonepeople.android.widget.util.AppView.singleClick
 import java.util.Calendar
 
-/**
- * 日期时间选择对话框
- */
 @Suppress("UNUSED")
 class DateTimePicker : DialogFragment() {
     private var dialogFragmentManager: FragmentManager? = null
@@ -154,19 +151,11 @@ class DateTimePicker : DialogFragment() {
         views.numberPickerDay.maxValue = dayRange
     }
 
-    /**
-     * 设置用于显示Dialog的FragmentManager及Tag
-     */
     fun setFragmentManagerAndTag(manager: FragmentManager, tag: String) = apply {
         dialogFragmentManager = manager
         dialogFragmentTag = tag
     }
 
-    /**
-     * 显示Dialog
-     * + 对于已经显示的Dialog，重复调用此函数不会进行任何操作
-     * + 在显示之前需要调用[setFragmentManagerAndTag]方法设置FragmentManager
-     */
     fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
         require(dialogFragmentManager != null) { "需要通过setFragmentManagerAndTag方法设置FragmentManager及Tag" }
         if (isAdded) return
@@ -186,11 +175,6 @@ class DateTimePicker : DialogFragment() {
     }
 
     companion object {
-        /**
-         * 展示日期时间选择对话框
-         * @param time 用于初始化对话框展示的时间
-         * @param action 用户点击确定后的动作，返回的[Calendar]可以使用[Calendar.getTimeInMillis]方法获取时间戳
-         */
         fun show(time: Long = System.currentTimeMillis(), action: (calendar: Calendar) -> Unit) {
             val activity = ActivityHolder.getTopActivity()
             if (activity is FragmentActivity) {

@@ -8,53 +8,29 @@ import androidx.core.content.pm.PackageInfoCompat
 import androidx.startup.Initializer
 import com.bonepeople.android.widget.activity.result.IntentLauncher
 
-/**
- * Application状态保存器
- */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
     private var application: Application? = null
 
-    /**
-     * 当前App的Application实例
-     */
     val app: Application
-        get() = application ?: throw IllegalStateException("未成功初始化，请调用StartupHelper.initializeAll方法进行初始化")
+        get() = application ?: throw IllegalStateException("please call StartupHelper.initializeAll first")
 
-    /**
-     * 当前App的PackageInfo
-     */
     val packageInfo: PackageInfo by lazy { app.packageManager.getPackageInfo(getPackageName(), 0) }
 
-    /**
-     * 当前App的debug标志
-     */
     val debug: Boolean by lazy { app.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 }
 
-    /**
-     * 获取当前App的包名
-     */
     fun getPackageName(): String {
         return app.packageName
     }
 
-    /**
-     * 获取当前App的版本号
-     */
     fun getVersionCode(): Long {
         return PackageInfoCompat.getLongVersionCode(packageInfo)
     }
 
-    /**
-     * 获取当前App的版本名称
-     */
     fun getVersionName(): String {
         return packageInfo.versionName
     }
 
-    /**
-     * ApplicationHolder的初始化逻辑
-     */
     class StartUp : Initializer<ApplicationHolder> {
         override fun create(context: Context): ApplicationHolder {
             if (context is Application) {

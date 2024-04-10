@@ -2,26 +2,16 @@ package com.bonepeople.android.widget.util
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
-import java.time.DateTimeException
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.TimeZone
 
-/**
- * 时间转换工具类
- */
 @Suppress("UNUSED")
 object AppTime {
     private val calendar: Calendar by lazy { Calendar.getInstance() }
 
-    /**
-     * 将13位的时间戳格式化为"2021/1/1 12:33:33"形式的字符串
-     * @param withMillis 返回的字符串中包含毫秒数，默认为**false**
-     * @param timeZone 时区，默认为系统当前时区，可通过[TimeZone.getTimeZone]获取，`TimeZone.getTimeZone("GMT+2")`表示东二区
-     */
     fun getDateTimeString(timestamp: Long, withMillis: Boolean = false, timeZone: TimeZone = TimeZone.getDefault()): String {
         calendar.timeZone = timeZone
         calendar.timeInMillis = timestamp
@@ -40,25 +30,11 @@ object AppTime {
         }
     }
 
-    /**
-     * 按照指定格式将时间戳格式化为字符串
-     * @param timestamp 13位时间戳
-     * @param pattern 格式化模版，例如"yyyy-MM-dd HH:mm:ss.SSS"
-     * @param timeZone 时区，默认为系统当前时区，可通过[TimeZone.getTimeZone]获取，`TimeZone.getTimeZone("GMT+2")`表示东二区
-     * @return 格式化后的字符串
-     * @throws DateTimeException 时间格式化异常
-     * @throws IllegalArgumentException 模版不合法
-     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun formatTime(timestamp: Long, pattern: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getDefault()): String {
         return Instant.ofEpochMilli(timestamp).atZone(timeZone.toZoneId()).format(DateTimeFormatter.ofPattern(pattern))
     }
 
-    /**
-     * 将时间戳格式化为"102:04:59.999"形式的字符串
-     * @param fullTimeString 时间不足小时或分钟的时候以**00**补全，默认为**false**
-     * @param withMillis 显示毫秒数，默认为**true**
-     */
     fun getTimeString(milliseconds: Long, fullTimeString: Boolean = false, withMillis: Boolean = true): String {
         val seconds = milliseconds / 1000
         val minutes = seconds / 60

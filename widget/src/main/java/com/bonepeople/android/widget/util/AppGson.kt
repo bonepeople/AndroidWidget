@@ -7,27 +7,16 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.util.*
 
-/**
- * Gson数据转换工具类
- */
 @Suppress("UNUSED")
 object AppGson {
     val defaultGson: Gson by lazy { addNotNullAdapter(GsonBuilder().disableHtmlEscaping().create()) }
 
-    /**
-     * 将对象转换成json字符串
-     */
     @CheckResult
     @JvmOverloads
     fun toJson(data: Any?, gson: Gson = defaultGson): String {
         return gson.toJson(data)
     }
 
-    /**
-     * 将json字符串转换成对象
-     * @throws JsonSyntaxException json字符串格式错误
-     * @throws IllegalStateException json字符串为空
-     */
     @CheckResult
     @JvmOverloads
     inline fun <reified R> toObject(json: String?, gson: Gson = defaultGson): R {
@@ -38,12 +27,6 @@ object AppGson {
         }
     }
 
-    /**
-     * 为gson添加一个可以去除空值的适配器
-     * + 该适配器可以在解析的过程中去掉json字符串中的null，防止空指针的发生
-     * @param originGson 需要添加适配器的gson，可以是[AppGson.defaultGson]，去掉null之后将使用此gson进行解析
-     * @return 返回一个已经添加了适配器的gson，可以使用返回的gson进行解析
-     */
     @CheckResult
     fun addNotNullAdapter(originGson: Gson): Gson {
         return originGson.newBuilder().registerTypeAdapterFactory(GsonFactory(originGson)).create()
