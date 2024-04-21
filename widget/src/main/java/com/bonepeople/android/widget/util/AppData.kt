@@ -88,6 +88,7 @@ class AppData private constructor(name: String) {
         private val instances = HashMap<String, AppData>()
         val default: AppData by lazy { create("default") }
 
+        @Synchronized
         fun create(storeName: String): AppData {
             return instances.getOrPut(storeName) {
                 val instance = AppData(storeName)
