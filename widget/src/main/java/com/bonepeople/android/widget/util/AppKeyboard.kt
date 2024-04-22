@@ -33,7 +33,7 @@ object AppKeyboard {
     }
 
 
-    @Deprecated("Use showKeyboard(editText: EditText) instead", ReplaceWith("AppKeyboard.showKeyboard(editText)"))
+    @Deprecated("Use showKeyboard(editText: EditText) instead. This method will be removed from version 1.7.0.", ReplaceWith("AppKeyboard.showKeyboard(editText)"))
     fun showKeyboard(context: Context, editText: EditText) = showKeyboard(editText)
 
     /**
@@ -48,7 +48,7 @@ object AppKeyboard {
         }
     }
 
-    @Deprecated("Use hideKeyboard() instead", ReplaceWith("AppKeyboard.hideKeyboard()"))
+    @Deprecated("Use hideKeyboard() instead. This method will be removed from version 1.7.0.", ReplaceWith("AppKeyboard.hideKeyboard()"))
     fun hideKeyboard(context: Context, focusedView: View?) = hideKeyboard()
 
     /**

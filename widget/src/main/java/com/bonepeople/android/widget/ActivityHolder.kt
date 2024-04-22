@@ -37,13 +37,13 @@ object ActivityHolder : DefaultActivityLifecycleCallbacks {
         activityData.remove(activity)
     }
 
-    @Deprecated("This extension method pollutes code suggestions and will be removed in the future.", ReplaceWith("ActivityHolder.putData(this, key, value)", "com.bonepeople.android.widget.ActivityHolder"))
+    @Deprecated("This extension method pollutes code suggestions. This method will be removed from version 1.7.0.", ReplaceWith("ActivityHolder.putData(this, key, value)", "com.bonepeople.android.widget.ActivityHolder"))
     fun Activity.putExtra(key: String, value: Any) = putData(this, key, value)
 
-    @Deprecated("This extension method pollutes code suggestions and will be removed in the future.", ReplaceWith("ActivityHolder.getData(this, key)", "com.bonepeople.android.widget.ActivityHolder"))
+    @Deprecated("This extension method pollutes code suggestions. This method will be removed from version 1.7.0.", ReplaceWith("ActivityHolder.getData(this, key)", "com.bonepeople.android.widget.ActivityHolder"))
     fun Activity.getExtra(key: String): Any? = getData(this, key)
 
-    @Deprecated("This extension method pollutes code suggestions and will be removed in the future.", ReplaceWith("ActivityHolder.removeData(this, key)", "com.bonepeople.android.widget.ActivityHolder"))
+    @Deprecated("This extension method pollutes code suggestions. This method will be removed from version 1.7.0.", ReplaceWith("ActivityHolder.removeData(this, key)", "com.bonepeople.android.widget.ActivityHolder"))
     fun Activity.removeExtra(key: String) = removeData(this, key)
 
     /**
