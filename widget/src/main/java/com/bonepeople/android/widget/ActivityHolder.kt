@@ -10,7 +10,7 @@ import kotlin.collections.HashMap
  *
  * A utility object to manage the state and data associated with [Activity] instances.
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ActivityHolder : DefaultActivityLifecycleCallbacks {
     private val activityData = HashMap<Activity, HashMap<String, Any>>()
 

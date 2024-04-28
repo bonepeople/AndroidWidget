@@ -21,7 +21,7 @@ import kotlin.math.roundToInt
  * - **Solution**: After updating the list, call `notifyItemRangeChanged(0, list.size)` to refresh the entire list,
  * ensuring the dividers are updated correctly.
  */
-@Suppress("unused")
+@Suppress("Unused")
 class GridItemDecoration(horizontal: Float, vertical: Float) : RecyclerView.ItemDecoration() {
     private var horizontalSpacing = 0
     private var verticalSpacing = 0

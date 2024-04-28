@@ -22,7 +22,7 @@ import java.net.SocketException
 /**
  * System-related utility class for retrieving system parameters and information.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("PrivateApi", "DiscouragedPrivateApi", "InternalInsetResource")
 object AppSystem {
     val batteryManager: BatteryManager by lazy { ApplicationHolder.app.getSystemService(Context.BATTERY_SERVICE) as BatteryManager }

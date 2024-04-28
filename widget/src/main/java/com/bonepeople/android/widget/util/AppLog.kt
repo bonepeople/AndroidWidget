@@ -6,7 +6,7 @@ import com.bonepeople.android.widget.ApplicationHolder
 /**
  * Logging utility class
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 class AppLog(val tag: String) {
     /**
      * Logging toggle

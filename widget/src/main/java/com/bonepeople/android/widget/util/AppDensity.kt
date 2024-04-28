@@ -11,7 +11,7 @@ import com.bonepeople.android.widget.ApplicationHolder
  *
  * Provides methods to convert between various unit types (px, dp, sp) using screen density parameters.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppDensity {
     /**
      * Global screen metrics

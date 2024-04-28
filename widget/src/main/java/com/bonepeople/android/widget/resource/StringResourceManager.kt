@@ -14,7 +14,7 @@ import java.util.Locale
  * 3. Before using a string, register string instances using the [register] method.
  * 4. Retrieve string instances in your code by calling the [get] method.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object StringResourceManager {
     private val localStrings = HashMap<String, LinkedHashMap<String, LinkedHashMap<String, StringTemplate>>>()
 
@@ -44,7 +44,7 @@ object StringResourceManager {
      * @param locale The locale to retrieve the string instance for (default is the system's default locale, e.g., `Locale.US`).
      * @return The string instance matching the given locale or a fallback instance if no exact match is found.
      */
-    @Suppress("unchecked_cast")
+    @Suppress("UNCHECKED_CAST")
     fun <T : StringTemplate> get(templateClass: Class<T>, locale: Locale = Locale.getDefault()): T {
         require(localStrings.isNotEmpty()) { "No string instances have been registered. Please register instances before use." }
         // Retrieve the class name of the string template to query the corresponding container

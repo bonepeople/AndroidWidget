@@ -12,7 +12,7 @@ import androidx.annotation.ColorInt
 /**
  * Utility class for building rich text with spans
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 open class AppSpan : SpannableStringBuilder() {
     /**
      * Adds a text segment with multiple span effects.

@@ -13,7 +13,7 @@ import com.bonepeople.android.widget.activity.result.IntentLauncher
  *
  * Provides a centralized place to access and manage the application instance and related information.
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
     private var application: Application? = null
 

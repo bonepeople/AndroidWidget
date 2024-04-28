@@ -16,7 +16,7 @@ interface StringTemplate {
      * + This is an example implementation. Developers can reference this structure when defining string templates.
      *   It provides a convenient way to pass the template type when retrieving string instances.
      */
-    @Suppress("unused")
+    @Suppress("Unused")
     companion object {
         val templateClass: Class<StringTemplate> = StringTemplate::class.java
     }

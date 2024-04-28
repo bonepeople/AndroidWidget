@@ -10,7 +10,7 @@ import com.bonepeople.android.widget.R
 /**
  * Utility class for managing View operations
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppView {
     /**
      * Default interval for debounce function for single clicks

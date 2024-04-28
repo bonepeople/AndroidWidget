@@ -11,7 +11,7 @@ import com.bonepeople.android.widget.ActivityHolder
 /**
  * Utility class for managing the software keyboard.
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppKeyboard {
     /**
      * Determines if the software keyboard should be hidden based on a touch event.

@@ -10,7 +10,7 @@ import java.util.*
 /**
  * Utility class for JSON serialization and deserialization using Gson.
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object AppGson {
     /**
      * Default Gson instance with custom configuration:

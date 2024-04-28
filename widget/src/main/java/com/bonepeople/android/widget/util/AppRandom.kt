@@ -6,7 +6,7 @@ import kotlin.random.Random
  * Utility class for generating random numbers
  * + Provides a random seed and several convenient methods
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppRandom {
     /**
      * Seed used for generating random numbers.

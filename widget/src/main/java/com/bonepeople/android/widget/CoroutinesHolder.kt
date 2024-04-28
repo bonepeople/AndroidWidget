@@ -10,7 +10,7 @@ import kotlin.coroutines.CoroutineContext
  *
  * Provides global coroutine singletons for different dispatchers to manage coroutine contexts efficiently.
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object CoroutinesHolder {
     /**
      * Global singleton coroutine scope for the Default dispatcher.

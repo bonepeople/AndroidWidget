@@ -8,7 +8,7 @@ import android.content.Context
  * + By default, Startup performs automatic initialization only in the main process.
  *   For applications with multiple processes, this utility class can be used to manually trigger the initialization logic.
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object StartupHelper {
     /**
      * Initializes all defined [Initializer] instances.

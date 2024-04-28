@@ -7,7 +7,7 @@ import android.animation.TimeInterpolator
  *
  * Accepts a floating-point number in the range [0,1] as input and returns a floating-point number in the range [0,1].
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 class BreatheInterpolator() : TimeInterpolator {
     /**
      *

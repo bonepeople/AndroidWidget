@@ -13,7 +13,7 @@ import kotlin.collections.LinkedHashMap
  *
  * Utilizes ActivityResultContract to request permissions
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 class AppPermission private constructor() {
     private val permissionResult = LinkedHashMap<String, Boolean>()
     private var resultAction: (Boolean, LinkedHashMap<String, Boolean>) -> Unit = { _, _ -> }

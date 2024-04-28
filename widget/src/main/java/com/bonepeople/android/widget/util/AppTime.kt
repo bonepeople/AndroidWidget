@@ -13,7 +13,7 @@ import java.util.TimeZone
 /**
  * Utility class for time conversion
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object AppTime {
     private val calendar: Calendar by lazy { Calendar.getInstance() }
 

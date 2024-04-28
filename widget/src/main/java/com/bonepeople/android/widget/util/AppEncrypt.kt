@@ -22,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec
  * Encryption and Decryption Utility
  * Provides methods for AES and RSA encryption and decryption.
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppEncrypt {
     /**
      * Encrypts data using AES.

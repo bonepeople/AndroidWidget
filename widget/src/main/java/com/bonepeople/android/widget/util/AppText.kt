@@ -8,7 +8,7 @@ import java.math.BigDecimal
 /**
  * Utility class for string manipulation
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object AppText {
     /**
      * Fills the beginning of the original data with the specified string until the specified length is reached.

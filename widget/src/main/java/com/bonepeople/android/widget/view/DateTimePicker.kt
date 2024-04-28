@@ -23,7 +23,7 @@ import java.util.Calendar
 /**
  * Date and Time Picker Dialog
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 class DateTimePicker : DialogFragment() {
     private var dialogFragmentManager: FragmentManager? = null
     private var dialogFragmentTag: String = ""

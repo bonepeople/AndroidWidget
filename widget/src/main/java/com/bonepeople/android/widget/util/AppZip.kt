@@ -12,7 +12,7 @@ import java.util.zip.ZipOutputStream
 /**
  * Utility class for file compression and decompression
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 object AppZip {
     /**
      * Compresses a single file.

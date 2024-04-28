@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
  * - **Solution**: After updating the list, manually call `notifyItemRangeChanged(0, 2)` to refresh the first two items.
  *   If multiple items are added, adjust the range to include all affected items.
  */
-@Suppress("unused")
+@Suppress("Unused")
 class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
     private var spacing = 0
     private var startPadding = 0

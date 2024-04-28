@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 /**
  * Utility class for displaying Toast messages
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppToast {
     /**
      * Displays a Toast for a short duration.

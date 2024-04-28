@@ -12,7 +12,7 @@ import java.io.OutputStream
  *
  * Based on MMKV
  */
-@Suppress("UNUSED")
+@Suppress("Unused")
 @Deprecated("The underlying storage implementation has migrated from MMKV to DataStore. Please migrate your data to AppData. This class will be removed from version 1.7.0.")
 object AppStorage {
     private const val TYPE_STRING = 1
