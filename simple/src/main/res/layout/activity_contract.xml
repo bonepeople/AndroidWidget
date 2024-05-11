@@ -11,25 +11,25 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/button_1"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="open new activity" />
 
     <Button
-        android:id="@+id/button_2"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Open a new activity and receive a return value" />
 
     <Button
-        android:id="@+id/button_3"
+        android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Request camera permission" />
 
     <Button
-        android:id="@+id/button_4"
+        android:id="@+id/button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Request permission and take a photo" />

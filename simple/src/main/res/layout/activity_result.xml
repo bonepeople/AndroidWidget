@@ -6,13 +6,13 @@
     android:padding="20dp">
 
     <Button
-        android:id="@+id/button_1"
+        android:id="@+id/buttonSuccess"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="return success" />
 
     <Button
-        android:id="@+id/button_2"
+        android:id="@+id/buttonFailure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="return failure" />

@@ -16,13 +16,13 @@
             android:padding="20dp">
 
             <Button
-                android:id="@+id/button_test"
+                android:id="@+id/buttonTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Test" />
 
             <Button
-                android:id="@+id/button_contract"
+                android:id="@+id/buttonContract"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ActivityResultContract" />

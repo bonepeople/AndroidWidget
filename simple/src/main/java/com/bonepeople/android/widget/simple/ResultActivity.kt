@@ -17,14 +17,14 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        views.button1.singleClick {
+        views.buttonSuccess.singleClick {
             val intent = Intent().apply {
                 putExtra("result", 1)
             }
             setResult(RESULT_OK, intent)
             finishAfterTransition()
         }
-        views.button2.singleClick {
+        views.buttonFailure.singleClick {
             setResult(RESULT_CANCELED)
             finishAfterTransition()
         }
