@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.simple
+package com.bonepeople.android.widget.sample
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bonepeople.android.widget.activity.result.launch
-import com.bonepeople.android.widget.simple.databinding.ActivityContractBinding
+import com.bonepeople.android.widget.sample.databinding.ActivityContractBinding
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppPermission
