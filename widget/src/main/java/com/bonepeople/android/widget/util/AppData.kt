@@ -90,6 +90,9 @@ class AppData private constructor(name: String) {
 
         @Synchronized
         fun create(storeName: String): AppData {
+            if (!isValidFolderName(storeName)) {
+                throw IllegalArgumentException("Invalid name: $storeName")
+            }
             return instances.getOrPut(storeName) {
                 val instance = AppData(storeName)
                 runBlocking {
@@ -105,6 +108,27 @@ class AppData private constructor(name: String) {
                 }
                 instance
             }
+        }
+
+        private fun isValidFolderName(name: String): Boolean {
+            // 1. Check if the name is empty or exceeds the length limit
+            if (name.isBlank() || name.length > 255) {
+                return false
+            }
+            // 2. Check for illegal characters
+            val illegalChars = listOf('<', '>', ':', '"', '/', '\\', '|', '?', '*')
+            if (name.any { it in illegalChars }) {
+                return false
+            }
+            // 3. Check if the name contains invisible characters (e.g., control characters)
+            if (name.any { it.isISOControl() }) {
+                return false
+            }
+            // 4. Check if the name ends with illegal characters (such as "." or " ")
+            if (name.endsWith(".") || name.endsWith(" ")) {
+                return false
+            }
+            return true
         }
     }
 }
