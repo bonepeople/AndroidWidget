@@ -4,6 +4,9 @@ import androidx.annotation.CheckResult
 import androidx.annotation.IntRange
 import java.lang.StringBuilder
 import java.math.BigDecimal
+import java.text.DecimalFormat
+import kotlin.math.log10
+import kotlin.math.pow
 
 /**
  * 字符串处理工具类
@@ -83,6 +86,14 @@ object AppText {
         return source.lines().joinToString(separator) { paragraph ->
             paragraph.chunked(length).joinToString(separator)
         }
+    }
+
+    fun formatFileSize(size: Long): String {
+        if (size <= 0) return "0B"
+        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB")
+        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
+            .toString() + " " + units[digitGroups]
     }
 
     /**
