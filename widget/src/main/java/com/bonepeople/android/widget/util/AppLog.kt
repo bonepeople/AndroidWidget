@@ -25,7 +25,7 @@ class AppLog(val tag: String) {
 
     fun verbose(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.v(tag, message.toString(), throwable)
+            Log.v(tag, addStackInfoIfNeed(message), throwable)
         }
     }
 
