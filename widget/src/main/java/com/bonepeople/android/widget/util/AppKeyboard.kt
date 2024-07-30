@@ -32,10 +32,6 @@ object AppKeyboard {
         return false
     }
 
-
-    @Deprecated("Use showKeyboard(editText: EditText) instead. This method will be removed from version 1.7.0.", ReplaceWith("AppKeyboard.showKeyboard(editText)"))
-    fun showKeyboard(context: Context, editText: EditText) = showKeyboard(editText)
-
     /**
      * Shows the software keyboard for a specific EditText.
      * @param editText The EditText for which the keyboard should be shown.
@@ -47,9 +43,6 @@ object AppKeyboard {
             inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
         }
     }
-
-    @Deprecated("Use hideKeyboard() instead. This method will be removed from version 1.7.0.", ReplaceWith("AppKeyboard.hideKeyboard()"))
-    fun hideKeyboard(context: Context, focusedView: View?) = hideKeyboard()
 
     /**
      * Hides the software keyboard.
