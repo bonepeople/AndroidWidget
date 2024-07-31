@@ -55,9 +55,6 @@ dependencies {
     // Gson https://github.com/google/gson
     api 'com.google.code.gson:gson:2.9.1'
 
-    // MMKV https://github.com/tencent/mmkv
-    implementation 'com.tencent:mmkv:1.2.14'
-
     // DataStore https://developer.android.com/topic/libraries/architecture/datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
