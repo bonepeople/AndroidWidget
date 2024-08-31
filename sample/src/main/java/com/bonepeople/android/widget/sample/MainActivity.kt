@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityMainBinding
-import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.SimpleLoadingDialog
@@ -34,13 +33,13 @@ class MainActivity : AppCompatActivity() {
             loading.show()
             runCatching {
                 measureTimeMillis {
-                    AppLog.defaultLog.debug("start test")
+                    LogUtil.test.debug("start test")
                     test()
                 }.let {
-                    AppLog.defaultLog.debug("used ${AppTime.getTimeString(it)}")
+                    LogUtil.test.debug("used ${AppTime.getTimeString(it)}")
                 }
             }.getOrElse {
-                AppLog.defaultLog.error("exception@MainActivity.test", it)
+                LogUtil.test.error("exception@MainActivity.test", it)
             }
             loading.dismiss()
         }

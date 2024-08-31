@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityContractBinding
 import com.bonepeople.android.widget.util.AppGson
-import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppPermission
 import com.bonepeople.android.widget.util.AppView.singleClick
 
@@ -48,10 +47,10 @@ class ContractActivity : AppCompatActivity() {
                     Intent(this, ResultActivity::class.java).launch()
                         .onSuccess {
                             val result = it?.getIntExtra("result", 0)
-                            AppLog.defaultLog.info("RESULT_OK - $result @ $ActivityResult")
+                            LogUtil.test.info("RESULT_OK - $result @ $ActivityResult")
                         }
                         .onFailure {
-                            AppLog.defaultLog.info("RESULT_CANCEL @ $ActivityResult")
+                            LogUtil.test.info("RESULT_CANCEL @ $ActivityResult")
                         }
                 }
             }
@@ -64,10 +63,10 @@ class ContractActivity : AppCompatActivity() {
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.defaultLog.info("permission result2 = granted @ $ActivityResult")
+                            LogUtil.test.info("permission result2 = granted @ $ActivityResult")
                         }
                         .onResult { _, permissionResult ->
-                            AppLog.defaultLog.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
+                            LogUtil.test.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
                         }
                 }
             }
@@ -80,13 +79,13 @@ class ContractActivity : AppCompatActivity() {
                 ActivityResult -> {
                     AppPermission.request(android.Manifest.permission.CAMERA)
                         .onGranted {
-                            AppLog.defaultLog.info("permission result3 = granted @ $ActivityResult")
+                            LogUtil.test.info("permission result3 = granted @ $ActivityResult")
                             Intent(MediaStore.ACTION_IMAGE_CAPTURE).launch()
                                 .onSuccess {
-                                    AppLog.defaultLog.info("TAKE_PICTURE_OK @ $ActivityResult")
+                                    LogUtil.test.info("TAKE_PICTURE_OK @ $ActivityResult")
                                 }
                                 .onFailure {
-                                    AppLog.defaultLog.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
+                                    LogUtil.test.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
                                 }
                         }
                 }
@@ -102,16 +101,16 @@ class ContractActivity : AppCompatActivity() {
             REQ_1 -> {
                 if (resultCode == RESULT_OK) {
                     val result = data?.getIntExtra("result", 0)
-                    AppLog.defaultLog.info("RESULT_OK - $result @ $Normal")
+                    LogUtil.test.info("RESULT_OK - $result @ $Normal")
                 } else {
-                    AppLog.defaultLog.info("RESULT_CANCEL @ $Normal")
+                    LogUtil.test.info("RESULT_CANCEL @ $Normal")
                 }
             }
             REQ_4 -> {
                 if (resultCode == RESULT_OK) {
-                    AppLog.defaultLog.info("TAKE_PICTURE_OK @ $Normal")
+                    LogUtil.test.info("TAKE_PICTURE_OK @ $Normal")
                 } else {
-                    AppLog.defaultLog.info("TAKE_PICTURE_CANCEL @ $Normal")
+                    LogUtil.test.info("TAKE_PICTURE_CANCEL @ $Normal")
                 }
             }
         }
@@ -121,10 +120,10 @@ class ContractActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQ_2 -> {
-                AppLog.defaultLog.info("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
+                LogUtil.test.info("permission result2 = ${AppGson.toJson(grantResults)} @ $Normal")
             }
             REQ_3 -> {
-                AppLog.defaultLog.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
+                LogUtil.test.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     @Suppress("DEPRECATION")
