@@ -23,46 +23,51 @@ class AppLog(val tag: String) {
      */
     var stackOffset = 5
 
+    /**
+     * Flag to include the current calling thread's name in log messages
+     */
+    var showThreadInfo = false
+
     fun verbose(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.v(tag, addStackInfoIfNeed(message), throwable)
+            Log.v(tag, assembleLog(message), throwable)
         }
     }
 
     fun debug(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.d(tag, addStackInfoIfNeed(message), throwable)
+            Log.d(tag, assembleLog(message), throwable)
         }
     }
 
     fun info(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.i(tag, addStackInfoIfNeed(message), throwable)
+            Log.i(tag, assembleLog(message), throwable)
         }
     }
 
     fun warn(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.w(tag, addStackInfoIfNeed(message), throwable)
+            Log.w(tag, assembleLog(message), throwable)
         }
     }
 
     fun error(message: Any?, throwable: Throwable? = null) {
         if (AppLog.enable && enable) {
-            Log.e(tag, addStackInfoIfNeed(message), throwable)
+            Log.e(tag, assembleLog(message), throwable)
         }
     }
 
-    private fun addStackInfoIfNeed(message: Any?): String {
-        return if (showStackInfo) {
+    private fun assembleLog(message: Any?): String {
+        val threadInfo = if (showThreadInfo) "[${Thread.currentThread().name}] " else ""
+        val stackInfo = if (showStackInfo) {
             val stack = Thread.currentThread().stackTrace.getOrNull(stackOffset)
             val className = stack?.className?.split(".")?.last() ?: "UnknownClass"
             val methodName = stack?.methodName ?: "UnknownMethod"
             val lineNumber = stack?.lineNumber ?: 0
-            "$message @ $className.$methodName:$lineNumber"
-        } else {
-            message.toString()
-        }
+            " @ $className.$methodName:$lineNumber"
+        } else ""
+        return "$threadInfo$message$stackInfo"
     }
 
     companion object {
