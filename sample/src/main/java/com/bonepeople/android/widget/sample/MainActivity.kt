@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityMainBinding
+import com.bonepeople.android.widget.sample.service.ServiceActivity
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.SimpleLoadingDialog
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         views.buttonTest.singleClick { startTest() }
         views.buttonContract.singleClick { Intent(this, ContractActivity::class.java).launch() }
+        views.buttonService.singleClick { ServiceActivity.open() }
     }
 
     private fun startTest() {
