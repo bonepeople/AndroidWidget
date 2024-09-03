@@ -25,10 +25,14 @@ class ServiceActivity : AppCompatActivity() {
 
     private fun startService() {
         LogUtil.test.info("startService")
+        val intent = Intent(this, MyService::class.java)
+        startService(intent)
     }
 
     private fun stopService() {
         LogUtil.test.info("stopService")
+        val intent = Intent(this, MyService::class.java)
+        stopService(intent)
     }
 
     companion object {

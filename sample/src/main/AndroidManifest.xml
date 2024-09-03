@@ -26,6 +26,8 @@
             android:name=".ResultActivity"
             android:exported="false" />
         <activity android:name=".service.ServiceActivity" />
+
+        <service android:name=".service.MyService" />
     </application>
 
 </manifest>
