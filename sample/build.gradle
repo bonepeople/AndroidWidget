@@ -39,4 +39,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     implementation project(path: ':widget')
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
 }

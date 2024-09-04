@@ -183,4 +183,22 @@ object AppSystem {
         manager.defaultDisplay.getRealSize(point)
         return point.y
     }
+
+    /**
+     * Checks whether a specific service is currently running in the app process.
+     *
+     * Note:
+     * - This method only works reliably for services within the same application.
+     * - On Android 8.0 (API 26) and above, the ability to retrieve running services is limited,
+     *   and this method may not return accurate results due to system restrictions.
+     *
+     * @param serviceClass The class of the service to check.
+     * @return True if the service is running; false otherwise.
+     */
+    fun checkServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = ApplicationHolder.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        @Suppress("Deprecation")
+        val runningServices = manager.getRunningServices(Int.MAX_VALUE)
+        return runningServices.any { it.service.className == serviceClass.name }
+    }
 }
