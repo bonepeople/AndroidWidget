@@ -1,13 +1,15 @@
 package com.bonepeople.android.widget.util
 
 import android.os.Build
-import androidx.annotation.RequiresApi
 import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 /**
@@ -45,13 +47,20 @@ object AppTime {
      * @param timestamp A 13-digit timestamp.
      * @param pattern Formatting template, e.g., "yyyy-MM-dd HH:mm:ss.SSS".
      * @param timeZone The timezone, default is the current system timezone. Use [TimeZone.getTimeZone], e.g., `TimeZone.getTimeZone("GMT+2")` for GMT+2.
+     * @param local The locale used for formatting, affecting language-specific elements like month and day names.
      * @return The formatted string.
      * @throws DateTimeException If the time format is invalid.
      * @throws IllegalArgumentException If the pattern is invalid.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun formatTime(timestamp: Long, pattern: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getDefault()): String {
-        return Instant.ofEpochMilli(timestamp).atZone(timeZone.toZoneId()).format(DateTimeFormatter.ofPattern(pattern))
+    fun formatTime(timestamp: Long, pattern: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getDefault(), local: Locale = Locale.getDefault()): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Instant.ofEpochMilli(timestamp).atZone(timeZone.toZoneId()).format(DateTimeFormatter.ofPattern(pattern, local))
+        } else {
+            SimpleDateFormat(pattern, local).let {
+                it.timeZone = timeZone
+                it.format(Date(timestamp))
+            }
+        }
     }
 
     /**
