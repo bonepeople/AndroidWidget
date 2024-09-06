@@ -4,6 +4,9 @@ import androidx.annotation.CheckResult
 import androidx.annotation.IntRange
 import java.lang.StringBuilder
 import java.math.BigDecimal
+import java.text.DecimalFormat
+import kotlin.math.log10
+import kotlin.math.pow
 
 /**
  * Utility class for string manipulation
@@ -82,6 +85,26 @@ object AppText {
         return source.lines().joinToString(separator) { paragraph ->
             paragraph.chunked(length).joinToString(separator)
         }
+    }
+
+    /**
+     * Converts a file size in bytes into a human-readable string using binary (base-1024) units.
+     *
+     * Examples:
+     * - 0 bytes   -> "0 B"
+     * - 1024      -> "1 KiB"
+     * - 1048576   -> "1 MiB"
+     *
+     * Thanks: https://stackoverflow.com/questions/66019926/android-text-format-formatter-formatfilesize-returns-wrong-format
+     *
+     * @param size The file size in bytes.
+     * @return A string representing the human-readable file size, using units from B to YiB.
+     */
+    fun formatFileSize(size: Long): String {
+        if (size <= 0) return "0 B"
+        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB")
+        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble())).toString() + " " + units[digitGroups]
     }
 
     /**
