@@ -10,6 +10,8 @@ import com.bonepeople.android.widget.ApplicationHolder
  * Android Pixel Density Conversion Utility
  *
  * Provides methods to convert between various unit types (px, dp, sp) using screen density parameters.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppDensity)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppDensity {
