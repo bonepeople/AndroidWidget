@@ -21,6 +21,8 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * Encryption and Decryption Utility
  * Provides methods for AES and RSA encryption and decryption.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEncrypt)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppEncrypt {
