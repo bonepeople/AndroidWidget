@@ -9,6 +9,8 @@ import java.util.*
 
 /**
  * Utility class for JSON serialization and deserialization using Gson.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppGson)
  */
 @Suppress("Unused")
 object AppGson {
