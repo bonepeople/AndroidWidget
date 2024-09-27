@@ -10,6 +10,8 @@ import com.bonepeople.android.widget.ActivityHolder
 
 /**
  * Utility class for managing the software keyboard.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppKeyboard)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppKeyboard {
