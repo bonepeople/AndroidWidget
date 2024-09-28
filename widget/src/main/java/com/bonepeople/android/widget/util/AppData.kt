@@ -18,6 +18,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
+/**
+ * AppData
+ *
+ * a key-value data storage utility class based on Jetpack DataStore
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppDensity)
+ */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 class AppData private constructor(name: String) {
     private val dataStore: DataStore<Preferences> by lazy {
