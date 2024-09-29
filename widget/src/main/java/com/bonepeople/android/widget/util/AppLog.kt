@@ -5,6 +5,8 @@ import com.bonepeople.android.widget.ApplicationHolder
 
 /**
  * Logging utility class
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppLog)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 class AppLog(val tag: String) {
