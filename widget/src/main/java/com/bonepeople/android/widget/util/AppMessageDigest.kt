@@ -6,6 +6,8 @@ import java.security.MessageDigest
 
 /**
  * Utility class for generating message digests.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppMessageDigest)
  */
 @Suppress("MemberVisibilityCanBePrivate")
 object AppMessageDigest {
