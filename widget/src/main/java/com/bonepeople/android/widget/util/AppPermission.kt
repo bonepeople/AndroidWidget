@@ -12,6 +12,8 @@ import kotlin.collections.LinkedHashMap
  * Permission request utility class
  *
  * Utilizes ActivityResultContract to request permissions
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppPermission)
  */
 @Suppress("Unused")
 class AppPermission private constructor() {
