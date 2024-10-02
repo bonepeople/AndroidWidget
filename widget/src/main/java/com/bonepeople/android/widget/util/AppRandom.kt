@@ -5,6 +5,8 @@ import kotlin.random.Random
 /**
  * Utility class for generating random numbers
  * + Provides a random seed and several convenient methods
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppRandom)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppRandom {
