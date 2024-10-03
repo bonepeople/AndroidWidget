@@ -11,6 +11,8 @@ import androidx.annotation.ColorInt
 
 /**
  * Utility class for building rich text with spans
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppSpan)
  */
 @Suppress("Unused")
 open class AppSpan : SpannableStringBuilder() {
