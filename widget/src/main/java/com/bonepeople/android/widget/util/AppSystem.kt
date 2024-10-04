@@ -21,6 +21,8 @@ import java.net.SocketException
 
 /**
  * System-related utility class for retrieving system parameters and information.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppSystem)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("PrivateApi", "DiscouragedPrivateApi", "InternalInsetResource")
