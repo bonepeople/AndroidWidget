@@ -10,6 +10,8 @@ import kotlin.math.pow
 
 /**
  * Utility class for string manipulation
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppText)
  */
 @Suppress("Unused")
 object AppText {
