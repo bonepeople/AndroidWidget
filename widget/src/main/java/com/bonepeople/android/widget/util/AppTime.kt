@@ -14,6 +14,8 @@ import java.util.TimeZone
 
 /**
  * Utility class for time conversion
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppTime)
  */
 @Suppress("Unused")
 object AppTime {
