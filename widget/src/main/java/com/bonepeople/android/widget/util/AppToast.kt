@@ -7,6 +7,8 @@ import kotlinx.coroutines.launch
 
 /**
  * Utility class for displaying Toast messages
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppToast)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppToast {
