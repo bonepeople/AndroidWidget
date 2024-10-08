@@ -9,6 +9,8 @@ import com.bonepeople.android.widget.R
 
 /**
  * Utility class for managing View operations
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppView)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object AppView {
