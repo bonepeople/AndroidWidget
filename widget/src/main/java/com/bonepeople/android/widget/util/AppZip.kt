@@ -11,6 +11,8 @@ import java.util.zip.ZipOutputStream
 
 /**
  * Utility class for file compression and decompression
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppZip)
  */
 @Suppress("Unused")
 object AppZip {
