@@ -14,6 +14,8 @@ import com.bonepeople.android.widget.DefaultActivityLifecycleCallbacks
 /**
  * Intent Launcher
  * + An [IntentLauncher] is created for each [ComponentActivity], allowing the user to launch a specified [Intent].
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityResult)
  */
 class IntentLauncher private constructor() : ActivityResultCallback<ActivityResult> {
     private var hostName: String = ""

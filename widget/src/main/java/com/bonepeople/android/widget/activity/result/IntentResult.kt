@@ -7,6 +7,8 @@ import androidx.activity.result.ActivityResult
 /**
  * Intent Result
  * + Handles and processes data returned by an [Activity].
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityResult)
  */
 class IntentResult {
     private var resultAction: ((ActivityResult) -> Unit)? = null

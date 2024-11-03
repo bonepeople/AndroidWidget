@@ -9,6 +9,8 @@ import com.bonepeople.android.widget.ActivityHolder
  * + Internally uses the [Activity.startActivityForResult] method, which may cause Activities with
  *   singleTop, singleTask, or singleInstance launch modes to create new instances.
  *   Ensure to manually add the appropriate flags to the Intent when calling this method.
+ *
+ *   [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityResult)
  */
 fun Intent.launch(): IntentResult {
     val data = ActivityHolder.getTopActivity()?.let { ActivityHolder.getData(it, "com.bonepeople.android.widget.activity.result.IntentLauncher") }
