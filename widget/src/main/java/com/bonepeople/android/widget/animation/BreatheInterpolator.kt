@@ -6,6 +6,8 @@ import android.animation.TimeInterpolator
  * Interpolator for breathing rhythm animations.
  *
  * Accepts a floating-point number in the range [0,1] as input and returns a floating-point number in the range [0,1].
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/BreatheInterpolator)
  */
 @Suppress("Unused")
 class BreatheInterpolator() : TimeInterpolator {
