@@ -2,6 +2,8 @@ package com.bonepeople.android.widget.resource
 
 /**
  * String Template
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/StringResource)
  */
 interface StringTemplate {
     /**

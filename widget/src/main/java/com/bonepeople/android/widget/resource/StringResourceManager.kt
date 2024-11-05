@@ -13,6 +13,8 @@ import java.util.Locale
  *    - A single template can have multiple language-specific string instances.
  * 3. Before using a string, register string instances using the [register] method.
  * 4. Retrieve string instances in your code by calling the [get] method.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/StringResource)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object StringResourceManager {
