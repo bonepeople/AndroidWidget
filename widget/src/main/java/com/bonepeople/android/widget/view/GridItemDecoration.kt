@@ -20,6 +20,8 @@ import kotlin.math.roundToInt
  * - **Reason**: Adding or removing items doesn’t refresh the dimensions of dividers for other elements in the list.
  * - **Solution**: After updating the list, call `notifyItemRangeChanged(0, list.size)` to refresh the entire list,
  * ensuring the dividers are updated correctly.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/GridItemDecoration)
  */
 @Suppress("Unused")
 class GridItemDecoration(horizontal: Float, vertical: Float) : RecyclerView.ItemDecoration() {
