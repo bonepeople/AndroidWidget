@@ -22,6 +22,8 @@ import kotlin.math.roundToInt
  * - **Reason**: Adding or removing items doesn’t refresh the dimensions of dividers for other elements in the list.
  * - **Solution**: After updating the list, manually call `notifyItemRangeChanged(0, 2)` to refresh the first two items.
  *   If multiple items are added, adjust the range to include all affected items.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/LinearItemDecoration)
  */
 @Suppress("Unused")
 class LinearItemDecoration(space: Float) : RecyclerView.ItemDecoration() {
