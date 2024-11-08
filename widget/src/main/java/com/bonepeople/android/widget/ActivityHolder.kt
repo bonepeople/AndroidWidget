@@ -9,6 +9,8 @@ import kotlin.collections.HashMap
  * Activity State Holder
  *
  * A utility object to manage the state and data associated with [Activity] instances.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityHolder)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ActivityHolder : DefaultActivityLifecycleCallbacks {
