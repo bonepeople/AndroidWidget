@@ -12,6 +12,8 @@ import com.bonepeople.android.widget.activity.result.IntentLauncher
  * Application State Holder
  *
  * Provides a centralized place to access and manage the application instance and related information.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ApplicationHolder)
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
