@@ -9,6 +9,8 @@ import kotlin.coroutines.CoroutineContext
  * Coroutines State Holder
  *
  * Provides global coroutine singletons for different dispatchers to manage coroutine contexts efficiently.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/CoroutinesHolder)
  */
 @Suppress("Unused")
 object CoroutinesHolder {
