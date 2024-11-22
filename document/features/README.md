@@ -1,3 +1,5 @@
+Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
+
 # Features List
 
 ## 1. Application & Activity Management
