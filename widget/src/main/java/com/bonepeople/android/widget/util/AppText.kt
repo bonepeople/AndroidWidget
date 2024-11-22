@@ -88,9 +88,10 @@ object AppText {
         }
     }
 
+    //https://stackoverflow.com/questions/66019926/android-text-format-formatter-formatfilesize-returns-wrong-format
     fun formatFileSize(size: Long): String {
         if (size <= 0) return "0B"
-        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB")
+        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB")
         val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
             .toString() + " " + units[digitGroups]
