@@ -2,7 +2,7 @@ package com.bonepeople.android.widget
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -20,7 +20,7 @@ object CoroutinesHolder {
      * + Uses a shared background thread pool with the number of threads equal to the number of CPU cores.
      */
     val default: CoroutineScope = object : CoroutineScope {
-        override val coroutineContext: CoroutineContext = Dispatchers.Default + Job()
+        override val coroutineContext: CoroutineContext = Dispatchers.Default + SupervisorJob()
     }
 
     /**
@@ -28,7 +28,7 @@ object CoroutinesHolder {
      * + Executes coroutines on the main thread.
      */
     val main: CoroutineScope = object : CoroutineScope {
-        override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
+        override val coroutineContext: CoroutineContext = Dispatchers.Main + SupervisorJob()
     }
 
     /**
@@ -37,6 +37,6 @@ object CoroutinesHolder {
      * + Based on a thread pool coroutine dispatcher that automatically adjusts the pool size as needed.
      */
     val io: CoroutineScope = object : CoroutineScope {
-        override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
+        override val coroutineContext: CoroutineContext = Dispatchers.IO + SupervisorJob()
     }
 }
