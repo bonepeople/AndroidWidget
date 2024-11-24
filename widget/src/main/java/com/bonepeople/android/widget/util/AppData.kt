@@ -1,5 +1,6 @@
 package com.bonepeople.android.widget.util
 
+import androidx.annotation.CheckResult
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -52,25 +53,43 @@ class AppData private constructor(name: String) {
     fun putDoubleSync(key: String, value: Double) = runBlocking { putDouble(key, value) }
     fun putBooleanSync(key: String, value: Boolean) = runBlocking { putBoolean(key, value) }
 
+    @CheckResult
     suspend fun getString(key: String, default: String = ""): String = getStringFlow(key, default).first()
+    @CheckResult
     suspend fun getInt(key: String, default: Int = 0): Int = getIntFlow(key, default).first()
+    @CheckResult
     suspend fun getLong(key: String, default: Long = 0): Long = getLongFlow(key, default).first()
+    @CheckResult
     suspend fun getFloat(key: String, default: Float = 0f): Float = getFloatFlow(key, default).first()
+    @CheckResult
     suspend fun getDouble(key: String, default: Double = 0.0): Double = getDoubleFlow(key, default).first()
+    @CheckResult
     suspend fun getBoolean(key: String, default: Boolean = false): Boolean = getBooleanFlow(key, default).first()
 
+    @CheckResult
     fun getStringSync(key: String, default: String = ""): String = runBlocking { getString(key, default) }
+    @CheckResult
     fun getIntSync(key: String, default: Int = 0): Int = runBlocking { getInt(key, default) }
+    @CheckResult
     fun getLongSync(key: String, default: Long = 0): Long = runBlocking { getLong(key, default) }
+    @CheckResult
     fun getFloatSync(key: String, default: Float = 0f): Float = runBlocking { getFloat(key, default) }
+    @CheckResult
     fun getDoubleSync(key: String, default: Double = 0.0): Double = runBlocking { getDouble(key, default) }
+    @CheckResult
     fun getBooleanSync(key: String, default: Boolean = false): Boolean = runBlocking { getBoolean(key, default) }
 
+    @CheckResult
     fun getStringFlow(key: String, default: String = ""): Flow<String> = getDataFlow(stringPreferencesKey(key), default)
+    @CheckResult
     fun getIntFlow(key: String, default: Int = 0): Flow<Int> = getDataFlow(intPreferencesKey(key), default)
+    @CheckResult
     fun getLongFlow(key: String, default: Long = 0): Flow<Long> = getDataFlow(longPreferencesKey(key), default)
+    @CheckResult
     fun getFloatFlow(key: String, default: Float = 0f): Flow<Float> = getDataFlow(floatPreferencesKey(key), default)
+    @CheckResult
     fun getDoubleFlow(key: String, default: Double = 0.0): Flow<Double> = getDataFlow(doublePreferencesKey(key), default)
+    @CheckResult
     fun getBooleanFlow(key: String, default: Boolean = false): Flow<Boolean> = getDataFlow(booleanPreferencesKey(key), default)
 
     suspend fun remove(key: String) {
