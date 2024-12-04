@@ -30,35 +30,11 @@ class AppLog(val tag: String) {
      */
     var showThreadInfo = false
 
-    fun verbose(message: Any?, throwable: Throwable? = null) {
-        if (AppLog.enable && enable) {
-            Log.v(tag, assembleLog(message), throwable)
-        }
-    }
-
-    fun debug(message: Any?, throwable: Throwable? = null) {
-        if (AppLog.enable && enable) {
-            Log.d(tag, assembleLog(message), throwable)
-        }
-    }
-
-    fun info(message: Any?, throwable: Throwable? = null) {
-        if (AppLog.enable && enable) {
-            Log.i(tag, assembleLog(message), throwable)
-        }
-    }
-
-    fun warn(message: Any?, throwable: Throwable? = null) {
-        if (AppLog.enable && enable) {
-            Log.w(tag, assembleLog(message), throwable)
-        }
-    }
-
-    fun error(message: Any?, throwable: Throwable? = null) {
-        if (AppLog.enable && enable) {
-            Log.e(tag, assembleLog(message), throwable)
-        }
-    }
+    fun verbose(message: Any?, throwable: Throwable? = null) = printLog(message, throwable, Log::v)
+    fun debug(message: Any?, throwable: Throwable? = null) = printLog(message, throwable, Log::d)
+    fun info(message: Any?, throwable: Throwable? = null) = printLog(message, throwable, Log::i)
+    fun warn(message: Any?, throwable: Throwable? = null) = printLog(message, throwable, Log::w)
+    fun error(message: Any?, throwable: Throwable? = null) = printLog(message, throwable, Log::e)
 
     private fun assembleLog(message: Any?): String {
         val threadInfo = if (showThreadInfo) "[${Thread.currentThread().name}] " else ""
@@ -70,6 +46,15 @@ class AppLog(val tag: String) {
             " @ $className.$methodName:$lineNumber"
         } else ""
         return "$threadInfo$message$stackInfo"
+    }
+
+    private fun printLog(message: Any?, throwable: Throwable? = null, action: (tag: String, message: String, throwable: Throwable?) -> Int = Log::v) {
+        if (AppLog.enable && enable) {
+            val messageList = assembleLog(message).chunked(MAX_LOG_LENGTH)
+            messageList.mapIndexed { index, subString ->
+                action.invoke(tag, subString, if (index == messageList.lastIndex) throwable else null)
+            }
+        }
     }
 
     companion object {
@@ -95,5 +80,7 @@ class AppLog(val tag: String) {
         fun tag(tag: String): AppLog {
             return instances.getOrPut(tag) { AppLog(tag) }
         }
+
+        private const val MAX_LOG_LENGTH = 3000
     }
 }
