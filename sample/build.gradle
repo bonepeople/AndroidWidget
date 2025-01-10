@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.bonepeople.android.widget.simple'
+    namespace 'com.bonepeople.android.widget.sample'
     compileSdk rootProject.androidConfig.compileSdk
 
     defaultConfig {
-        applicationId "com.bonepeople.android.widget.simple"
+        applicationId "com.bonepeople.android.widget.sample"
         minSdk rootProject.androidConfig.minSdk
         targetSdk rootProject.androidConfig.targetSdk
         versionCode rootProject.androidConfig.versionCode

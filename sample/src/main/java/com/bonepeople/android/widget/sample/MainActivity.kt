@@ -1,11 +1,11 @@
-package com.bonepeople.android.widget.simple
+package com.bonepeople.android.widget.sample
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
-import com.bonepeople.android.widget.simple.databinding.ActivityMainBinding
+import com.bonepeople.android.widget.sample.databinding.ActivityMainBinding
 import com.bonepeople.android.widget.util.AppLog
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick

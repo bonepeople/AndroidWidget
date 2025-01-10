@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.simple
+package com.bonepeople.android.widget.sample
 
 import android.app.Application
 import com.bonepeople.android.widget.util.AppLog

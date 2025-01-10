@@ -1,9 +1,9 @@
-package com.bonepeople.android.widget.simple
+package com.bonepeople.android.widget.sample
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bonepeople.android.widget.simple.databinding.ActivityResultBinding
+import com.bonepeople.android.widget.sample.databinding.ActivityResultBinding
 import com.bonepeople.android.widget.util.AppView.singleClick
 
 class ResultActivity : AppCompatActivity() {
