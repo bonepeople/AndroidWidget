@@ -41,7 +41,7 @@ object AppKeyboard {
      * @param editText The EditText for which the keyboard should be shown.
      */
     fun showKeyboard(editText: EditText) {
-        editText.postDelayed(200) {
+        editText.postDelayed(100) {
             editText.requestFocus()
             val inputMethodManager = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
