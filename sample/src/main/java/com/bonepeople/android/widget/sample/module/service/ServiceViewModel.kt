@@ -1,8 +1,8 @@
-package com.bonepeople.android.widget.sample.service
+package com.bonepeople.android.widget.sample.module.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bonepeople.android.widget.sample.LogUtil
+import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.util.AppSystem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

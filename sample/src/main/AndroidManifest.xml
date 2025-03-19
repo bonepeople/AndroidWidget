@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidWidget">
         <activity
-            android:name=".MainActivity"
+            android:name=".module.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,14 +20,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ContractActivity"
+            android:name=".module.contract.ContractActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
+            android:name=".module.contract.ResultActivity"
             android:exported="false" />
-        <activity android:name=".service.ServiceActivity" />
+        <activity android:name=".module.service.ServiceActivity" />
 
-        <service android:name=".service.MyService" />
+        <service android:name=".module.service.MyService" />
     </application>
 
 </manifest>

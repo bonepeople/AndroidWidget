@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.sample
+package com.bonepeople.android.widget.sample.module.contract
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityContractBinding
+import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.util.AppGson
 import com.bonepeople.android.widget.util.AppPermission
 import com.bonepeople.android.widget.util.AppView.singleClick
@@ -40,7 +41,7 @@ class ContractActivity : AppCompatActivity() {
             when (views.spinner.selectedItem as String) {
                 Normal -> {
                     val intent = Intent(this, ResultActivity::class.java)
-                    @Suppress("DEPRECATION")
+                    @Suppress("Deprecation")
                     startActivityForResult(intent, REQ_1)
                 }
                 ActivityResult -> {
@@ -95,7 +96,7 @@ class ContractActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
+        @Suppress("Deprecation")
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQ_1 -> {
@@ -126,7 +127,7 @@ class ContractActivity : AppCompatActivity() {
                 LogUtil.test.info("permission result3 = ${AppGson.toJson(grantResults)} @ $Normal")
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    @Suppress("DEPRECATION")
+                    @Suppress("Deprecation")
                     startActivityForResult(intent, REQ_4)
                 }
             }

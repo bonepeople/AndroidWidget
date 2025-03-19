@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.sample.service
+package com.bonepeople.android.widget.sample.module.service
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.activity.result.launch
-import com.bonepeople.android.widget.sample.LogUtil
 import com.bonepeople.android.widget.sample.databinding.ActivityServiceBinding
+import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.util.AppView.singleClick
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
