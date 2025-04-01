@@ -12,14 +12,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InsetsLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
-    private var initialPaddingLeft = paddingLeft
-    private var initialPaddingTop = paddingTop
-    private var initialPaddingRight = paddingRight
-    private var initialPaddingBottom = paddingBottom
+    private var initialPaddingLeft: Int = paddingLeft
+    private var initialPaddingTop: Int = paddingTop
+    private var initialPaddingRight: Int = paddingRight
+    private var initialPaddingBottom: Int = paddingBottom
     var typeMask: Int = WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
         set(value) {
             field = value
@@ -30,15 +32,15 @@ class InsetsLayout @JvmOverloads constructor(context: Context, attrs: AttributeS
             field = value
             updatePadding()
         }
-    private val currentInsets = MutableStateFlow(WindowInsetsCompat.Builder().build())
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val currentInsets: MutableStateFlow<WindowInsetsCompat> = MutableStateFlow(WindowInsetsCompat.Builder().build())
+    private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.InsetsLayout, defStyleAttr, 0).let {
             insetsMask = it.getInt(R.styleable.InsetsLayout_insets, INSET_NONE)
             it.recycle()
         }
-        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets: WindowInsetsCompat ->
             insets.also { currentInsets.value = it }
         }
     }
@@ -61,6 +63,8 @@ class InsetsLayout @JvmOverloads constructor(context: Context, attrs: AttributeS
         initialPaddingBottom = bottom
         updatePadding()
     }
+
+    fun insetsFlow(): StateFlow<WindowInsetsCompat> = currentInsets.asStateFlow()
 
     private fun needInsets(type: Int): Boolean {
         return (insetsMask and type) != 0
