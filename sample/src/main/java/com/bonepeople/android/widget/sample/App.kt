@@ -1,6 +1,7 @@
 package com.bonepeople.android.widget.sample
 
 import android.app.Application
+import com.bonepeople.android.widget.sample.global.LogUtil
 
 class App : Application() {
     override fun onCreate() {

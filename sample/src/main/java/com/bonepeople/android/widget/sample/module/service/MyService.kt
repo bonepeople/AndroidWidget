@@ -1,10 +1,10 @@
-package com.bonepeople.android.widget.sample.service
+package com.bonepeople.android.widget.sample.module.service
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.bonepeople.android.widget.CoroutinesHolder
-import com.bonepeople.android.widget.sample.LogUtil
+import com.bonepeople.android.widget.sample.global.LogUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

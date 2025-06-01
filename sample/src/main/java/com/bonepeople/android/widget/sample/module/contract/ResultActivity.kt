@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.sample
+package com.bonepeople.android.widget.sample.module.contract
 
 import android.content.Intent
 import android.os.Bundle

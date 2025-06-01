@@ -1,4 +1,4 @@
-package com.bonepeople.android.widget.sample
+package com.bonepeople.android.widget.sample.module.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,9 @@ import android.os.Bundle
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityMainBinding
-import com.bonepeople.android.widget.sample.service.ServiceActivity
+import com.bonepeople.android.widget.sample.global.LogUtil
+import com.bonepeople.android.widget.sample.module.contract.ContractActivity
+import com.bonepeople.android.widget.sample.module.service.ServiceActivity
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick
 import com.bonepeople.android.widget.view.SimpleLoadingDialog
