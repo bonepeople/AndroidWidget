@@ -11,3 +11,5 @@ gradle.xml
 compiler.xml
 kotlinc.xml
 migrations.xml
+deploymentTargetSelector.xml
+runConfigurations.xml
