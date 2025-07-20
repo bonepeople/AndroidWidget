@@ -92,10 +92,14 @@
 #### [LinearItemDecoration](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/LinearItemDecoration)
 - **用途**：RecyclerView 线性布局的间距装饰器，支持彩色分隔线与内边距。
 
-## 7. 协程管理
+## 7. 协程与事件
 
 #### [CoroutinesHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/CoroutinesHolder)
 - **用途**：全局协程作用域（`Default`、`Main`、`IO`）便于统一启动。
+
+#### [AppEvent](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEvent)
+- **用途**：基于 `Flow` 的全局事件总线，支持生命周期感知的跨组件通信。
+- **特点**：非粘性分发、强类型或 `CommonEvent` 通用事件、`post` / `postAsync` 双模式发送。
 
 ## 8. 多语言管理
 

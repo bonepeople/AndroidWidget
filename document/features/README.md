@@ -92,10 +92,14 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 #### [LinearItemDecoration](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/LinearItemDecoration)
 - **Purpose**: RecyclerView linear item spacing with optional colored dividers and padding.
 
-## 7. Coroutine Management
+## 7. Coroutines & Events
 
 #### [CoroutinesHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/CoroutinesHolder)
 - **Purpose**: Global coroutine scopes (`Default`, `Main`, `IO`) for simplified launching.
+
+#### [AppEvent](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEvent)
+- **Purpose**: Lifecycle-aware global event bus based on `Flow` for cross-component communication.
+- **Features**: Non-sticky delivery, typed or `CommonEvent` generic events, `post` / `postAsync` posting modes.
 
 ## 8. Multi-language Management
 

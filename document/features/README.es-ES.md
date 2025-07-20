@@ -92,10 +92,14 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 #### [LinearItemDecoration](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/LinearItemDecoration)
 - **Propósito**: Decorador de espaciado para elementos lineales en RecyclerView, con divisores de color opcionales y relleno.
 
-## 7. Gestión de corrutinas
+## 7. Corrutinas y eventos
 
 #### [CoroutinesHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/CoroutinesHolder)
 - **Propósito**: Ámbitos globales de corrutinas (`Default`, `Main`, `IO`) para simplificar lanzamientos.
+
+#### [AppEvent](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEvent)
+- **Propósito**: Bus de eventos global con conocimiento del ciclo de vida, basado en `Flow`, para comunicación entre componentes.
+- **Características**: Entrega no pegajosa, eventos tipados o genéricos con `CommonEvent`, modos de publicación `post` / `postAsync`.
 
 ## 8. Gestión multilingüe
 
