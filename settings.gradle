@@ -1,6 +1,7 @@
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven { url uri("$rootDir/gradle/repositories") }
         google()
         mavenCentral()
         maven { url 'https://maven.aliyun.com/repository/jcenter' }

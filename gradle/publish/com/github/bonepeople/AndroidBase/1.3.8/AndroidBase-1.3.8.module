@@ -1,0 +1,160 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.bonepeople",
+    "module": "AndroidBase",
+    "version": "1.3.8",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.bonepeople",
+          "module": "AndroidWidget",
+          "version": {
+            "requires": "1.4.3"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidBase-1.3.8.aar",
+          "url": "AndroidBase-1.3.8.aar",
+          "size": 132867,
+          "sha512": "3feb33b69ef88dfb2dddd70276044e57a0588491d893e336ee1909203bf913898c9f7b7801cfaf2234116e89ecfaa4b13ec3552e7c1455a20301263857389453",
+          "sha256": "140ad5c74c68b1f219a1075365638f013c57a3cc2209d86da183ce844ac309f0",
+          "sha1": "1c02be21288fff36dd6f37d5eae5edf23c92fe75",
+          "md5": "7d199186f9a965d60114ceb65b872288"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.bonepeople",
+          "module": "AndroidWidget",
+          "version": {
+            "requires": "1.4.3"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.7.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "Shade",
+          "version": {
+            "requires": "1.2.2"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar-ktx",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "androidx.paging",
+          "module": "paging-runtime-ktx",
+          "version": {
+            "requires": "3.0.1"
+          }
+        },
+        {
+          "group": "androidx.startup",
+          "module": "startup-runtime",
+          "version": {
+            "requires": "1.1.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidBase-1.3.8.aar",
+          "url": "AndroidBase-1.3.8.aar",
+          "size": 132867,
+          "sha512": "3feb33b69ef88dfb2dddd70276044e57a0588491d893e336ee1909203bf913898c9f7b7801cfaf2234116e89ecfaa4b13ec3552e7c1455a20301263857389453",
+          "sha256": "140ad5c74c68b1f219a1075365638f013c57a3cc2209d86da183ce844ac309f0",
+          "sha1": "1c02be21288fff36dd6f37d5eae5edf23c92fe75",
+          "md5": "7d199186f9a965d60114ceb65b872288"
+        }
+      ]
+    }
+  ]
+}

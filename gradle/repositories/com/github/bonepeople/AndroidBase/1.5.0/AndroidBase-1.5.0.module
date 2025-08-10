@@ -1,0 +1,174 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.bonepeople",
+    "module": "AndroidBase",
+    "version": "1.5.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.4"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.bonepeople",
+          "module": "AndroidWidget",
+          "version": {
+            "requires": "1.5.1"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar-ktx",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.3.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidBase-1.5.0.aar",
+          "url": "AndroidBase-1.5.0.aar",
+          "size": 146273,
+          "sha512": "9c5f58b02d81e6a3e055e175a491ea738d4f563cd1f33eb158171700099139c98ab398d64baba04c0c1e02b40f09f051aba2fe87c6e113deaf83c4bd5fb41387",
+          "sha256": "6162fba94a1b49965e228806a9afd8bfa9aa1dffa88183f4006cc2104e483658",
+          "sha1": "a66fb45eed7f2fcdb1f3f9e7deeed76c2b858c74",
+          "md5": "ee51a5462af9d633344e7d95d1182d21"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.bonepeople",
+          "module": "AndroidWidget",
+          "version": {
+            "requires": "1.5.1"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "com.geyifeng.immersionbar",
+          "module": "immersionbar-ktx",
+          "version": {
+            "requires": "3.2.2"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.3.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.7.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "Shade",
+          "version": {
+            "requires": "1.3.0"
+          }
+        },
+        {
+          "group": "androidx.paging",
+          "module": "paging-runtime-ktx",
+          "version": {
+            "requires": "3.1.1"
+          }
+        },
+        {
+          "group": "androidx.startup",
+          "module": "startup-runtime",
+          "version": {
+            "requires": "1.1.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidBase-1.5.0.aar",
+          "url": "AndroidBase-1.5.0.aar",
+          "size": 146273,
+          "sha512": "9c5f58b02d81e6a3e055e175a491ea738d4f563cd1f33eb158171700099139c98ab398d64baba04c0c1e02b40f09f051aba2fe87c6e113deaf83c4bd5fb41387",
+          "sha256": "6162fba94a1b49965e228806a9afd8bfa9aa1dffa88183f4006cc2104e483658",
+          "sha1": "a66fb45eed7f2fcdb1f3f9e7deeed76c2b858c74",
+          "md5": "ee51a5462af9d633344e7d95d1182d21"
+        }
+      ]
+    }
+  ]
+}

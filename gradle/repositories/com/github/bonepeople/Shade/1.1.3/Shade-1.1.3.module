@@ -1,0 +1,132 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.bonepeople",
+    "module": "Shade",
+    "version": "1.1.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Shade-1.1.3.aar",
+          "url": "Shade-1.1.3.aar",
+          "size": 85334,
+          "sha512": "2166c4c8107a0313ac79c12b2663c543c3b70ac604ce1edd2624c26c09dd552af14801656fd56383f2a12e74e713f00380241e7a362fc724a746a9c60353d21c",
+          "sha256": "ca4546b0d750756216b2ba0d0e728ce3da2e8698e77d88b086ae9efb50770852",
+          "sha1": "9205443a968a13dad4ce7a700e56be9fa98ab7df",
+          "md5": "6bd831340ffaaf94a27cff8bb7a047b9"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "AndroidWidget",
+          "version": {
+            "requires": "1.4.1"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "retrofit",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-gson",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.okhttp3",
+          "module": "okhttp",
+          "version": {
+            "requires": "4.9.0"
+          }
+        },
+        {
+          "group": "androidx.startup",
+          "module": "startup-runtime",
+          "version": {
+            "requires": "1.1.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Shade-1.1.3.aar",
+          "url": "Shade-1.1.3.aar",
+          "size": 85334,
+          "sha512": "2166c4c8107a0313ac79c12b2663c543c3b70ac604ce1edd2624c26c09dd552af14801656fd56383f2a12e74e713f00380241e7a362fc724a746a9c60353d21c",
+          "sha256": "ca4546b0d750756216b2ba0d0e728ce3da2e8698e77d88b086ae9efb50770852",
+          "sha1": "9205443a968a13dad4ce7a700e56be9fa98ab7df",
+          "md5": "6bd831340ffaaf94a27cff8bb7a047b9"
+        }
+      ]
+    }
+  ]
+}
