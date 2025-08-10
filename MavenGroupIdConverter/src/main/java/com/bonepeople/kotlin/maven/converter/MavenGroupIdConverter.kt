@@ -21,9 +21,11 @@ class MavenGroupIdConverter(
         // 找到旧仓库下所有模块目录，比如 AndroidWidget
         val modules = oldGroupDir.listFiles { file -> file.isDirectory } ?: emptyArray()
         modules.forEach { moduleDir ->
+            println("convert module ${moduleDir.name}")
             // 复制所有版本目录下的文件
             val versions = moduleDir.listFiles { file -> file.isDirectory } ?: emptyArray()
             versions.forEach { versionDir ->
+                print("    convert version ${versionDir.name}")
                 val relativePathFromOldGroup = versionDir.relativeTo(oldGroupDir).path
                 val targetDir = File(publishDir, newGroupPath + File.separator + relativePathFromOldGroup)
                 targetDir.mkdirs()
@@ -40,11 +42,13 @@ class MavenGroupIdConverter(
                         file.copyTo(targetFile, overwrite = true)
                     }
                 }
+                println(" done")
             }
 
             // 处理 maven-metadata.xml 文件（可能在模块目录下）
             val metadataFile = File(moduleDir, "maven-metadata.xml")
             if (metadataFile.exists()) {
+                print("update ${metadataFile.name}")
                 val newMetadataDir = File(publishDir, newGroupPath + File.separator + moduleDir.name)
                 newMetadataDir.mkdirs()
                 val newMetadataFile = File(newMetadataDir, "maven-metadata.xml")
@@ -52,6 +56,7 @@ class MavenGroupIdConverter(
                 // maven-metadata.xml 里也有 groupId 字段，替换
                 val newContent = content.replace(oldGroupId, newGroupId)
                 newMetadataFile.writeText(newContent)
+                println(" done")
             }
         }
         println("GroupId conversion finished.")
