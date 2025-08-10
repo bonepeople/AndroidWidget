@@ -10,3 +10,4 @@ dependencyResolutionManagement {
 rootProject.name = "AndroidWidget"
 include ':sample'
 include ':widget'
+include ':MavenGroupIdConverter'
