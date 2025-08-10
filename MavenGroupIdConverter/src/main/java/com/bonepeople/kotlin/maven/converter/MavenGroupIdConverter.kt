@@ -20,17 +20,22 @@ class MavenGroupIdConverter(
 
         // 找到旧仓库下所有模块目录，比如 AndroidWidget
         val modules = oldGroupDir.listFiles { file -> file.isDirectory } ?: emptyArray()
-        modules.forEach { moduleDir ->
+        modules.forEach module@{ moduleDir ->
             println("convert module ${moduleDir.name}")
             // 复制所有版本目录下的文件
             val versions = moduleDir.listFiles { file -> file.isDirectory } ?: emptyArray()
-            versions.forEach { versionDir ->
+            versions.forEach version@{ versionDir ->
                 print("    convert version ${versionDir.name}")
                 val relativePathFromOldGroup = versionDir.relativeTo(oldGroupDir).path
                 val targetDir = File(publishDir, newGroupPath + File.separator + relativePathFromOldGroup)
+                if (targetDir.exists()) {
+                    println(" skip")
+                    return@version
+                }
+                print(" copy")
                 targetDir.mkdirs()
 
-                versionDir.listFiles()?.forEach { file ->
+                versionDir.listFiles()?.forEach file@{ file ->
                     val targetFile = File(targetDir, file.name)
                     if (file.extension in setOf("pom", "module")) {
                         // 修改pom和module文件内容中 groupId 字符串
