@@ -1,0 +1,181 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.bonepeople.android.lib",
+    "module": "AndroidWidget",
+    "version": "1.1.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.5.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.5.2"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "LocalBroadcastUtil",
+          "version": {
+            "requires": "1.3.2"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "DimensionUtil",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.8.6"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.6.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidWidget-1.1.2.aar",
+          "url": "AndroidWidget-1.1.2.aar",
+          "size": 82024,
+          "sha512": "2ce5ec4f0c486be16630c6903f946977a2b8ebea4ef51b592e77ab87ae0c595e97f85f0c488dcf2d25302c985f9d5b19b249e587bda98521da9ae22a3461ff6f",
+          "sha256": "59aac0bb8fc1126d2b0d72f95b836d693f7c9200725ef8a461affad385c3b49f",
+          "sha1": "e6352cfb38d0c9117847617ac26371303057b4dc",
+          "md5": "311919b70fd14583bbfd90ff08010aa3"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.5.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.5.2"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "LocalBroadcastUtil",
+          "version": {
+            "requires": "1.3.2"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "DimensionUtil",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.8.6"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.6.10"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "com.tencent",
+          "module": "mmkv-static",
+          "version": {
+            "requires": "1.2.9"
+          }
+        },
+        {
+          "group": "androidx.startup",
+          "module": "startup-runtime",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidWidget-1.1.2.aar",
+          "url": "AndroidWidget-1.1.2.aar",
+          "size": 82024,
+          "sha512": "2ce5ec4f0c486be16630c6903f946977a2b8ebea4ef51b592e77ab87ae0c595e97f85f0c488dcf2d25302c985f9d5b19b249e587bda98521da9ae22a3461ff6f",
+          "sha256": "59aac0bb8fc1126d2b0d72f95b836d693f7c9200725ef8a461affad385c3b49f",
+          "sha1": "e6352cfb38d0c9117847617ac26371303057b4dc",
+          "md5": "311919b70fd14583bbfd90ff08010aa3"
+        }
+      ]
+    }
+  ]
+}

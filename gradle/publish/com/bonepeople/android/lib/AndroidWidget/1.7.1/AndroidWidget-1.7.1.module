@@ -1,0 +1,201 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.bonepeople.android.lib",
+    "module": "AndroidWidget",
+    "version": "1.7.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.5"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "LocalBroadcastUtil",
+          "version": {
+            "requires": "1.4.1"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.9.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "8.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidWidget-1.7.1.aar",
+          "url": "AndroidWidget-1.7.1.aar",
+          "size": 190898,
+          "sha512": "f5bee989b2b569aff248c407ddab30f4a276b83312e204706f35b98e2b4963133bf83fab520072eb4eabfbf5244e898e7cac939075d20c5719dbc3db88f679f1",
+          "sha256": "e3eae80a0ed939abd4e8e321a377993ec8e310bbdb4e877e9a295d72ca264dcc",
+          "sha1": "342a7b6fdda006e66847e7cea9917fa11d9f6c6e",
+          "md5": "f08a09806bd075db49e6b5611b6d3384"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "androidx.datastore",
+          "module": "datastore-preferences",
+          "version": {
+            "requires": "1.0.0"
+          }
+        },
+        {
+          "group": "androidx.startup",
+          "module": "startup-runtime",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "com.github.bonepeople",
+          "module": "LocalBroadcastUtil",
+          "version": {
+            "requires": "1.4.1"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.9.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "8.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AndroidWidget-1.7.1.aar",
+          "url": "AndroidWidget-1.7.1.aar",
+          "size": 190898,
+          "sha512": "f5bee989b2b569aff248c407ddab30f4a276b83312e204706f35b98e2b4963133bf83fab520072eb4eabfbf5244e898e7cac939075d20c5719dbc3db88f679f1",
+          "sha256": "e3eae80a0ed939abd4e8e321a377993ec8e310bbdb4e877e9a295d72ca264dcc",
+          "sha1": "342a7b6fdda006e66847e7cea9917fa11d9f6c6e",
+          "md5": "f08a09806bd075db49e6b5611b6d3384"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "AndroidWidget-1.7.1-sources.jar",
+          "url": "AndroidWidget-1.7.1-sources.jar",
+          "size": 42848,
+          "sha512": "c8406833ceeed53b250ae3456dd68bcb84615796e398ea77bfe67771113bf634e43e541580fc225396cf1b924852a12de8f66a0ea7cb1335ea6c2a9f40a29d43",
+          "sha256": "bfc16531777720abfa0b566d6e372eaf6286bd877a68f278b2bc44ddaf87695f",
+          "sha1": "d20d635ee194a6019632b2f770e7884f49b9b20e",
+          "md5": "82bdf8adff7ea81b9fdd3914e6e3e3b2"
+        }
+      ]
+    }
+  ]
+}
