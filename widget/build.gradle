@@ -74,4 +74,9 @@ publishing {
             version = rootProject.publishConfig.publishVersion
         }
     }
+    repositories {
+        maven {
+            url = uri("${rootProject.projectDir}/gradle/publish")
+        }
+    }
 }
