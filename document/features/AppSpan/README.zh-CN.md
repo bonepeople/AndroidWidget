@@ -1,64 +1,54 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppSpan 使用指南
-
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSpan.kt  
-**本文档由 ChatGPT 协助完成。**
+# AppSpan
 
 ## 简介
 
-`AppSpan` 是一个用于构建富文本的工具类，继承自 `SpannableStringBuilder`，提供便捷的方法来设置文字颜色、背景色、文字大小、缩放比例等样式。
+`AppSpan` 简化 Android 富文本内容的创建，继承 `SpannableStringBuilder`，提供链式 API 用于设置文字颜色、大小、背景等样式。
 
-> 适用于制作动态样式文本，如高亮标签、自定义标题、组合样式段落等。
+## 场景
 
-## 使用方法
+- 高亮标签和自定义标题
+- 在 `TextView`、Toast、Snackbar 等处的复合样式段落
 
-### 1. 添加带样式的文本段
+## 功能
 
-可使用 `text` 方法添加带多个效果的文本：
+- 链式 API 追加带样式文本
+- 内置前景色、字号、相对缩放、背景色等辅助方法
+- 兼容所有接受 `CharSequence` 的场景
 
-```kotlin
-val span = AppSpan()
-    .text("你好", ForegroundColorSpan(Color.RED))
-    .text("世界", BackgroundColorSpan(Color.YELLOW))
-```
+## 使用方式
 
-### 2. 使用内置快捷方法
-
-#### 设置文字颜色：
-
-```kotlin
-val span = AppSpan.textColor("蓝色文字", Color.BLUE)
-```
-
-#### 设置绝对文字大小（单位 SP）：
-
-```kotlin
-val span = AppSpan.textSize("大字体", 20f)
-```
-
-#### 设置文字缩放比例：
-
-```kotlin
-val span = AppSpan.textScale("放大文字", 1.5f)
-```
-
-#### 设置文字背景色：
-
-```kotlin
-val span = AppSpan.backgroundColor("背景文字", Color.LTGRAY)
-```
-
-### 3. 链式调用示例
+追加带一种或多种 span 效果的文本：
 
 ```kotlin
 val span = AppSpan()
-    .textColor("红色", Color.RED)
-    .textSize(" 大号", 18f)
-    .backgroundColor(" 高亮", Color.YELLOW)
+    .text("Hello ", ForegroundColorSpan(Color.RED))
+    .text("World", BackgroundColorSpan(Color.YELLOW))
+```
+
+内置辅助方法：
+
+```kotlin
+val colorSpan = AppSpan.textColor("Hello", Color.BLUE)
+val sizeSpan = AppSpan.textSize("Large Text", 20f)
+val scaleSpan = AppSpan.textScale("Scaled Text", 1.5f)
+val bgSpan = AppSpan.backgroundColor("Highlighted", Color.LTGRAY)
+```
+
+链式组合多种样式：
+
+```kotlin
+val span = AppSpan()
+    .textColor("Red", Color.RED)
+    .textSize(" Big", 18f)
+    .backgroundColor(" Highlight", Color.YELLOW)
 ```
 
 ## 注意事项
 
-- `AppSpan` 可用于任何支持 `CharSequence` 的控件，例如 `TextView`、`Toast` 或 `Snackbar`。
-- 所有效果均基于 Android 原生的 Span 类型实现。
+- 样式基于 Android 标准 span 类实现。
+
+## 源码链接
+
+[AppSpan.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSpan.kt)

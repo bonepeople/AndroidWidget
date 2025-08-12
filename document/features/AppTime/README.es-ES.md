@@ -1,61 +1,60 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppTime
+# AppTime
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppTime` formatea y convierte marcas de tiempo y duraciones. Soporta patrones de salida personalizados, zonas horarias y formateo específico por locale.
 
-`AppTime` es una clase utilitaria para convertir y formatear fechas, horas y duraciones. Permite configurar zona horaria, patrón de salida y formato local.
+## Casos de uso
 
-> Útil para mostrar fechas y duraciones legibles en la interfaz o en registros.
+- Cadenas de tiempo legibles en logs, UI e informes
+- Visualización de duración estilo temporizador
 
-## Cómo usarlo
+## Características
 
-### 1. Formatear marca de tiempo como fecha legible
+- Formateo de marcas de tiempo con milisegundos opcionales
+- Soporte de patrón, zona horaria y locale personalizados
+- Formateo de duración como cadena de temporizador (unidades completas y control de milisegundos opcionales)
+- Compatible con versiones anteriores y posteriores a API 26
+
+## Uso
+
+Formatear marca de tiempo como fecha-hora legible:
 
 ```kotlin
-val resultado = AppTime.getDateTimeString(System.currentTimeMillis())
-// resultado: "2025/6/30 14:33:45"
+val result = AppTime.getDateTimeString(System.currentTimeMillis())
+// "2025/6/30 14:33:45"
+
+val withMillis = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
+// "2025/6/30 14:33:45.123"
 ```
 
-#### Incluir milisegundos:
+Formatear con un patrón personalizado:
 
 ```kotlin
-val resultado = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
-// resultado: "2025/6/30 14:33:45.123"
-```
-
-### 2. Formatear usando un patrón personalizado
-
-```kotlin
-val resultado = AppTime.formatTime(
+val result = AppTime.formatTime(
     timestamp = System.currentTimeMillis(),
     pattern = "yyyy-MM-dd HH:mm:ss.SSS",
-    timeZone = TimeZone.getTimeZone("GMT+2"),
-    local = Locale("es", "ES")
+    timeZone = TimeZone.getTimeZone("GMT+8"),
+    local = Locale.US
 )
-// resultado: "2025-06-30 08:33:45.123"
+// "2025-06-30 14:33:45.123"
 ```
 
-### 3. Convertir duración (milisegundos) a formato de temporizador
+Formatear duración (milisegundos) como cadena de temporizador:
 
 ```kotlin
-val temporizador = AppTime.getTimeString(3661999)
-// resultado: "1:01:01.999"
+val timer = AppTime.getTimeString(3661999)
+// "1:01:01.999"
+
+val fullTimer = AppTime.getTimeString(5999, fullTimeString = true)
+// "00:00:05.999"
+
+val noMillis = AppTime.getTimeString(5999, withMillis = false)
+// "5"
 ```
 
-#### Mostrar siempre horas y minutos:
+## Código fuente
 
-```kotlin
-val temporizador = AppTime.getTimeString(5999, fullTimeString = true)
-// resultado: "00:00:05.999"
-```
-
-#### Ocultar milisegundos:
-
-```kotlin
-val temporizador = AppTime.getTimeString(5999, withMillis = false)
-// resultado: "5"
-```
+[AppTime.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt)

@@ -2,52 +2,48 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 # GridItemDecoration
 
-**Enlace al código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/view/GridItemDecoration.kt
+## Introducción
 
-`GridItemDecoration` es una clase utilitaria que se utiliza para agregar espacios uniformes (divisores) entre los elementos de un RecyclerView con diseño de cuadrícula.
+`GridItemDecoration` añade espaciado uniforme entre elementos en un `RecyclerView` configurado con diseño de cuadrícula. Soporta `GridLayoutManager` y `StaggeredGridLayoutManager` en orientaciones vertical y horizontal.
 
-Es compatible tanto con `GridLayoutManager` como con `StaggeredGridLayoutManager`, y funciona en orientaciones verticales y horizontales.
+## Características
 
-> 📄 Esta documentación fue asistida por ChatGPT.
+- Espaciado horizontal y vertical configurable (en dp)
+- Funciona con diseños de cuadrícula y cuadrícula escalonada
 
 ## Uso
 
-### Constructor
+Constructor:
 
 ```kotlin
 GridItemDecoration(horizontal: Float, vertical: Float)
 ```
 
-- `horizontal`: espacio horizontal entre los elementos (en dp).
-- `vertical`: espacio vertical entre los elementos (en dp).
+- `horizontal`: espaciado horizontal entre elementos de cuadrícula (en dp)
+- `vertical`: espaciado vertical entre elementos de cuadrícula (en dp)
 
-### Ejemplo
+Ejemplo:
 
 ```kotlin
 val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-recyclerView.layoutManager = GridLayoutManager(contexto, 3)
+recyclerView.layoutManager = GridLayoutManager(context, 3)
 recyclerView.addItemDecoration(GridItemDecoration(8f, 12f))
 ```
 
-Esto configura una cuadrícula de 3 columnas con 8dp de espacio horizontal y 12dp de espacio vertical entre elementos.
+Configura una cuadrícula de 3 columnas con 8dp de espaciado horizontal y 12dp vertical.
 
-## Problema Conocido
+## Notas
 
-Al actualizar el adaptador con `DiffUtil`, o llamar manualmente a:
+Al actualizar el adaptador mediante `DiffUtil`, o al llamar `notifyItemInserted` / `notifyItemRemoved`, los divisores pueden no actualizarse correctamente.
 
-```kotlin
-adapter.notifyItemInserted(position)
-adapter.notifyItemRemoved(position)
-```
-
-... los divisores podrían no actualizarse correctamente.
-
-### ✅ Solución
-
-Después de actualizar la lista de datos, también llama a:
+Tras actualizar el conjunto de datos, llama también:
 
 ```kotlin
 adapter.notifyItemRangeChanged(0, itemCount)
 ```
 
-Esto obliga al RecyclerView a recalcular los espacios de todos los elementos.
+Para forzar al RecyclerView a recalcular el espaciado de todos los elementos.
+
+## Código fuente
+
+[GridItemDecoration.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/view/GridItemDecoration.kt)

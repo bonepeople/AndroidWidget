@@ -1,31 +1,35 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppToast
+# AppToast
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppToast` muestra mensajes toast desde cualquier parte de la aplicación. Cambia automáticamente al hilo principal e ignora mensajes en blanco.
 
-`AppToast` es una clase utilitaria para mostrar mensajes Toast desde cualquier parte de tu aplicación, gestionando automáticamente el hilo principal mediante corrutinas.
+## Características
 
-> Ideal para mostrar notificaciones rápidas al usuario sin preocuparse del contexto de hilo.
+- Soporte de duración corta y larga
+- Visualización segura en hilos mediante corrutinas
+- Filtrado automático de mensajes en blanco
 
-## Cómo usarlo
+## Uso
 
-### 1. Mostrar un Toast de duración corta
+Mostrar un toast de duración corta:
 
 ```kotlin
-AppToast.show("Operación completada con éxito")
+AppToast.show("Operation completed successfully")
 ```
 
-### 2. Mostrar un Toast de duración larga
+Mostrar un toast de duración larga:
 
 ```kotlin
-AppToast.show("Este mensaje se mostrará por más tiempo", Toast.LENGTH_LONG)
+AppToast.show("This message will stay longer", Toast.LENGTH_LONG)
 ```
 
 ## Notas
 
-- Ignora automáticamente mensajes nulos o vacíos.
-- Asegura la ejecución en el hilo principal usando `CoroutinesHolder.main.launch`.
+- Se ejecuta en el hilo principal usando `CoroutinesHolder.main.launch`.
+
+## Código fuente
+
+[AppToast.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt)

@@ -1,70 +1,70 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppLog
-
-> Este documento fue elaborado con la ayuda de ChatGPT  
-> Enlace al código fuente: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppLog.kt
+# AppLog
 
 ## Introducción
 
-`AppLog` es una utilidad de registro para Android que envuelve la clase `Log` nativa y agrega funcionalidades como mostrar el nombre del hilo, ubicación del método, y soporte para múltiples instancias reutilizables por etiqueta (`tag`).
+`AppLog` es una utilidad de registro ligera para Android. Envuelve la clase nativa `Log` y añade información de hilo, ubicación del llamador e instancias reutilizables por tag.
+
+## Casos de uso
+
+- Registro por módulo o funcionalidad con tags personalizados
+- Incluir hilo o ubicación del método para depuración
+- Configuración de registro centralizada y controlable
 
 ## Características
 
-- Cinco niveles de log: `verbose`, `debug`, `info`, `warn`, `error`;
-- Habilitación global o por instancia;
-- Opción para mostrar el nombre del hilo actual;
-- Opción para mostrar clase, método y número de línea;
-- Instancias reutilizables basadas en etiquetas.
+- Cinco niveles de log: `verbose`, `debug`, `info`, `warn`, `error`
+- Activación global y por instancia
+- Visualización opcional del nombre del hilo y ubicación del llamador
+- Instancias reutilizables por tag
 
-## Cómo usar
+## Uso
 
-### 1. Usar el registrador por defecto
+Obtener el logger predeterminado:
 
 ```kotlin
 AppLog.defaultLog.debug("App started.")
 ```
 
-### 2. Crear una instancia con etiqueta personalizada
+Crear un logger con un tag específico:
 
 ```kotlin
 val log = AppLog.tag("MainActivity")
-log.info("Vista creada")
+log.info("View created")
 ```
 
-### 3. Usar distintos niveles de log
+Usar distintos niveles de log:
 
 ```kotlin
-log.verbose("Mensaje verbose")
-log.debug("Mensaje de depuración")
-log.info("Mensaje informativo")
-log.warn("Advertencia")
-log.error("Error")
+log.verbose("This is a verbose message")
+log.debug("This is a debug message")
+log.info("This is an info message")
+log.warn("This is a warning")
+log.error("This is an error")
 ```
 
-### 4. Mostrar información del hilo y del método
+Activar información de hilo y pila de llamadas:
 
 ```kotlin
 log.showThreadInfo = true
 log.showStackInfo = true
-log.stackOffset = 6 // Ajustar según la profundidad de la pila
-log.debug("Con información de hilo y método") // [main] Con información de hilo y método @ MainActivity$startTest$1.invokeSuspend:38
+log.stackOffset = 6 // Ajustar según el nivel de la pila
+log.debug("With stack and thread info") // [main] With stack and thread info @ MainActivity$startTest$1.invokeSuspend:38
 ```
 
-### 5. Controlar el registro globalmente
+Controlar el registro global:
 
 ```kotlin
-AppLog.enable = false // Desactiva todos los logs
+AppLog.enable = false // Desactivar todos los logs globalmente
 ```
-
-## Casos recomendados de uso
-
-- Registrar logs por módulo o clase mediante etiquetas;
-- Incluir información detallada de depuración (método, hilo);
-- Gestionar el comportamiento del log de manera centralizada.
 
 ## Notas
 
-- Ajusta `stackOffset` para coincidir con la profundidad real del método;
-- `AppLog.enable` controla el log global; `.enable` por instancia controla cada tag;
-- Evita usar logs detallados en producción para mejorar el rendimiento.
+- Ajusta `stackOffset` según la profundidad de llamadas de tu método.
+- `AppLog.enable` es un interruptor global; `AppLog.tag(...).enable` es a nivel de instancia.
+- Evita logs de depuración excesivos en builds de producción por rendimiento.
+
+## Código fuente
+
+[AppLog.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppLog.kt)

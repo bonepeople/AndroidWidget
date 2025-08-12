@@ -1,16 +1,18 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppDensity 工具类
+# AppDensity
 
-本工具类提供了 Android 上常用的像素密度单位转换方法，包括 px 、dp 、sp 之间的互相转换。
+## 简介
 
-## 功能摘要
+`AppDensity` 提供 Android 中常用的像素密度转换方法，支持 px、dp、sp 之间的相互转换。
 
-* 支持将 dp / sp 转换为 px
-* 支持将 px 转换为 dp / sp
-* 支持指定或自动选择屏幕属性 DisplayMetrics
+## 功能
 
-## 使用方法
+- dp / sp 转 px
+- px 转 dp / sp
+- 支持自定义或自动获取 `DisplayMetrics`
+
+## 使用方式
 
 ```kotlin
 val px = AppDensity.getPx(16f) // 16dp -> px
@@ -18,17 +20,13 @@ val dp = AppDensity.getDp(32)  // px -> dp
 val sp = AppDensity.getSp(24)  // px -> sp
 ```
 
-你也可以指定自己的 DisplayMetrics 对象：
+指定自定义 `DisplayMetrics`：
 
 ```kotlin
 val customMetrics = Resources.getSystem().displayMetrics
 val px = AppDensity.getPx(16f, TypedValue.COMPLEX_UNIT_SP, customMetrics)
 ```
 
-## 源代码
+## 源码链接
 
-[点击查看源代码](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppDensity.kt)
-
----
-
-本文档由 ChatGPT 协助生成
+[AppDensity.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppDensity.kt)

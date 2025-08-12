@@ -1,22 +1,22 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# IntentLauncher Usage Guide
+# IntentLauncher
 
-This document was generated with the help of ChatGPT.
+## Introduction
 
-## Overview
+`IntentLauncher` simplifies the Android `startActivityForResult` workflow. Launch an `Activity` with the `.launch()` extension and handle results through chainable callbacks.
 
-`IntentLauncher` is a utility designed to simplify the Android `startActivityForResult` workflow. It allows developers to launch an `Activity` using the `.launch()` extension function and handle the result in a fluent, reactive way.
+Lifecycle monitoring and launcher registration are handled automatically—no manual setup is required.
 
-## How to Use
+## Features
 
-### 1. Setup
+- Chainable `.onSuccess`, `.onFailure`, and `.onResult` handlers
+- Automatic lifecycle management
+- Supports concurrent activity launches (with configurable capacity)
 
-No manual registration is required. Lifecycle monitoring and launcher registration are handled automatically by the internal module.
+## Usage
 
-### 2. Launch an Activity and Handle Result
-
-You can directly launch an `Intent` using `.launch()` and chain result handlers:
+Launch an `Intent` and handle the result:
 
 ```kotlin
 val intent = Intent(this, DetailActivity::class.java)
@@ -33,17 +33,17 @@ intent.launch()
     }
 ```
 
-## Concurrency (Optional Configuration)
+### Concurrent launches
 
 By default, each Activity initializes a single `IntentLauncher` instance, which is sufficient for most use cases.
 
-If you encounter the following exception:
+If you encounter:
 
 ```
 IllegalStateException: The number of simultaneously used IntentLaunchers exceeds the limit.
 ```
 
-Then you may increase the capacity:
+Increase the capacity:
 
 ```kotlin
 IntentLauncher.initialCapacity = 2 // or higher
@@ -51,10 +51,10 @@ IntentLauncher.initialCapacity = 2 // or higher
 
 ## Notes
 
-- For launch modes like `singleTop`, `singleTask`, or `singleInstance`, be sure to manually add appropriate flags to your `Intent`.
-- You only need to adjust `initialCapacity` when launching multiple activities for result concurrently.
+- For launch modes such as `singleTop`, `singleTask`, or `singleInstance`, add appropriate flags to your `Intent` manually.
+- Adjust `initialCapacity` only when launching multiple activities for result concurrently.
 
-## Source Code Links
+## Source Code
 
 - [IntentExtensions.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/activity/result/ActivityResultContracts.kt)
 - [IntentLauncher.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/activity/result/IntentLauncher.kt)

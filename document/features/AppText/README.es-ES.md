@@ -1,72 +1,68 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppText
+# AppText
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppText.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppText` es una utilidad de cadenas que proporciona operaciones de formateo comunes como formateo numérico, relleno de cadenas, conversión de tamaño de archivos y transformaciones byte/hexadecimal.
 
-`AppText` es una clase utilitaria para manipulación y formato de cadenas, incluyendo relleno, formato de números, conversión de tamaños de archivo y transformación de bytes/hexadecimal.
+## Casos de uso
 
-> Útil para mostrar datos formateados, manipular cadenas y convertir entre representaciones.
+- Formateo de visualización y salida amigable para UI
+- Etiquetas legibles de tamaño de archivo
+- Conversión entre arrays de bytes y cadenas hexadecimales
 
-## Cómo usarlo
+## Características
 
-### 1. Rellenar cadenas
+- Relleno de cadenas (inicio y fin)
+- Formateo numérico con separador de miles
+- Ajuste de líneas en cadenas largas
+- Formateo de tamaño de archivo (p. ej. `"1 MiB"`)
+- Conversión entre array de bytes y cadena hexadecimal
 
-#### Rellenar al principio:
+## Uso
+
+Relleno de cadenas:
 
 ```kotlin
-val resultado = AppText.completeStart("3", "000")
-// resultado: "003"
+val start = AppText.completeStart("3", "000") // "003"
+val end = AppText.completeEnd("3", "###")     // "3##"
 ```
 
-#### Rellenar al final:
+Formatear números con separador de miles:
 
 ```kotlin
-val resultado = AppText.completeEnd("3", "###")
-// resultado: "3##"
+val formatted = AppText.formatNumber(1234567.89)
+// "1,234,567.89"
 ```
 
-### 2. Formatear números con separador de miles
+Ajustar cadenas largas en líneas:
 
 ```kotlin
-val formateado = AppText.formatNumber(1234567.89)
-// formateado: "1,234,567.89"
-```
-
-### 3. Dividir texto largo en líneas
-
-```kotlin
-val envuelto = AppText.wrapString("1234567890123456789", 7)
+val wrapped = AppText.wrapString("1234567890123456789", 7)
 /*
-Salida:
 1234567
 8901234
 56789
 */
 ```
 
-### 4. Formatear tamaño de archivo
+El parámetro `length` controla el máximo de caracteres por línea. Puedes personalizar el separador de línea si es necesario.
+
+Formatear tamaños de archivo:
 
 ```kotlin
-val tamaño = AppText.formatFileSize(1048576)
-// tamaño: "1 MiB"
+val readable = AppText.formatFileSize(1048576)
+// "1 MiB"
 ```
 
-### 5. Conversión entre bytes y cadena hexadecimal
-
-#### ByteArray a hex:
+Conversión entre array de bytes y cadena hexadecimal:
 
 ```kotlin
-val hex = AppText.byteArrayToString(byteArrayOf(0x1F, 0x2B))
-// hex: "1f2b"
+val hex = AppText.byteArrayToString(byteArrayOf(0x1F, 0x2B)) // "1f2b"
+val bytes = AppText.stringToByteArray("1f2b")                // [0x1F, 0x2B]
 ```
 
-#### Hex a ByteArray:
+## Código fuente
 
-```kotlin
-val bytes = AppText.stringToByteArray("1f2b")
-// bytes: [0x1F, 0x2B]
-```
+[AppText.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppText.kt)

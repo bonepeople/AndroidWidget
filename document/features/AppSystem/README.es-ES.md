@@ -1,76 +1,76 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppSystem
+# AppSystem
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSystem.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppSystem` proporciona acceso a información y funciones a nivel de sistema en dispositivos Android, incluido estado de batería, direcciones IP, dimensiones de pantalla e información de procesos.
 
-`AppSystem` es una clase utilitaria que permite acceder a información y funciones del sistema en dispositivos Android, incluyendo batería, direcciones IP, dimensiones de pantalla y más.
+## Casos de uso
 
-> Útil para diagnóstico, operaciones de red, ajuste de interfaces y monitoreo del dispositivo.
+- Diagnóstico y monitorización de dispositivos
+- Operaciones de red y ajustes de diseño UI
 
-## Cómo usarlo
+## Características
 
-### 1. Obtener información de la batería
+- Porcentaje de batería y listener de cambios
+- ID de dispositivo y nombre de proceso
+- Obtención de direcciones IPv4/IPv6 y dirección de broadcast
+- Dimensiones de barra de estado, barra de navegación y pantalla
+- Comprobación de servicios en ejecución
 
-#### Porcentaje de batería (0–100):
+## Uso
+
+Porcentaje de batería (0–100):
 
 ```kotlin
-val porcentaje = AppSystem.batteryPercent
+val percent = AppSystem.batteryPercent
 ```
 
-#### Escuchar cambios de batería:
+Escuchar cambios de batería:
 
 ```kotlin
-val receptor = AppSystem.registerBatteryChanged(context) { porcentaje ->
-    // Manejar el nuevo nivel de batería
+val receiver = AppSystem.registerBatteryChanged(context) { percent ->
+    // Gestionar actualización de nivel
 }
-// Recuerda cancelar el registro cuando ya no sea necesario
-context.unregisterReceiver(receptor)
+// Recuerda desregistrar el receiver al terminar
+context.unregisterReceiver(receiver)
 ```
 
-### 2. Información del dispositivo y proceso
+Información de dispositivo y proceso:
 
 ```kotlin
 val androidId = AppSystem.androidId
-val nombreProceso = AppSystem.processName
+val processName = AppSystem.processName
 ```
 
-### 3. Obtener direcciones IP (Requiere permiso INTERNET)
-
-#### Direcciones IPv4:
+Direcciones IP (requiere permiso `INTERNET`):
 
 ```kotlin
-val listaIPv4 = AppSystem.getIpAddressV4()
-```
-
-#### Direcciones IPv6:
-
-```kotlin
-val listaIPv6 = AppSystem.getIpAddressV6()
-```
-
-#### Dirección de difusión (broadcast):
-
-```kotlin
+val ipv4List = AppSystem.getIpAddressV4()
+val ipv6List = AppSystem.getIpAddressV6()
 val broadcast = AppSystem.getBroadcastAddress()
 ```
 
-### 4. Dimensiones de pantalla y UI
+Dimensiones de pantalla y UI del sistema:
 
 ```kotlin
-val alturaBarraEstado = AppSystem.getStatusBarHeight()
-val alturaBarraNavegacion = AppSystem.getNavigationBarHeight()
-val anchoPantalla = AppSystem.getScreenWidth()
-val altoPantalla = AppSystem.getScreenHeight()
+val statusBarHeight = AppSystem.getStatusBarHeight()
+val navigationBarHeight = AppSystem.getNavigationBarHeight()
+val screenWidth = AppSystem.getScreenWidth()
+val screenHeight = AppSystem.getScreenHeight()
 ```
 
-### 5. Verificar si un servicio está en ejecución
+Comprobar servicios en ejecución:
 
 ```kotlin
-val ejecutando = AppSystem.checkServiceRunning(MyService::class.java)
+val isRunning = AppSystem.checkServiceRunning(MyService::class.java)
 ```
 
-> ⚠ En Android 8.0+ (API 26+), la verificación de servicios está limitada y puede no ser precisa.
+## Notas
+
+- En Android 8.0+ (API 26+), la comprobación de servicios está restringida y puede no ser precisa.
+
+## Código fuente
+
+[AppSystem.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSystem.kt)

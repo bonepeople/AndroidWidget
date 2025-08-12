@@ -1,66 +1,62 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppGson
-
-> Este documento fue elaborado con la ayuda de ChatGPT  
-> Enlace al código fuente: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppGson.kt
+# AppGson
 
 ## Introducción
 
-`AppGson` es una clase utilitaria para la serialización y deserialización de JSON basada en Gson. Mejora el comportamiento predeterminado eliminando automáticamente los valores `null` durante la deserialización, lo que mejora la seguridad en Kotlin.
+`AppGson` es una utilidad de serialización y deserialización JSON basada en Gson. Mejora el comportamiento predeterminado de Gson eliminando automáticamente valores `null` durante la deserialización, mejorando la seguridad nula en entornos Kotlin.
+
+## Casos de uso
+
+- Ignorar campos `null` durante el análisis JSON
+- Evitar `NullPointerException` en Kotlin
+- Centralizar el comportamiento JSON en la app
 
 ## Características
 
-- Proporciona una instancia `Gson` predeterminada que elimina valores `null`;
-- Convierte objetos en cadenas JSON;
-- Convierte cadenas JSON en objetos tipados mediante genéricos;
-- Permite el uso de instancias personalizadas de `Gson`;
-- Incluye `addNotNullAdapter` para agregar filtrado de nulls a cualquier instancia de `Gson`.
+- Instancia `Gson` predeterminada que elimina valores `null` del JSON
+- Conversión objeto-JSON y JSON-objeto con soporte de tipos genéricos
+- Soporte para instancias `Gson` personalizadas
+- `addNotNullAdapter` para mejorar cualquier instancia `Gson` con filtrado de nulos
 
-## Cómo usar
+## Uso
 
-### 1. Convertir un objeto a una cadena JSON
+Convertir un objeto a JSON:
 
 ```kotlin
 val json = AppGson.toJson(User(name = "Tom", age = 25))
 ```
 
-### 2. Convertir una cadena JSON a un objeto
+Convertir JSON a objeto:
 
 ```kotlin
 val json = """{"name":"Tom","age":25}"""
 val user: User = AppGson.toObject(json)
 ```
 
-### 3. Usar una instancia Gson personalizada
+Usar una instancia `Gson` personalizada:
 
 ```kotlin
 val customGson = GsonBuilder().create()
 val json = AppGson.toJson(data, customGson)
 ```
 
-### 4. Usar `addNotNullAdapter` para filtrar valores `null`
+Usar `addNotNullAdapter` para eliminar campos `null`:
 
 ```kotlin
 val gson = AppGson.addNotNullAdapter(GsonBuilder().create())
 val user = gson.fromJson<User>("""{"name":"Tom","age":null}""", User::class.java)
-// El campo age será eliminado automáticamente
+// El valor null de age se eliminará automáticamente
 ```
 
-#### ¿Por qué usar `addNotNullAdapter`?
-
-Cuando se analiza un JSON con campos `null`, esos valores se asignan directamente al objeto, lo que puede provocar errores o excepciones en Kotlin.
-
-Al usar `addNotNullAdapter`, se añade un adaptador que elimina automáticamente los `null` de todos los niveles del JSON (objetos o listas). Esto evita tener que comprobar manualmente los nulos en tu código.
-
-## Casos recomendados de uso
-
-- Cuando deseas ignorar los campos `null` al analizar JSON;
-- Cuando necesitas evitar `NullPointerException` en Kotlin;
-- Cuando prefieres gestionar el comportamiento de JSON desde un único lugar.
+Al deserializar JSON, los campos con valor `null` se asignan directamente a las propiedades del objeto, lo que puede causar referencias nulas en Kotlin. `addNotNullAdapter` elimina todos los valores `null` de objetos y arrays JSON — incluidas estructuras anidadas — para que no necesites comprobar nulos manualmente en cada acceso.
 
 ## Notas
 
-- Las cadenas JSON vacías lanzarán una `IllegalStateException`;
-- `toObject` admite inferencia de tipos genéricos;
-- `addNotNullAdapter` devuelve una instancia modificada de `Gson`, se recomienda reutilizarla.
+- Las cadenas JSON vacías lanzan `IllegalStateException`.
+- `toObject` soporta inferencia de tipos genéricos.
+- `addNotNullAdapter` devuelve una instancia `Gson` modificada — reutilízala cuando sea posible.
+
+## Código fuente
+
+[AppGson.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppGson.kt)

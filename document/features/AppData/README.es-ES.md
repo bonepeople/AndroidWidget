@@ -1,37 +1,41 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppData
-
-> Este documento fue elaborado con la ayuda de ChatGPT  
-> Enlace al código fuente: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppData.kt
+# AppData
 
 ## Introducción
 
-`AppData` es una clase utilitaria basada en Jetpack DataStore para almacenar datos persistentes como pares clave-valor en aplicaciones Android. Soporta tanto acceso asincrónico (`suspend`) como sincrónico (bloqueante), y permite múltiples instancias aisladas mediante nombres personalizados.
+`AppData` es una utilidad de almacenamiento clave-valor basada en Jetpack DataStore, diseñada para persistir datos de configuración de forma eficiente en aplicaciones Android. Soporta acceso asíncrono (suspend) y bloqueante (síncrono), así como múltiples instancias aisladas por nombre.
+
+## Casos de uso
+
+- Reemplazar `SharedPreferences` con una solución moderna y segura para corrutinas
+- Gestionar configuraciones para múltiples usuarios o módulos
+- Monitorizar cambios de preferencias mediante flujos reactivos
+- Rastrear versiones de datos en múltiples almacenes de preferencias
 
 ## Características
 
-- Lectura y escritura de tipos básicos (String, Int, Long, Float, Double, Boolean);
-- Métodos suspendidos y métodos sincrónicos;
-- Acceso reactivo con `Flow`;
-- Soporte para múltiples almacenes de datos nombrados;
-- Mantenimiento automático de la versión y tabla de registro.
+- Lectura y escritura de tipos básicos (String, Int, Long, Float, Double, Boolean)
+- Funciones suspend y API síncrona
+- Acceso reactivo con `Flow`
+- Múltiples instancias de almacenamiento con nombre
+- Gestión automática de versión y registro
 
-## Cómo usar
+## Uso
 
-### 1. Obtener el almacén de datos por defecto
+Usar el almacén de datos predeterminado:
 
 ```kotlin
 val data = AppData.default
 ```
 
-### 2. Crear un almacén de datos con nombre
+Crear un almacén con nombre personalizado:
 
 ```kotlin
 val config = AppData.create("settings")
 ```
 
-### 3. Guardar datos (suspend)
+Guardar datos (suspend):
 
 ```kotlin
 runBlocking {
@@ -40,20 +44,20 @@ runBlocking {
 }
 ```
 
-### 4. Leer datos (suspend)
+Recuperar datos (suspend):
 
 ```kotlin
 val username = data.getString("username", "guest")
 ```
 
-### 5. Guardar/leer datos (sincrónico)
+Guardar/recuperar datos (síncrono):
 
 ```kotlin
 data.putBooleanSync("night_mode", true)
 val enabled = data.getBooleanSync("night_mode", false)
 ```
 
-### 6. Escuchar cambios con Flow
+Observar cambios con `Flow`:
 
 ```kotlin
 data.getIntFlow("launchCount").collect {
@@ -61,14 +65,11 @@ data.getIntFlow("launchCount").collect {
 }
 ```
 
-## Casos recomendados de uso
-
-- Reemplazar `SharedPreferences` con una solución moderna y segura para corutinas;
-- Manejar configuraciones para múltiples usuarios o módulos;
-- Monitorear cambios de preferencias en tiempo real con `Flow`;
-- Llevar control de versiones y registros de configuración.
-
 ## Notas
 
-- El nombre `storeName` no debe contener caracteres ilegales (`<>:"/\\|?*`) ni terminar en punto o espacio;
-- Las funciones sincrónicas utilizan `runBlocking`, se recomienda no llamarlas en el hilo principal;
+- `storeName` no debe contener caracteres ilegales (`<>:"/\|?*`) ni terminar en punto o espacio.
+- Las API síncronas usan `runBlocking` — evita llamarlas en el hilo principal.
+
+## Código fuente
+
+[AppData.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppData.kt)

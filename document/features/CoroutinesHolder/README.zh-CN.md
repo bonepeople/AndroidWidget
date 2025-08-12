@@ -2,43 +2,51 @@
 
 # CoroutinesHolder
 
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/CoroutinesHolder.kt
+## 简介
 
-`CoroutinesHolder` 提供全局的协程作用域单例对象，涵盖常用的 `Dispatchers` 类型：`Default`、`Main` 和 `IO`，方便在应用中快捷启动协程任务。
+`CoroutinesHolder` 提供 `Default`、`Main`、`IO` 三种常用 `Dispatcher` 的全局单例协程作用域，无需手动创建 Scope 即可启动协程。
 
-> 📄 本文档由 ChatGPT 协助完成。
+## 场景
 
-## 使用方法
+- 工具函数或库模块中需要共享协程作用域
+- 从无生命周期上下文中执行后台任务（如 `AppEvent.postAsync`、`AppToast.show`）
 
-根据任务类型选择对应的协程作用域：
+## 功能
 
-### CPU 密集型任务（Default Dispatcher）：
+- 开箱即用的 `Default`、`Main`、`IO` 协程作用域
+- 每个作用域拥有独立的 `Job`
+
+## 使用方式
+
+CPU 密集型任务：
 
 ```kotlin
 CoroutinesHolder.default.launch {
-    // 执行复杂计算
+    // 执行耗时计算
 }
 ```
 
-### UI 相关任务（Main Dispatcher）：
+UI 相关任务：
 
 ```kotlin
 CoroutinesHolder.main.launch {
-    // 安全地操作界面
+    // 安全更新 UI
 }
 ```
 
-### IO 密集型任务（IO Dispatcher）：
+IO 密集型任务：
 
 ```kotlin
 CoroutinesHolder.io.launch {
-    // 执行网络请求、文件读写等
+    // 读写文件、网络请求
 }
 ```
 
-每个作用域自带独立的 `Job`，可以独立取消（但此对象本身不暴露取消机制）。
-
 ## 注意事项
 
-- 非常适合工具类、库模块等场景，避免重复创建多个协程作用域。
-- 如果任务需要与生命周期绑定，请优先使用如 `lifecycleScope` 等具备生命周期感知的作用域。
+- 需要生命周期感知的 UI 组件应优先使用 `lifecycleScope`。
+- 此处启动的任务不会随 Activity 或 Fragment 销毁而自动取消。
+
+## 源码链接
+
+[CoroutinesHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/CoroutinesHolder.kt)

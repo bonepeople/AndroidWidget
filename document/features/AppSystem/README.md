@@ -1,27 +1,33 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppSystem Usage Guide
+# AppSystem
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSystem.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppSystem` provides access to system-level information and features on Android devices, including battery status, IP addresses, screen dimensions, and process info.
 
-`AppSystem` is a utility object that provides access to various system-level information and features on Android devices, including battery status, IP addresses, screen dimensions, and more.
+## Use Cases
 
-> Useful for diagnostics, network operations, UI layout adjustments, and device monitoring.
+- Diagnostics and device monitoring
+- Network operations and UI layout adjustments
 
-## How to Use
+## Features
 
-### 1. Get Battery Information
+- Battery percentage and change listener
+- Device ID and process name
+- IPv4/IPv6 address and broadcast address retrieval
+- Status bar, navigation bar, and screen dimensions
+- Running service check
 
-#### Battery percentage (0–100):
+## Usage
+
+Battery percentage (0–100):
 
 ```kotlin
 val percent = AppSystem.batteryPercent
 ```
 
-#### Listen for battery changes:
+Listen for battery changes:
 
 ```kotlin
 val receiver = AppSystem.registerBatteryChanged(context) { percent ->
@@ -31,34 +37,22 @@ val receiver = AppSystem.registerBatteryChanged(context) { percent ->
 context.unregisterReceiver(receiver)
 ```
 
-### 2. Get Device and Process Info
+Device and process info:
 
 ```kotlin
 val androidId = AppSystem.androidId
 val processName = AppSystem.processName
 ```
 
-### 3. Retrieve IP Addresses (Requires INTERNET permission)
-
-#### IPv4 addresses:
+IP addresses (requires `INTERNET` permission):
 
 ```kotlin
 val ipv4List = AppSystem.getIpAddressV4()
-```
-
-#### IPv6 addresses:
-
-```kotlin
 val ipv6List = AppSystem.getIpAddressV6()
-```
-
-#### Broadcast address:
-
-```kotlin
 val broadcast = AppSystem.getBroadcastAddress()
 ```
 
-### 4. Screen and System UI Dimensions
+Screen and system UI dimensions:
 
 ```kotlin
 val statusBarHeight = AppSystem.getStatusBarHeight()
@@ -67,10 +61,16 @@ val screenWidth = AppSystem.getScreenWidth()
 val screenHeight = AppSystem.getScreenHeight()
 ```
 
-### 5. Check Running Services
+Check running services:
 
 ```kotlin
 val isRunning = AppSystem.checkServiceRunning(MyService::class.java)
 ```
 
-> ⚠ On Android 8.0+ (API 26+), service checking is restricted and may not be accurate.
+## Notes
+
+- On Android 8.0+ (API 26+), service checking is restricted and may not be accurate.
+
+## Source Code
+
+[AppSystem.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSystem.kt)

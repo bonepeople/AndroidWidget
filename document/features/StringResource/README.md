@@ -1,23 +1,26 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# String Resource Manager - Usage Guide
+# String Resource Manager
 
-> **Note**: This documentation was generated with assistance from ChatGPT.
+## Introduction
 
-## Overview
+This utility provides a flexible, template-based approach to managing localized string resources in Kotlin projects. It is suitable for Android applications that require modular and multilingual support.
 
-This utility provides a flexible and structured way to manage localized string resources in Kotlin-based projects. It's suitable for Android applications that require modular and multilingual support.
+Core components:
 
-It includes:
+- `StringTemplate`: interface for defining string template types
+- `StringResourceManager`: registry for localized string instances
 
-- `StringTemplate`: An interface for defining string template types.
-- `StringResourceManager`: A registry for localized string instances.
+## Use Cases
 
-## How to Use
+- Multi-module or multi-feature projects with centralized string management
+- Programmatic localization outside of standard `strings.xml` workflows
 
-### 1. Create a Template
+## Usage
 
-Define an abstract class that extends `StringTemplate`. You can freely add abstract properties based on the strings your module or feature requires.
+### Create a template
+
+Define an abstract class extending `StringTemplate`. Add abstract properties based on the strings your module requires.
 
 ```kotlin
 abstract class ChatText : StringTemplate {
@@ -41,11 +44,11 @@ abstract class ChatText : StringTemplate {
 }
 ```
 
-> 💡 You can define more or fewer abstract properties depending on your UI needs.
+You can define more or fewer abstract properties depending on your UI needs.
 
-### 2. Implement Language-Specific Classes
+### Implement language-specific classes
 
-Each implementation corresponds to a locale and should override the abstract string properties.
+Each implementation corresponds to a locale and overrides the abstract string properties.
 
 ```kotlin
 class ChatTextEnUS : ChatText() {
@@ -56,7 +59,7 @@ class ChatTextEnUS : ChatText() {
 }
 ```
 
-### 3. Use the Strings in Code
+### Use strings in code
 
 ```kotlin
 val text: ChatText = StringResourceManager.get(ChatText.templateClass)
@@ -65,5 +68,5 @@ views.textViewSend.text = text.send
 
 ## Source Code
 
-- [`StringResourceManager.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
-- [`StringTemplate.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)
+- [StringResourceManager.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
+- [StringTemplate.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)

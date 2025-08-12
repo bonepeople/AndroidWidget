@@ -1,31 +1,35 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppToast 使用指南
-
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt  
-**本文档由 ChatGPT 协助完成。**
+# AppToast
 
 ## 简介
 
-`AppToast` 是一个便捷的 Toast 工具类，支持在全局任意位置显示提示消息，并自动切换至主线程执行。
+`AppToast` 可在应用任意位置显示 Toast 消息，自动切换到主线程并忽略空白消息。
 
-> 适用于在任意协程或线程中调用，无需手动切换至主线程。
+## 功能
 
-## 使用方法
+- 支持短时长和长时长
+- 通过协程线程安全显示
+- 自动过滤空白消息
 
-### 1. 显示短时间的 Toast
+## 使用方式
+
+显示短时长 Toast：
 
 ```kotlin
-AppToast.show("操作已完成")
+AppToast.show("Operation completed successfully")
 ```
 
-### 2. 显示长时间的 Toast
+显示长时长 Toast：
 
 ```kotlin
-AppToast.show("该提示会停留较长时间", Toast.LENGTH_LONG)
+AppToast.show("This message will stay longer", Toast.LENGTH_LONG)
 ```
 
 ## 注意事项
 
-- 会自动忽略 null 或空字符串。
-- 内部使用 `CoroutinesHolder.main.launch` 保证主线程安全。
+- 通过 `CoroutinesHolder.main.launch` 在主线程执行。
+
+## 源码链接
+
+[AppToast.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt)

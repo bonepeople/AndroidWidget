@@ -1,50 +1,54 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de Uso de AppZip
+# AppZip
 
-**Código Fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt  
-**Este documento fue generado con la ayuda de ChatGPT.**
+## Introducción
 
-## Descripción General
+`AppZip` proporciona utilidades de compresión y descompresión de archivos. Soporta compresión de un solo archivo, compresión de múltiples archivos/directorios y extracción de archivos zip, conservando la estructura de directorios.
 
-`AppZip` es una utilidad para comprimir y descomprimir archivos y carpetas.  
-Permite comprimir un solo archivo, múltiples archivos o directorios, así como descomprimir archivos `.zip`.
+## Características
 
-## Funciones
+- Comprimir un solo archivo en una entrada zip
+- Comprimir múltiples archivos o directorios conservando la estructura
+- Extraer archivos zip a un directorio destino
+- Codificación UTF-8 para nombres de entradas zip
 
-### 1. Comprimir un solo archivo
+## Uso
+
+Comprimir un solo archivo:
 
 ```kotlin
-val archivoEntrada = File("ejemplo.txt")
-val archivoZip = File("ejemplo.zip")
+val inputFile = File("example.txt")
+val outputFile = File("example.zip")
 
-AppZip.zipFile("ejemplo.txt", archivoEntrada.inputStream(), archivoZip.outputStream())
+AppZip.zipFile("example.txt", inputFile.inputStream(), outputFile.outputStream())
 ```
 
-### 2. Comprimir múltiples archivos o carpetas
+Comprimir múltiples archivos o directorios:
 
 ```kotlin
 AppZip.zipFiles(
-    File("salida.zip").outputStream(),
-    File("archivo1.txt"),
-    File("carpeta2")
+    File("output.zip").outputStream(),
+    File("file1.txt"),
+    File("dir2")
 )
 ```
 
-La estructura de carpetas se mantiene en el archivo `.zip`.
-
-### 3. Descomprimir archivo zip
+Extraer un archivo zip:
 
 ```kotlin
 AppZip.unzipFile(
-    File("ejemplo.zip").inputStream(),
-    File("directorio_destino")
+    File("example.zip").inputStream(),
+    File("output_directory")
 )
 ```
 
-**Nota**: Lanza una excepción si el archivo zip no está codificado en UTF-8.
+## Notas
 
-## Observaciones
+- Los directorios vacíos se conservan durante la compresión.
+- Los nombres de archivo se almacenan con codificación UTF-8 (valor predeterminado de `ZipEntry` en Java moderno).
+- Lanza una excepción si las entradas zip no están codificadas en UTF-8.
 
-- Los directorios vacíos se mantienen en la compresión.
-- Los nombres de archivos se almacenan con codificación UTF-8.
+## Código fuente
+
+[AppZip.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt)

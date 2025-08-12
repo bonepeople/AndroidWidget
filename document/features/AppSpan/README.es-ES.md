@@ -1,66 +1,54 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppSpan
+# AppSpan
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSpan.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppSpan` simplifica la creación de contenido de texto enriquecido en Android mediante spans. Extiende `SpannableStringBuilder` y proporciona métodos encadenables para estilizar texto con color, tamaño, fondo y más.
 
-`AppSpan` es una clase utilitaria que extiende `SpannableStringBuilder` para facilitar la creación de texto enriquecido en Android. Ofrece métodos prácticos para aplicar estilos como color, tamaño, fondo y más.
+## Casos de uso
 
-> Ideal para etiquetas resaltadas, títulos personalizados y textos compuestos con estilos.
+- Etiquetas resaltadas y títulos personalizados
+- Párrafos con estilos compuestos en `TextView`, Toast, Snackbar, etc.
 
-## Cómo usarlo
+## Características
 
-### 1. Añadir texto con estilos
+- API encadenada para añadir texto estilizado
+- Helpers integrados para color de primer plano, tamaño de texto, escala relativa y color de fondo
+- Compatible donde se acepte `CharSequence`
 
-Agregar texto con uno o más efectos de span (color, fondo, tamaño, etc.):
+## Uso
 
-```kotlin
-val span = AppSpan()
-    .text("Hola ", ForegroundColorSpan(Color.RED))
-    .text("Mundo", BackgroundColorSpan(Color.YELLOW))
-```
-
-### 2. Usar métodos abreviados
-
-#### Texto con color:
-
-```kotlin
-val span = AppSpan.textColor("Hola", Color.BLUE)
-```
-
-#### Texto con tamaño absoluto (en SP):
-
-```kotlin
-val span = AppSpan.textSize("Texto Grande", 20f)
-```
-
-#### Texto con escala relativa:
-
-```kotlin
-val span = AppSpan.textScale("Texto Escalado", 1.5f)
-```
-
-#### Texto con fondo de color:
-
-```kotlin
-val span = AppSpan.backgroundColor("Resaltado", Color.LTGRAY)
-```
-
-### 3. Encadenar métodos
-
-Puedes combinar múltiples estilos:
+Añadir texto con uno o más efectos span:
 
 ```kotlin
 val span = AppSpan()
-    .textColor("Rojo", Color.RED)
-    .textSize(" Grande", 18f)
-    .backgroundColor(" Fondo", Color.YELLOW)
+    .text("Hello ", ForegroundColorSpan(Color.RED))
+    .text("World", BackgroundColorSpan(Color.YELLOW))
+```
+
+Métodos auxiliares integrados:
+
+```kotlin
+val colorSpan = AppSpan.textColor("Hello", Color.BLUE)
+val sizeSpan = AppSpan.textSize("Large Text", 20f)
+val scaleSpan = AppSpan.textScale("Scaled Text", 1.5f)
+val bgSpan = AppSpan.backgroundColor("Highlighted", Color.LTGRAY)
+```
+
+Encadenar múltiples métodos de estilo:
+
+```kotlin
+val span = AppSpan()
+    .textColor("Red", Color.RED)
+    .textSize(" Big", 18f)
+    .backgroundColor(" Highlight", Color.YELLOW)
 ```
 
 ## Notas
 
-- `AppSpan` puede usarse en cualquier lugar que acepte `CharSequence` (como TextView, Toast o Snackbar).
-- Los efectos utilizan clases estándar de span de Android.
+- Los efectos se aplican con las clases span estándar de Android.
+
+## Código fuente
+
+[AppSpan.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppSpan.kt)

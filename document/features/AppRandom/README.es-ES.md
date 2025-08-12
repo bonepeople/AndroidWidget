@@ -1,48 +1,49 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppRandom
+# AppRandom
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppRandom.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppRandom` proporciona métodos convenientes para generar cadenas aleatorias, enteros y listas mezcladas. Usa una semilla basada en la hora del sistema, garantizando aleatoriedad y permitiendo reproducibilidad cuando sea necesario.
 
-`AppRandom` es un objeto utilitario que proporciona métodos convenientes para generar valores aleatorios, como cadenas de texto, números enteros y listas desordenadas. Usa una semilla basada en la hora actual del sistema.
+## Casos de uso
 
-> Es útil para generar datos de prueba, crear identificadores únicos o proporcionar experiencias de usuario aleatorias.
+- Generar datos de prueba
+- Crear identificadores únicos
+- Aleatorizar experiencias de usuario
 
-## Cómo usarlo
+## Características
 
-### 1. Generar una cadena aleatoria
+- Cadenas alfanuméricas aleatorias de longitud configurable
+- Enteros aleatorios dentro de un rango especificado
+- Copias mezcladas de colecciones (la lista original no se modifica)
 
-Crea una cadena con letras (mayúsculas y minúsculas) y dígitos:
+## Uso
+
+Generar una cadena aleatoria (dígitos, letras minúsculas y mayúsculas):
 
 ```kotlin
-val cadena = AppRandom.randomString(12)
+val str = AppRandom.randomString(12)
 // Ejemplo: "aZ3bD9x1YqT8"
 ```
 
-- El parámetro `length` define la cantidad de caracteres de la cadena resultante.
-
-### 2. Generar un entero aleatorio dentro de un rango
-
-Devuelve un número entero aleatorio dentro del rango especificado:
+Generar un entero aleatorio en un rango:
 
 ```kotlin
-val numero = AppRandom.randomInt(10..99)
+val number = AppRandom.randomInt(10..99)
 // Ejemplo: 47
 ```
 
-- Si el rango está vacío, se devuelve `0`.
+Devuelve `0` si el rango está vacío.
 
-### 3. Barajar una lista
-
-Devuelve una nueva lista con los elementos desordenados:
+Mezclar una lista:
 
 ```kotlin
-val lista = listOf(1, 2, 3, 4, 5)
-val desordenada = AppRandom.shuffleList(lista)
+val list = listOf(1, 2, 3, 4, 5)
+val shuffled = AppRandom.shuffleList(list)
 // Ejemplo: [3, 1, 5, 2, 4]
 ```
 
-- La lista original no se modifica.
+## Código fuente
+
+[AppRandom.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppRandom.kt)

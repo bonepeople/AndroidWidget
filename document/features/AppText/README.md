@@ -1,75 +1,68 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppText Usage Guide
+# AppText
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppText.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppText` is a string utility providing common formatting operations such as number formatting, string padding, file size conversion, and byte/hex transformations.
 
-`AppText` is a string utility class providing common formatting operations such as number formatting, string padding, file size conversion, and byte/hex transformations.
+## Use Cases
 
-> Especially useful for display formatting, file size readability, data conversion, and UI-friendly output.
+- Display formatting and UI-friendly output
+- Readable file size labels
+- Data conversion between byte arrays and hex strings
 
-## How to Use
+## Features
 
-### 1. Padding Strings
+- String padding (start and end)
+- Number formatting with thousands separator
+- Long string line wrapping
+- File size formatting (e.g. `"1 MiB"`)
+- Byte array and hex string conversion
 
-#### Add characters to the beginning:
+## Usage
+
+Padding strings:
 
 ```kotlin
-val result = AppText.completeStart("3", "000")
-// result: "003"
+val start = AppText.completeStart("3", "000") // "003"
+val end = AppText.completeEnd("3", "###")     // "3##"
 ```
 
-#### Add characters to the end:
-
-```kotlin
-val result = AppText.completeEnd("3", "###")
-// result: "3##"
-```
-
-### 2. Format Numbers with Thousands Separator
+Format numbers with thousands separator:
 
 ```kotlin
 val formatted = AppText.formatNumber(1234567.89)
-// formatted: "1,234,567.89"
+// "1,234,567.89"
 ```
 
-### 3. Wrap Long Strings into Lines
+Wrap long strings into lines:
 
 ```kotlin
 val wrapped = AppText.wrapString("1234567890123456789", 7)
 /*
-Output:
 1234567
 8901234
 56789
 */
 ```
 
-- The `length` parameter controls the maximum characters per line.
-- You can customize the line separator if needed.
+The `length` parameter controls the maximum characters per line. You can customize the line separator if needed.
 
-### 4. Format File Sizes
+Format file sizes:
 
 ```kotlin
 val readable = AppText.formatFileSize(1048576)
-// readable: "1 MiB"
+// "1 MiB"
 ```
 
-### 5. Byte Array and Hex String Conversion
-
-#### Convert byte array to hex string:
+Byte array and hex string conversion:
 
 ```kotlin
-val hex = AppText.byteArrayToString(byteArrayOf(0x1F, 0x2B))
-// hex: "1f2b"
+val hex = AppText.byteArrayToString(byteArrayOf(0x1F, 0x2B)) // "1f2b"
+val bytes = AppText.stringToByteArray("1f2b")                // [0x1F, 0x2B]
 ```
 
-#### Convert hex string to byte array:
+## Source Code
 
-```kotlin
-val bytes = AppText.stringToByteArray("1f2b")
-// bytes: [0x1F, 0x2B]
-```
+[AppText.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppText.kt)

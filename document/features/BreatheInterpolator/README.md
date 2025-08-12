@@ -1,27 +1,26 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# BreatheInterpolator Documentation
+# BreatheInterpolator
 
-**Source Code:** https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/animation/BreatheInterpolator.kt  
-**This documentation was created with assistance from ChatGPT.*
+## Introduction
 
-## Overview
+`BreatheInterpolator` is a custom animation interpolator that simulates a natural breathing rhythm. It accepts an input value between `0` and `1` and returns a modified value in the same range, producing smooth and organic animation effects.
 
-`BreatheInterpolator` is a custom animation interpolator designed to simulate a natural breathing rhythm. It can be used to create smooth and organic animation effects in Android applications.
+## Use Cases
+
+- Breathing buttons and loading indicators
+- Any UI element that needs a natural easing pattern
 
 ## Features
 
-- Accepts an input value between `0` and `1`, and returns a modified value in the same range.
-- Simulates a breathing-like easing curve.
-- Offers two modes of interpolation:
-    - `FROM_BOTTOM`: Animation starts from a minimum value and rises (default).
-    - `FROM_TOP`: Animation starts from a maximum value and falls.
+- Breathing-like easing curve
+- Two interpolation modes:
+  - `FROM_BOTTOM`: starts from minimum and rises (default)
+  - `FROM_TOP`: starts from maximum and falls
 
-## How to Use
+## Usage
 
-### 1. Add the Interpolator
-
-To use the `BreatheInterpolator`, instantiate it and apply it to an Android animation (e.g., `ObjectAnimator` or `ValueAnimator`):
+Apply to an animation (e.g. `ObjectAnimator` or `ValueAnimator`):
 
 ```kotlin
 val animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).apply {
@@ -31,9 +30,7 @@ val animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).apply {
 animator.start()
 ```
 
-### 2. Specify Mode (Optional)
-
-You can specify the mode to start the animation from the top instead of the bottom:
+Specify the mode to start from the top:
 
 ```kotlin
 val animator = ObjectAnimator.ofFloat(view, "scaleX", 0.8f, 1.2f).apply {
@@ -43,15 +40,13 @@ val animator = ObjectAnimator.ofFloat(view, "scaleX", 0.8f, 1.2f).apply {
 animator.start()
 ```
 
-## Constants
+Mode constants:
 
 ```kotlin
 BreatheInterpolator.FROM_BOTTOM // value = 1
 BreatheInterpolator.FROM_TOP    // value = 2
 ```
 
-Use these constants when creating an interpolator to control the animation direction.
+## Source Code
 
-## Summary
-
-This interpolator adds a subtle, rhythmic breathing effect to animations, ideal for UI components like breathing buttons, loading indicators, or any element requiring a natural easing pattern.
+[BreatheInterpolator.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/animation/BreatheInterpolator.kt)

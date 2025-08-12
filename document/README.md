@@ -123,7 +123,7 @@ Create multiple named stores for different modules or users — `AppData.create(
 Global event delivery often means sticky events, manual unregister, or callbacks firing after `Activity` is destroyed. `AppEvent` is built on `Flow` with lifecycle binding — **subscribe once, forget about cleanup**:
 
 ```kotlin
-// Subscribe — auto-cancelled when Activity is destroyed
+// Subscribe — auto-canceled when Activity is destroyed
 AppEvent.register(this) { event ->
     when (event) {
         is LoginSuccessEvent -> refreshProfile()

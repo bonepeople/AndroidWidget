@@ -2,111 +2,95 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 # Features List
 
+A catalog of utility modules provided by AndroidWidget. Each module has its own README with usage details and source code links.
+
 ## 1. Application & Activity Management
 
-#### [ApplicationHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ApplicationHolder)
-- **Purpose**: Global access to the `Application` instance, debug status, version, and package information.
-- **Features**: Automatically initialized via Jetpack Startup, no manual setup required.
+#### [ApplicationHolder](./ApplicationHolder)
+Global access to the `Application` instance, debug status, version, and package information. Automatically initialized via Jetpack Startup.
 
-#### [ActivityHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityHolder)
-- **Purpose**: Manage all active `Activity` instances, retrieve the top activity, store temporary data per activity, and access the activity list.
-- **Use Cases**: Global access, cross-activity communication, lifecycle cleanup.
+#### [ActivityHolder](./ActivityHolder)
+Manage all active `Activity` instances, retrieve the top activity, store temporary data per activity, and access the activity list.
 
 ## 2. Activity Result & Permission Handling
 
-#### [ActivityResult / IntentLauncher](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityResult)
-- **Purpose**: Simplify the `startActivityForResult` workflow with chainable `.onSuccess`, `.onFailure`, `.onResult` handlers.
-- **Features**: Automatic lifecycle management, supports concurrent launches.
+#### [ActivityResult / IntentLauncher](./ActivityResult)
+Simplify the `startActivityForResult` workflow with chainable `.onSuccess`, `.onFailure`, `.onResult` handlers. Automatic lifecycle management and concurrent launch support.
 
-#### [AppPermission](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppPermission)
-- **Purpose**: Simplify runtime permission requests by handling multiple permissions in one call, only requesting ungranted ones.
-- **Features**: `onGranted` callback for full grants, `onResult` map for detailed permission states.
+#### [AppPermission](./AppPermission)
+Simplify runtime permission requests — handle multiple permissions in one call, requesting only ungranted ones. `onGranted` for full grants, `onResult` for detailed permission states.
 
 ## 3. Data Storage, Serialization & Security
 
-#### [AppData](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppData)
-- **Purpose**: Modern key-value storage based on Jetpack DataStore.
-- **Features**: Coroutine and synchronous APIs, `Flow` observation, multiple named instances.
+#### [AppData](./AppData)
+Modern key-value storage based on Jetpack DataStore. Coroutine and synchronous APIs, `Flow` observation, multiple named instances.
 
-#### [AppGson](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppGson)
-- **Purpose**: Enhanced Gson utility with automatic null filtering and generic deserialization.
-- **Features**: Customizable Gson instance, improved Kotlin null-safety.
+#### [AppGson](./AppGson)
+Enhanced Gson utility with automatic null filtering and generic deserialization. Customizable Gson instance support.
 
-#### [AppEncrypt](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEncrypt)
-- **Purpose**: AES and RSA encryption/decryption utility for strings and streams.
-- **Features**: RSA key pair generation and parsing, secure default algorithms.
+#### [AppEncrypt](./AppEncrypt)
+AES and RSA encryption/decryption for strings and streams. RSA key pair generation and parsing.
 
-#### [AppMessageDigest](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppMessageDigest)
-- **Purpose**: MD5 hashing for strings and streams with optional progress tracking.
-- **Use Cases**: File verification, large file processing.
+#### [AppMessageDigest](./AppMessageDigest)
+MD5 hashing for strings and streams with optional progress tracking. Suitable for file verification and large file processing.
 
-#### [AppRandom](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppRandom)
-- **Purpose**: Generate random strings, numbers, and shuffled lists.
-- **Features**: Range-based integers, reproducible randomness with seeds.
+#### [AppRandom](./AppRandom)
+Generate random strings, numbers, and shuffled lists. Range-based integers and seed-based reproducibility.
 
 ## 4. UI Tools & User Interaction
 
-#### [AppDensity](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppDensity)
-- **Purpose**: Convert between `px`, `dp`, and `sp` units.
-- **Features**: Supports custom `DisplayMetrics`.
+#### [AppDensity](./AppDensity)
+Convert between `px`, `dp`, and `sp` units. Supports custom `DisplayMetrics`.
 
-#### [AppKeyboard](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppKeyboard)
-- **Purpose**: Show/hide the software keyboard and automatically dismiss on outside touch.
+#### [AppKeyboard](./AppKeyboard)
+Show/hide the software keyboard and automatically dismiss on outside touch.
 
-#### [AppLog](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppLog)
-- **Purpose**: Enhanced logging with thread info, caller location, and reusable log instances.
+#### [AppLog](./AppLog)
+Enhanced logging with thread info, caller location, and reusable log instances.
 
-#### [AppSpan](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppSpan)
-- **Purpose**: Simplify the creation and application of `SpannableString` styles.
-- **Features**: Chainable API for text color, background, underline, clickable spans, and more.
+#### [AppSpan](./AppSpan)
+Simplify `SpannableString` creation with a chainable API for text color, background, underline, clickable spans, and more.
 
-#### [AppSystem](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppSystem)
-- **Purpose**: Retrieve battery, network, screen, and process information.
+#### [AppSystem](./AppSystem)
+Retrieve battery, network, screen, and process information.
 
-#### [AppText](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppText)
-- **Purpose**: String formatting, file size conversion, byte/hex transformations.
+#### [AppText](./AppText)
+String formatting, file size conversion, byte/hex transformations.
 
-#### [AppTime](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppTime)
-- **Purpose**: Format timestamps and durations with custom patterns, time zones, and locales.
+#### [AppTime](./AppTime)
+Format timestamps and durations with custom patterns, time zones, and locales.
 
-#### [AppToast](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppToast)
-- **Purpose**: Thread-safe toast display, automatically switches to the main thread, ignores blank messages.
+#### [AppToast](./AppToast)
+Thread-safe toast display, automatically switches to the main thread, ignores blank messages.
 
-#### [AppView](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppView)
-- **Purpose**: Safe click handling, visibility control, per-view data storage, `MeasureSpec` utilities.
+#### [AppView](./AppView)
+Safe click handling, visibility control, per-view data storage, `MeasureSpec` utilities.
 
 ## 5. File Operations
 
-#### [AppZip](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppZip)
-- **Purpose**: Compress and decompress files and directories while preserving structure.
-- **Features**: UTF-8 encoding support.
+#### [AppZip](./AppZip)
+Compress and decompress files and directories while preserving structure. UTF-8 encoding support.
 
 ## 6. Animation & View Decoration
 
-#### [BreatheInterpolator](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/BreatheInterpolator)
-- **Purpose**: Breathing-style animation interpolator with bottom-to-top or top-to-bottom modes.
+#### [BreatheInterpolator](./BreatheInterpolator)
+Breathing-style animation interpolator with bottom-to-top or top-to-bottom modes.
 
-#### [GridItemDecoration](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/GridItemDecoration)
-- **Purpose**: RecyclerView grid item spacing decorator for both vertical and horizontal layouts.
+#### [GridItemDecoration](./GridItemDecoration)
+RecyclerView grid item spacing for both vertical and horizontal layouts.
 
-#### [LinearItemDecoration](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/LinearItemDecoration)
-- **Purpose**: RecyclerView linear item spacing with optional colored dividers and padding.
+#### [LinearItemDecoration](./LinearItemDecoration)
+RecyclerView linear item spacing with optional colored dividers and padding.
 
 ## 7. Coroutines & Events
 
-#### [CoroutinesHolder](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/CoroutinesHolder)
-- **Purpose**: Global coroutine scopes (`Default`, `Main`, `IO`) for simplified launching.
+#### [CoroutinesHolder](./CoroutinesHolder)
+Global coroutine scopes (`Default`, `Main`, `IO`) for simplified launching.
 
-#### [AppEvent](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppEvent)
-- **Purpose**: Lifecycle-aware global event bus based on `Flow` for cross-component communication.
-- **Features**: Non-sticky delivery, typed or `CommonEvent` generic events, `post` / `postAsync` posting modes.
+#### [AppEvent](./AppEvent)
+Lifecycle-aware global event bus based on `Flow`. Non-sticky delivery, typed or `CommonEvent` generic events, `post` / `postAsync` posting modes.
 
 ## 8. Multi-language Management
 
-#### [String Resource Manager](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/StringResource)
-- **Purpose**: Modular, template-based string resource management for localization.
-- **Features**: Centralized registration and retrieval, suitable for multi-module or multi-feature projects.
-
----
-
-> This document was created with the assistance of ChatGPT.
+#### [String Resource Manager](./StringResource)
+Modular, template-based string resource management for localization. Centralized registration and retrieval for multi-module projects.

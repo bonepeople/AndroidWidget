@@ -1,49 +1,49 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de Uso de IntentLauncher
-
-Este documento fue generado con la ayuda de ChatGPT.
+# IntentLauncher
 
 ## Introducción
 
-`IntentLauncher` es una utilidad que simplifica el uso de `startActivityForResult` en Android. Permite lanzar un `Intent` mediante la extensión `.launch()` y manejar el resultado de forma encadenada y reactiva.
+`IntentLauncher` simplifica el flujo de `startActivityForResult` en Android. Lanza una `Activity` con la extensión `.launch()` y gestiona el resultado mediante callbacks encadenados.
 
-## Cómo usarlo
+El monitoreo del ciclo de vida y el registro del launcher se gestionan automáticamente, sin configuración manual.
 
-### 1. Configuración
+## Características
 
-No es necesario registrar manualmente ningún callback. El registro del ciclo de vida se maneja automáticamente a través del módulo interno.
+- Manejadores encadenados `.onSuccess`, `.onFailure` y `.onResult`
+- Gestión automática del ciclo de vida
+- Soporte para lanzamientos concurrentes de actividades (capacidad configurable)
 
-### 2. Lanzar un `Activity` y manejar el resultado
+## Uso
 
-Puedes lanzar un `Intent` directamente usando `.launch()` y encadenar los manejadores:
+Lanzar un `Intent` y gestionar el resultado:
 
 ```kotlin
 val intent = Intent(this, DetailActivity::class.java)
 
 intent.launch()
     .onSuccess { data ->
-        // Resultado exitoso (Intent?)
+        // Gestionar resultado exitoso (Intent?)
     }
     .onFailure { result ->
-        // Resultado diferente a RESULT_OK (ActivityResult)
+        // Gestionar resultado distinto de RESULT_OK (ActivityResult)
     }
     .onResult { result ->
-        // Manejo general del resultado
+        // Gestionar todos los casos
     }
 ```
 
-## Concurrencia (configuración opcional)
+### Lanzamientos concurrentes
 
-Por defecto, cada `Activity` crea una instancia de `IntentLauncher`, lo cual es suficiente en la mayoría de los casos.
+Por defecto, cada Activity inicializa una instancia de `IntentLauncher`, suficiente para la mayoría de casos.
 
-Si ves una excepción como:
+Si aparece:
 
 ```
 IllegalStateException: The number of simultaneously used IntentLaunchers exceeds the limit.
 ```
 
-Puedes aumentar la capacidad así:
+Aumenta la capacidad:
 
 ```kotlin
 IntentLauncher.initialCapacity = 2 // o más
@@ -51,10 +51,10 @@ IntentLauncher.initialCapacity = 2 // o más
 
 ## Notas
 
-- Si usas modos de lanzamiento como `singleTop`, `singleTask` o `singleInstance`, añade manualmente los flags necesarios al `Intent`.
-- Solo necesitas ajustar `initialCapacity` si vas a lanzar múltiples actividades al mismo tiempo y necesitas resultados simultáneos.
+- Para modos de lanzamiento como `singleTop`, `singleTask` o `singleInstance`, añade manualmente los flags apropiados al `Intent`.
+- Ajusta `initialCapacity` solo al lanzar varias actividades para resultado de forma concurrente.
 
-## Enlaces al código fuente
+## Código fuente
 
 - [IntentExtensions.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/activity/result/ActivityResultContracts.kt)
 - [IntentLauncher.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/activity/result/IntentLauncher.kt)

@@ -2,35 +2,36 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 # LinearItemDecoration
 
-**Link to source code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/view/LinearItemDecoration.kt
+## Introduction
 
-`LinearItemDecoration` adds customizable spacing and optional color dividers between items in a `LinearLayoutManager`-based RecyclerView.
+`LinearItemDecoration` adds customizable spacing and optional color dividers between items in a `LinearLayoutManager`-based `RecyclerView`. It supports both vertical and horizontal orientations.
 
-It supports both vertical and horizontal orientations and allows optional color and padding configuration for dividers.
+## Features
 
-> 📄 This documentation was assisted by ChatGPT.
+- Configurable item spacing (in dp)
+- Optional divider color and start/end padding
 
 ## Usage
 
-### Constructor
+Constructor:
 
 ```kotlin
 LinearItemDecoration(space: Float)
 ```
 
-- `space`: the spacing between items (in dp).
+- `space`: spacing between items (in dp)
 
-### Optional Configurations
+Optional configuration:
 
 ```kotlin
 decoration.setColor(Color.GRAY)
 decoration.setPadding(16f, 16f)
 ```
 
-- `setColor`: sets the divider color (ARGB).
-- `setPadding`: sets start and end padding (in dp) for the divider.
+- `setColor`: divider color (ARGB)
+- `setPadding`: start and end padding for the divider (in dp)
 
-### Example
+Example:
 
 ```kotlin
 val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
@@ -42,21 +43,16 @@ recyclerView.layoutManager = LinearLayoutManager(context)
 recyclerView.addItemDecoration(decoration)
 ```
 
-## Known Issue
+## Notes
 
-When using `DiffUtil` or calling:
-
-```kotlin
-adapter.notifyItemInserted(position)
-adapter.notifyItemRemoved(position)
-```
-
-...the dividers may not render correctly.
-
-### ✅ Solution
+When using `DiffUtil` or calling `notifyItemInserted` / `notifyItemRemoved`, dividers may not render correctly.
 
 After updating the data, manually trigger a partial refresh:
 
 ```kotlin
 adapter.notifyItemRangeChanged(0, 2)
 ```
+
+## Source Code
+
+[LinearItemDecoration.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/view/LinearItemDecoration.kt)

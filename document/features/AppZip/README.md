@@ -1,18 +1,21 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppZip Usage Guide
+# AppZip
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt  
-**This document was generated with the help of ChatGPT.**
+## Introduction
 
-## Overview
-
-`AppZip` provides file compression and decompression utilities.  
-It supports single file compression, multi-file/directory compression, and zip file extraction.
+`AppZip` provides file compression and decompression utilities. It supports single-file compression, multi-file/directory compression, and zip file extraction while preserving directory structure.
 
 ## Features
 
-### 1. Compress a Single File
+- Compress a single file into a zip entry
+- Compress multiple files or directories with structure preserved
+- Extract zip files to a target directory
+- UTF-8 encoding for zip entry names
+
+## Usage
+
+Compress a single file:
 
 ```kotlin
 val inputFile = File("example.txt")
@@ -21,7 +24,7 @@ val outputFile = File("example.zip")
 AppZip.zipFile("example.txt", inputFile.inputStream(), outputFile.outputStream())
 ```
 
-### 2. Compress Multiple Files or Directories
+Compress multiple files or directories:
 
 ```kotlin
 AppZip.zipFiles(
@@ -31,9 +34,7 @@ AppZip.zipFiles(
 )
 ```
 
-The directory structure is preserved in the resulting `.zip`.
-
-### 3. Extract Zip File
+Extract a zip file:
 
 ```kotlin
 AppZip.unzipFile(
@@ -42,9 +43,12 @@ AppZip.unzipFile(
 )
 ```
 
-**Note**: Throws an exception if the zip entries are not UTF-8 encoded.
-
 ## Notes
 
 - Empty directories are preserved during compression.
 - File names are stored using UTF-8 encoding (default for `ZipEntry` in modern Java).
+- Throws an exception if zip entries are not UTF-8 encoded.
+
+## Source Code
+
+[AppZip.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt)

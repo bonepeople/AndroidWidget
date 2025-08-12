@@ -1,23 +1,26 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# 字符串资源管理器 - 使用说明
+# String Resource Manager
 
-> **说明**：本文档由 ChatGPT 协助完成。
+## 简介
 
-## 概述
+该工具提供灵活、模板化的多语言字符串资源管理方式，适用于需要模块化和多语言支持的 Kotlin / Android 项目。
 
-该工具类为 Kotlin 项目提供了灵活的多语言字符串管理机制，适用于需要模块化或国际化的 Android 应用开发。
+核心组件：
 
-主要包括：
+- `StringTemplate`：定义字符串模板类型的接口
+- `StringResourceManager`：本地化字符串实例的注册表
 
-- `StringTemplate`：用于定义字符串模板结构的接口。
-- `StringResourceManager`：用于注册与获取具体语言的字符串实现。
+## 场景
 
-## 使用方法
+- 多模块或多功能项目的集中字符串管理
+- 在标准 `strings.xml` 流程之外的程序化本地化
 
-### 1. 定义字符串模板
+## 使用方式
 
-创建一个抽象类实现 `StringTemplate`，根据需要添加抽象属性。
+### 创建模板
+
+定义继承 `StringTemplate` 的抽象类，按模块需求添加抽象属性。
 
 ```kotlin
 abstract class ChatText : StringTemplate {
@@ -31,7 +34,7 @@ abstract class ChatText : StringTemplate {
     companion object {
         val templateClass: Class<ChatText> = ChatText::class.java
 
-        // 建议在这里注册所有实现类，初始化一次即可
+        // 建议在此注册各语言实现
         init {
             StringResourceManager.register(ChatTextEnUS(), Locale.ENGLISH)
             StringResourceManager.register(ChatTextZhCN(), Locale.SIMPLIFIED_CHINESE)
@@ -41,11 +44,11 @@ abstract class ChatText : StringTemplate {
 }
 ```
 
-> 💡 抽象属性可根据实际使用需求自由添加。
+可按 UI 需求增减抽象属性数量。
 
-### 2. 定义语言实现类
+### 实现各语言类
 
-每个实现类用于具体语言，需重写所有属性。
+每个实现对应一个 locale，覆盖抽象字符串属性。
 
 ```kotlin
 class ChatTextEnUS : ChatText() {
@@ -56,7 +59,7 @@ class ChatTextEnUS : ChatText() {
 }
 ```
 
-### 3. 获取并使用字符串
+### 在代码中使用
 
 ```kotlin
 val text: ChatText = StringResourceManager.get(ChatText.templateClass)
@@ -65,5 +68,5 @@ views.textViewSend.text = text.send
 
 ## 源码链接
 
-- [`StringResourceManager.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
-- [`StringTemplate.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)
+- [StringResourceManager.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
+- [StringTemplate.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)

@@ -1,25 +1,26 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppKeyboard 使用指南
-
-> 本文档由 ChatGPT 协助完成  
-> 源代码链接：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppKeyboard.kt
+# AppKeyboard
 
 ## 简介
 
-`AppKeyboard` 是一个用于控制软件输入法（软键盘）的工具类，提供在 Android 应用中显示与隐藏软键盘的便捷方法，并支持判断点击区域是否需要隐藏键盘。
+`AppKeyboard` 用于管理 Android 应用中的软键盘，提供显示/隐藏键盘的方法，以及判断触摸事件是否应触发键盘收起的能力。
 
-## 功能概览
+## 场景
 
-- 判断是否应隐藏软键盘；
-- 显示软键盘；
-- 隐藏软键盘。
+- 点击 `EditText` 外部区域时自动隐藏键盘
+- 程序方式为输入框获取焦点时显示键盘
+- 在应用中集中管理键盘行为
 
-## 如何使用
+## 功能
 
-### 1. 判断是否需要隐藏软键盘
+- 根据触摸输入判断是否需要隐藏键盘
+- 程序方式显示软键盘
+- 隐藏软键盘
 
-当用户点击 EditText 以外区域时，可以调用此方法判断是否应关闭键盘：
+## 使用方式
+
+在 `Activity.dispatchTouchEvent` 中处理点击外部收起键盘：
 
 ```kotlin
 override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -30,24 +31,22 @@ override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
 }
 ```
 
-### 2. 主动显示软键盘
+显示软键盘：
 
 ```kotlin
 AppKeyboard.showKeyboard(myEditText)
 ```
 
-### 3. 主动隐藏软键盘
+隐藏软键盘：
 
 ```kotlin
 AppKeyboard.hideKeyboard()
 ```
 
-## 推荐使用场景
-
-- 实现点击空白区域自动隐藏软键盘；
-- 在特定输入场景中主动弹出软键盘；
-- 统一管理应用中的键盘显示与隐藏逻辑。
-
 ## 注意事项
 
-- `showKeyboard()` 方法通过延迟处理确保在视图渲染后打开键盘。
+- `showKeyboard()` 使用短暂延迟，确保 View 就绪后再请求焦点并显示键盘。
+
+## 源码链接
+
+[AppKeyboard.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppKeyboard.kt)

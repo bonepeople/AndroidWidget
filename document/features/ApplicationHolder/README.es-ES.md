@@ -2,19 +2,21 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 # ApplicationHolder
 
-**Enlace al código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ApplicationHolder.kt
+## Introducción
 
-`ApplicationHolder` es una utilidad centralizada que permite acceder a información clave de la aplicación y a la instancia de `Application` desde cualquier parte de tu app Android.
+`ApplicationHolder` proporciona acceso centralizado a la instancia de `Application` y a información clave a nivel de aplicación, como el estado de depuración, la versión y el nombre del paquete.
 
-Se inicializa automáticamente mediante Jetpack Startup para facilitar el acceso global.
+Se inicializa automáticamente mediante Jetpack Startup, sin configuración manual.
 
-> 📄 Esta documentación fue asistida por ChatGPT.
+## Características
+
+- Acceso al contexto global de `Application`
+- Comprobar si la app se ejecuta en modo depuración
+- Leer nombre de versión, código de versión y nombre del paquete
 
 ## Uso
 
-Este objeto se inicializa automáticamente utilizando el mecanismo de inicialización de AndroidX. Una vez inicializado, puedes usarlo en cualquier parte de tu aplicación.
-
-### Ejemplo
+Tras el inicio de la app, úsalo desde cualquier parte:
 
 ```kotlin
 val context = ApplicationHolder.app
@@ -24,12 +26,16 @@ val versionCode = ApplicationHolder.getVersionCode()
 val packageName = ApplicationHolder.getPackageName()
 ```
 
-### Resultados Típicos
+Valores típicos:
 
-- `debug`: `true` si la app fue compilada en modo debug.
-- `getVersionName()`: devuelve el nombre de versión de la app (ejemplo: `"1.0.0"`).
-- `getVersionCode()`: devuelve el código de versión de la app (ejemplo: `10000`).
+- `debug`: `true` si la app se compila en modo depuración
+- `getVersionName()`: p. ej. `"1.0.0"`
+- `getVersionCode()`: p. ej. `10000`
 
 ## Notas
 
-- Si accedes a `ApplicationHolder` antes de su inicialización, se lanzará una excepción.
+- Acceder a `ApplicationHolder` antes de la inicialización lanza una excepción.
+
+## Código fuente
+
+[ApplicationHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ApplicationHolder.kt)

@@ -1,51 +1,48 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppMessageDigest 使用指南
-
-> 本文档由 ChatGPT 协助完成  
-> 源代码链接：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppMessageDigest.kt
+# AppMessageDigest
 
 ## 简介
 
-`AppMessageDigest` 是一个用于计算 MD5 哈希值的工具类，支持对字符串与输入流进行哈希处理，可用于文件完整性校验、唯一标识符生成等场景。支持设置读取块大小及进度回调，适用于大数据处理。
+`AppMessageDigest` 用于计算字符串和输入流的 MD5 哈希值，支持流处理过程中的进度回调，适用于文件完整性校验和内容指纹生成。
 
-## 功能概览
+## 场景
 
-- 支持对字符串进行 MD5 加密；
-- 支持对输入流（如文件）进行分块 MD5 加密；
-- 支持计算过程中进度回调；
-- 支持自定义读取缓冲区大小。
+- 通过 MD5 校验下载文件
+- 生成内容指纹或字符串去重
+- 哈希大文件时展示进度
 
-## 如何使用
+## 功能
 
-### 1. 计算字符串的 MD5 值
+- 字符串 MD5 哈希
+- `InputStream` 分块读取 MD5 哈希
+- 已读字节数进度回调
+- 可自定义流读取缓冲区大小
+
+## 使用方式
+
+哈希字符串：
 
 ```kotlin
 val hash = AppMessageDigest.md5("Hello, World!")
-// 输出：fc3ff98e8c6a0d3087d515c0473f8677
+// 输出: fc3ff98e8c6a0d3087d515c0473f8677
 ```
 
-### 2. 计算文件的 MD5 值（带进度回调）
+哈希文件并反馈进度：
 
 ```kotlin
 val file = File("/path/to/large_file.zip")
 val md5 = AppMessageDigest.md5(file.inputStream(), 4096) { bytesRead ->
-    Log.d("Progress", "已读取 $bytesRead 字节")
+    Log.d("Progress", "Read $bytesRead bytes")
 }
 ```
 
-### 3. 自定义读取逻辑（内部使用）
-
-该工具类内部采用 `readStream` 方法完成分块读取、处理与进度汇报，开发者通常无需手动调用。
-
-## 推荐使用场景
-
-- 验证下载文件的完整性；
-- 对敏感信息进行唯一签名或去重；
-- 处理大文件时希望获取读取进度。
-
 ## 注意事项
 
-- MD5 并非加密算法，不可用于安全性敏感的场景；
-- `InputStream` 使用完后不会自动关闭，请手动处理；
-- 当前版本尚未支持中断处理，适合一次性处理完整数据。
+- MD5 不是安全的加密算法，请勿用于敏感数据。
+- 流不会自动关闭，需手动关闭。
+- 当前版本不支持中断操作。
+
+## 源码链接
+
+[AppMessageDigest.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppMessageDigest.kt)

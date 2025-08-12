@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
  * Lifecycle-aware global event bus based on [MutableSharedFlow].
  *
  * Post [AppEventData] from anywhere, subscribe in [LifecycleOwner] (e.g. Activity, Fragment).
- * Subscription is paused when lifecycle is below [minState], and cancelled when destroyed.
+ * Posting is independent of subscriber lifecycle; receiving is gated by [minState].
+ * When lifecycle is below [minState], the subscriber stops collecting and events emitted
+ * during that period are not replayed on resume. Subscription is cancelled on destroy.
  *
  * Usage:
  * ```
@@ -47,7 +49,9 @@ object AppEvent {
      * Registers a lifecycle-aware subscriber.
      *
      * @param owner The [LifecycleOwner] to bind the subscription to.
-     * @param minState Minimum lifecycle state for event delivery; defaults to [Lifecycle.State.STARTED].
+     * @param minState Minimum lifecycle state for a subscriber to receive events; defaults to [Lifecycle.State.STARTED].
+     *                 When lifecycle drops below this state, the subscriber stops collecting;
+     *                 events emitted during the inactive period are not replayed on resume.
      * @param action Suspend callback invoked for each event; use `when` to handle specific event types.
      */
     fun register(owner: LifecycleOwner, minState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (AppEventData) -> Unit) {

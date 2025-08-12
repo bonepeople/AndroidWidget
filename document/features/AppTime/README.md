@@ -1,63 +1,60 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppTime Usage Guide
+# AppTime
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppTime` formats and converts timestamps and durations. It supports custom output patterns, time zones, and locale-specific formatting.
 
-`AppTime` is a utility class for formatting and converting timestamps and durations. It supports various output formats, time zones, and locale-specific formatting.
+## Use Cases
 
-> Helpful for presenting readable time strings in logs, UIs, and reports.
+- Readable time strings in logs, UIs, and reports
+- Timer-style duration display
 
-## How to Use
+## Features
 
-### 1. Format Timestamp as a Readable Date-Time
+- Timestamp formatting with optional milliseconds
+- Custom pattern, time zone, and locale support
+- Duration formatting as timer strings (with optional full units and millisecond control)
+- Compatible with both pre-API 26 and modern Android versions
+
+## Usage
+
+Format timestamp as a readable date-time:
 
 ```kotlin
 val result = AppTime.getDateTimeString(System.currentTimeMillis())
-// result: "2025/6/30 14:33:45"
+// "2025/6/30 14:33:45"
+
+val withMillis = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
+// "2025/6/30 14:33:45.123"
 ```
 
-#### Include milliseconds:
-
-```kotlin
-val result = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
-// result: "2025/6/30 14:33:45.123"
-```
-
-### 2. Format Timestamp with Custom Pattern
+Format timestamp with a custom pattern:
 
 ```kotlin
 val result = AppTime.formatTime(
     timestamp = System.currentTimeMillis(),
     pattern = "yyyy-MM-dd HH:mm:ss.SSS",
     timeZone = TimeZone.getTimeZone("GMT+8"),
-    local = Locale.CHINA
+    local = Locale.US
 )
-// result: "2025-06-30 14:33:45.123"
+// "2025-06-30 14:33:45.123"
 ```
 
-> Supports both pre-API 26 and modern Android versions.
-
-### 3. Format Duration (Milliseconds) as Timer String
+Format duration (milliseconds) as a timer string:
 
 ```kotlin
 val timer = AppTime.getTimeString(3661999)
-// result: "1:01:01.999"
+// "1:01:01.999"
+
+val fullTimer = AppTime.getTimeString(5999, fullTimeString = true)
+// "00:00:05.999"
+
+val noMillis = AppTime.getTimeString(5999, withMillis = false)
+// "5"
 ```
 
-#### Always show full time units (hours, minutes):
+## Source Code
 
-```kotlin
-val timer = AppTime.getTimeString(5999, fullTimeString = true)
-// result: "00:00:05.999"
-```
-
-#### Omit milliseconds:
-
-```kotlin
-val timer = AppTime.getTimeString(5999, withMillis = false)
-// result: "5"
-```
+[AppTime.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt)

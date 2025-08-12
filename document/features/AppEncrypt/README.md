@@ -1,26 +1,23 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppEncrypt Utility
+# AppEncrypt
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppEncrypt.kt
+## Introduction
 
-This document describes how to use the `AppEncrypt` utility class for performing AES and RSA encryption and decryption in Android projects.
-
-> *This document was generated with assistance from ChatGPT.*
-
----
+`AppEncrypt` provides AES and RSA encryption and decryption for strings and streams in Android projects.
 
 ## Features
 
-* AES encryption and decryption (stream and string-based)
-* RSA encryption and decryption (stream and string-based)
-* RSA key generation and decoding
+- AES encryption and decryption (string and stream)
+- RSA encryption and decryption (string and stream)
+- RSA key pair generation and decoding
+- Optional `onProgress` callbacks for performance monitoring
 
----
+## Usage
 
-## AES Usage
+### AES
 
-### Encrypt a String
+Encrypt a string:
 
 ```kotlin
 val encrypted = AppEncrypt.encryptByAES(
@@ -30,7 +27,7 @@ val encrypted = AppEncrypt.encryptByAES(
 )
 ```
 
-### Decrypt a String
+Decrypt a string:
 
 ```kotlin
 val decrypted = AppEncrypt.decryptByAES(
@@ -40,7 +37,7 @@ val decrypted = AppEncrypt.decryptByAES(
 )
 ```
 
-### Encrypt a File Stream
+Encrypt a file stream:
 
 ```kotlin
 AppEncrypt.encryptByAES(
@@ -50,35 +47,34 @@ AppEncrypt.encryptByAES(
 )
 ```
 
----
+### RSA
 
-## RSA Usage
-
-### Generate Key Pair
+Generate a key pair:
 
 ```kotlin
 val (publicKey, privateKey) = AppEncrypt.generateRSAKeys()
 ```
 
-### Decode Keys
+Decode keys:
 
 ```kotlin
 val public = AppEncrypt.decodeRSAPublicKey(publicKey)
 val private = AppEncrypt.decodeRSAPrivateKey(privateKey)
 ```
 
-### Encrypt/Decrypt Strings
+Encrypt/decrypt strings:
 
 ```kotlin
 val encrypted = AppEncrypt.encryptByRSA("Hello", public)
 val decrypted = AppEncrypt.decryptByRSA(encrypted, private)
 ```
 
----
-
 ## Notes
 
-* AES keys and salts are padded to 16 characters.
-* RSA supports the PKCS#8 format.
-* Uses default transformations: `AES/CBC/PKCS5Padding` and `RSA/ECB/PKCS1Padding`
-* For performance monitoring, optional `onProgress` callbacks are supported.
+- AES keys and salts are padded to 16 characters.
+- RSA supports the PKCS#8 format.
+- Default transformations: `AES/CBC/PKCS5Padding` and `RSA/ECB/PKCS1Padding`.
+
+## Source Code
+
+[AppEncrypt.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppEncrypt.kt)

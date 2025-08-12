@@ -2,20 +2,24 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 # AppEvent
 
-**Link to source code**:
-- [AppEvent.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/AppEvent.kt)
-- [AppEventData.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/AppEventData.kt)
-- [CommonEvent.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/CommonEvent.kt)
+## Introduction
 
-`AppEvent` is a lifecycle-aware global event bus built on `MutableSharedFlow`. Post events from anywhere; subscribe in a `LifecycleOwner` (e.g. `Activity`, `Fragment`). Delivery pauses when the lifecycle drops below the configured minimum state, and the subscription is cancelled on destroy.
+`AppEvent` is a lifecycle-aware global event bus built on `MutableSharedFlow`. Post events from anywhere; subscribe in a `LifecycleOwner` (e.g. `Activity`, `Fragment`).
 
-> 📄 This documentation was assisted by ChatGPT.
+**Posting is independent of subscriber lifecycle** — `post` / `postAsync` always emit to the global flow. **Receiving is gated by lifecycle** — a subscriber collects events only when its lifecycle is at least `minState`; when it drops below, that subscriber stops receiving and events emitted during the inactive period are not replayed when the lifecycle resumes. The subscription is cancelled on destroy.
+
+## Features
+
+- Non-sticky event delivery
+- Typed `data class` events or generic `CommonEvent` signals
+- `post` (coroutine) and `postAsync` (non-coroutine) posting modes
+- Automatic subscription cleanup on lifecycle destroy
 
 ## Usage
 
-### 1. Define events
+### Define events
 
-Implement the `AppEventData` marker interface. Prefer typed `data class` events; use the built-in `CommonEvent` for generic signals.
+Implement the `AppEventData` marker interface. Prefer typed `data class` events; use `CommonEvent` for generic signals.
 
 ```kotlin
 // Typed event
@@ -28,7 +32,7 @@ CommonEvent("refresh")
 CommonEvent("user_login", userId)
 ```
 
-### 2. Subscribe
+### Subscribe
 
 Call `register` on a `LifecycleOwner` and handle events with `when`:
 
@@ -52,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-By default, events are delivered only when the lifecycle is at least `STARTED`. Pass `minState` to receive events earlier:
+By default, a subscriber receives events only when the lifecycle is at least `STARTED`. Pass `minState` to receive events earlier:
 
 ```kotlin
 AppEvent.register(this, minState = Lifecycle.State.CREATED) { event ->
@@ -60,7 +64,7 @@ AppEvent.register(this, minState = Lifecycle.State.CREATED) { event ->
 }
 ```
 
-### 3. Post events
+### Post events
 
 Use `post` inside a coroutine; use `postAsync` from non-coroutine contexts (callbacks, click listeners, etc.):
 
@@ -77,7 +81,7 @@ AppEvent.postAsync(CommonEvent("refresh"))
 
 `postAsync` dispatches via [CoroutinesHolder](../CoroutinesHolder/README.md) `default` scope on a background thread; subscriber callbacks still run on the main thread via `lifecycleScope`.
 
-## API overview
+### API overview
 
 | Method | Description |
 |--------|-------------|
@@ -87,8 +91,15 @@ AppEvent.postAsync(CommonEvent("refresh"))
 
 ## Notes
 
-- **Non-sticky**: Events posted before registration are not replayed; only new events after subscribing are received.
+- **Non-sticky**: Events posted before registration are not replayed. Events posted while a subscriber is inactive (lifecycle below `minState`) are also not replayed when the lifecycle resumes — only newly posted events are received.
+- **Posting vs receiving**: Senders are unaffected by any subscriber's lifecycle. Other subscribers that remain active still receive events normally.
 - **In-process only**: Event objects are passed by reference within the same process; cross-process delivery is not supported.
 - **Lifecycle-safe**: Subscriptions are automatically cancelled when the `Activity` / `Fragment` is destroyed; no manual unregister needed.
 - **Buffer policy**: Uses `DROP_OLDEST` overflow handling; under extreme load, older events may be dropped.
 - **Type filtering**: Every subscriber receives every posted event; filter with `when`. Typed events are easier to maintain than `CommonEvent`.
+
+## Source Code
+
+- [AppEvent.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/AppEvent.kt)
+- [AppEventData.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/AppEventData.kt)
+- [CommonEvent.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/event/CommonEvent.kt)

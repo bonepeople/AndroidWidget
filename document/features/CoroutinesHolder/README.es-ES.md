@@ -2,33 +2,39 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 # CoroutinesHolder
 
-**Enlace al código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/CoroutinesHolder.kt
+## Introducción
 
-`CoroutinesHolder` proporciona instancias globales de `CoroutineScope` para los `Dispatchers` más utilizados: `Default`, `Main` e `IO`. Esto facilita el lanzamiento de corutinas en toda la aplicación sin tener que crear ámbitos manualmente.
+`CoroutinesHolder` proporciona ámbitos globales singleton de corrutinas para los `Dispatchers` más usados — `Default`, `Main` e `IO`. Permite lanzar corrutinas sin crear ámbitos manualmente.
 
-> 📄 Esta documentación fue asistida por ChatGPT.
+## Casos de uso
+
+- Funciones utilitarias o módulos de biblioteca que necesitan un ámbito compartido
+- Trabajo en segundo plano desde contextos sin ciclo de vida (p. ej. `AppEvent.postAsync`, `AppToast.show`)
+
+## Características
+
+- Instancias listas de `CoroutineScope` para `Default`, `Main` e `IO`
+- Cada ámbito tiene su propio `Job` independiente
 
 ## Uso
 
-Usa el ámbito adecuado según el tipo de tarea:
-
-### Tareas de procesamiento (Dispatcher Default):
+Tareas intensivas en CPU:
 
 ```kotlin
 CoroutinesHolder.default.launch {
-    // Cálculos intensivos en CPU
+    // Realizar cálculos pesados
 }
 ```
 
-### Tareas relacionadas con la UI (Dispatcher Main):
+Tareas relacionadas con UI:
 
 ```kotlin
 CoroutinesHolder.main.launch {
-    // Actualizar la interfaz de usuario
+    // Actualizar UI de forma segura
 }
 ```
 
-### Tareas de entrada/salida (Dispatcher IO):
+Tareas intensivas en IO:
 
 ```kotlin
 CoroutinesHolder.io.launch {
@@ -36,9 +42,11 @@ CoroutinesHolder.io.launch {
 }
 ```
 
-Cada ámbito tiene su propio `Job`, por lo tanto son cancelables de forma independiente (aunque esta clase no proporciona métodos para hacerlo directamente).
-
 ## Notas
 
-- Útil en funciones utilitarias o módulos de biblioteca donde no quieres crear scopes adicionales.
-- Si necesitas tareas con conocimiento del ciclo de vida, considera usar `lifecycleScope`.
+- Prefiere `lifecycleScope` para componentes UI que necesiten conocimiento del ciclo de vida.
+- Las tareas lanzadas aquí no se cancelan automáticamente al destruir una Activity o Fragment.
+
+## Código fuente
+
+[CoroutinesHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/CoroutinesHolder.kt)

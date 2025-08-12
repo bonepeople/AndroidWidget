@@ -1,23 +1,26 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Gestor de Recursos de Texto - Guía de Uso
+# String Resource Manager
 
-> **Nota**: Este documento fue generado con la ayuda de ChatGPT.
+## Introducción
 
-## Visión General
+Esta utilidad proporciona un enfoque flexible y basado en plantillas para gestionar recursos de cadenas localizados en proyectos Kotlin. Es adecuada para aplicaciones Android que requieren soporte modular y multilingüe.
 
-Esta herramienta proporciona una forma organizada y flexible de gestionar textos localizados en proyectos Kotlin. Ideal para aplicaciones Android con soporte multilingüe y modularidad.
+Componentes principales:
 
-Incluye:
+- `StringTemplate`: interfaz para definir tipos de plantillas de cadenas
+- `StringResourceManager`: registro de instancias de cadenas localizadas
 
-- `StringTemplate`: Interfaz para definir plantillas de texto.
-- `StringResourceManager`: Registra y recupera textos según el idioma.
+## Casos de uso
 
-## Cómo Usarlo
+- Gestión centralizada de cadenas en proyectos con múltiples módulos o funcionalidades
+- Localización programática fuera del flujo estándar de `strings.xml`
 
-### 1. Crear una Plantilla
+## Uso
 
-Define una clase abstracta que herede de `StringTemplate`. Puedes declarar las propiedades abstractas necesarias para tu interfaz.
+### Crear una plantilla
+
+Define una clase abstracta que extienda `StringTemplate`. Añade propiedades abstractas según las cadenas que requiera tu módulo.
 
 ```kotlin
 abstract class ChatText : StringTemplate {
@@ -31,7 +34,7 @@ abstract class ChatText : StringTemplate {
     companion object {
         val templateClass: Class<ChatText> = ChatText::class.java
 
-        // Recomendado: registrar implementaciones en el bloque init
+        // Recomendado: registrar implementaciones aquí
         init {
             StringResourceManager.register(ChatTextEnUS(), Locale.ENGLISH)
             StringResourceManager.register(ChatTextZhCN(), Locale.SIMPLIFIED_CHINESE)
@@ -41,11 +44,11 @@ abstract class ChatText : StringTemplate {
 }
 ```
 
-> 💡 Puedes agregar o quitar propiedades según lo requiera tu interfaz de usuario.
+Puedes definir más o menos propiedades abstractas según tus necesidades de UI.
 
-### 2. Crear Implementaciones por Idioma
+### Implementar clases por idioma
 
-Cada clase representa un idioma y sobrescribe los valores definidos.
+Cada implementación corresponde a un locale y debe sobrescribir las propiedades abstractas de cadenas.
 
 ```kotlin
 class ChatTextEnUS : ChatText() {
@@ -56,14 +59,14 @@ class ChatTextEnUS : ChatText() {
 }
 ```
 
-### 3. Obtener los Textos en Código
+### Usar cadenas en código
 
 ```kotlin
 val text: ChatText = StringResourceManager.get(ChatText.templateClass)
 views.textViewSend.text = text.send
 ```
 
-## Código Fuente
+## Código fuente
 
-- [`StringResourceManager.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
-- [`StringTemplate.kt`](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)
+- [StringResourceManager.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringResourceManager.kt)
+- [StringTemplate.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/resource/StringTemplate.kt)

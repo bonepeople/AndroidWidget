@@ -1,28 +1,26 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppPermission Usage Guide
+# AppPermission
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppPermission` simplifies runtime permission checks and requests in Android applications. It uses `ActivityResultContract` internally and triggers the request flow immediately when `request()` is called.
 
-`AppPermission` is a utility class for handling runtime permission checks and requests in Android applications. It leverages `ActivityResultContract` to simplify the process and streamline permission flow management.
+## Features
 
-> This utility is designed to be simple and flexible.
-> - You can apply for multiple permissions at once.
-> - Only permissions that are not yet granted will be requested.
-> - Unlike other frameworks, calling `AppPermission.request()` immediately triggers the request process. You are not forced to set callbacks or invoke a separate "apply" operation.
-> - The `onGranted` callback is only triggered when **all** requested permissions are granted. It is ideal for logic that doesn't require handling denial cases.
+- Check or request multiple permissions in one call
+- Only requests permissions that are not yet granted
+- `onGranted` callback when all requested permissions are granted
+- `onResult` callback with a detailed permission state map
 
-## How to Use
+Unlike some other frameworks, calling `AppPermission.request()` immediately triggers the request process. You are not forced to set callbacks or invoke a separate "apply" operation.
 
-### 1. Checking Permissions
+## Usage
 
-You can check if permissions are granted using the `check()` method:
+Check permissions:
 
 ```kotlin
-val permission = AppPermission.check(android.Manifest.permission.CAMERA)
+AppPermission.check(android.Manifest.permission.CAMERA)
     .onGranted {
         // All requested permissions are granted
     }
@@ -31,12 +29,10 @@ val permission = AppPermission.check(android.Manifest.permission.CAMERA)
     }
 ```
 
-### 2. Requesting Permissions
-
-To request permissions from the user:
+Request permissions:
 
 ```kotlin
-val permission = AppPermission.request(
+AppPermission.request(
     android.Manifest.permission.CAMERA,
     android.Manifest.permission.READ_EXTERNAL_STORAGE
 ).onGranted {
@@ -47,3 +43,11 @@ val permission = AppPermission.request(
     }
 }
 ```
+
+## Notes
+
+- `onGranted` is only triggered when **all** requested permissions are granted. Use `onResult` when you need to handle denial cases.
+
+## Source Code
+
+[AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt)

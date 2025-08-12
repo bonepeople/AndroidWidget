@@ -2,52 +2,58 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 # ActivityHolder
 
-**Enlace al código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ActivityHolder.kt
+## Introducción
 
-`ActivityHolder` es un objeto utilitario que permite gestionar el ciclo de vida, estado y datos asociados a todas las instancias activas de `Activity` dentro de una aplicación Android.
+`ActivityHolder` es un objeto utilitario para gestionar el ciclo de vida, el estado y los datos en memoria de todas las instancias activas de `Activity` en una aplicación Android.
 
-> 📄 Esta documentación fue asistida por ChatGPT.
+## Casos de uso
+
+- Acceso global a la actividad actual
+- Comunicación entre actividades
+- Lógica de limpieza con conocimiento del ciclo de vida
+
+## Características
+
+- Obtener la actividad superior (actualmente visible)
+- Almacenar y recuperar datos temporales clave-valor por instancia de actividad
+- Acceder a la lista ordenada de todas las actividades activas
 
 ## Uso
 
-### Obtener la Actividad Superior
-
-Puedes recuperar en cualquier momento la actividad actualmente visible:
+### Acceso a la actividad superior
 
 ```kotlin
 val currentActivity = ActivityHolder.getTopActivity()
 ```
 
-### Almacenar Datos Temporales
+### Datos temporales de actividad
 
-Permite guardar datos temporales tipo clave-valor asociados a una instancia específica de actividad.
-
-#### Guardar datos:
+Guardar datos:
 
 ```kotlin
 ActivityHolder.putData(activity, "key", value)
 ```
 
-#### Obtener datos:
+Recuperar datos:
 
 ```kotlin
 val value = ActivityHolder.getData(activity, "key")
 ```
 
-#### Eliminar datos:
+Eliminar datos:
 
 ```kotlin
 ActivityHolder.removeData(activity, "key")
 ```
 
-### Obtener Todas las Actividades Activas
+### Todas las actividades activas
 
 ```kotlin
 val allActivities = ActivityHolder.activityList
 ```
 
-La lista mantiene el orden en que se abrieron las actividades.
+Mantiene el orden en que se abrieron las actividades.
 
-## Notas
+## Código fuente
 
-- Es útil para acceso global, comunicación entre actividades o lógica de limpieza.
+[ActivityHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ActivityHolder.kt)

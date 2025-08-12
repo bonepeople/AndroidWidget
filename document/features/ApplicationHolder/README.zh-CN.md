@@ -2,21 +2,21 @@
 
 # ApplicationHolder
 
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ApplicationHolder.kt
+## 简介
 
-`ApplicationHolder` 是一个用于全局访问 `Application` 实例和应用关键信息的工具类。
+`ApplicationHolder` 提供对 `Application` 实例及调试状态、版本号、包名等应用级信息的集中访问。
 
-它通过 Jetpack Startup 自动初始化，便于在项目中任何位置使用。
+通过 Jetpack Startup 自动初始化，无需手动配置。
 
-> 📄 本文档由 ChatGPT 协助完成。
+## 功能
 
-## 使用方法
+- 访问全局 `Application` 上下文
+- 判断应用是否处于调试模式
+- 读取版本名、版本号和包名
 
-该工具类通过 AndroidX Startup 机制自动初始化，无需手动调用初始化方法。
+## 使用方式
 
-初始化完成后，可直接使用以下方法获取应用信息：
-
-### 示例代码
+应用启动后，可在任意位置使用：
 
 ```kotlin
 val context = ApplicationHolder.app
@@ -26,12 +26,16 @@ val versionCode = ApplicationHolder.getVersionCode()
 val packageName = ApplicationHolder.getPackageName()
 ```
 
-### 输出说明
+典型返回值：
 
-- `debug`：如果当前是 Debug 模式，返回 `true`
-- `getVersionName()`：返回应用版本名（如 `"1.0.0"`）
-- `getVersionCode()`：返回应用版本号（如 `10000`）
+- `debug`：调试模式下为 `true`
+- `getVersionName()`：如 `"1.0.0"`
+- `getVersionCode()`：如 `10000`
 
 ## 注意事项
 
-- 如果在初始化之前访问 `ApplicationHolder`，将会抛出异常。
+- 在初始化完成前访问 `ApplicationHolder` 会抛出异常。
+
+## 源码链接
+
+[ApplicationHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ApplicationHolder.kt)

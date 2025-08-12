@@ -2,54 +2,58 @@
 
 # ActivityHolder
 
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ActivityHolder.kt
+## 简介
 
-`ActivityHolder` 是一个用于管理当前所有活动中的 `Activity` 实例及其临时状态数据的工具类。
+`ActivityHolder` 是一个用于管理应用中所有活动 `Activity` 实例的生命周期、状态及内存数据的工具对象。
 
-它能够跟踪所有已打开的 Activity，并为每个 Activity 提供独立的数据存储空间。
+## 场景
 
-> 📄 本文档由 ChatGPT 协助完成。
+- 全局访问当前 Activity
+- 跨 Activity 通信
+- 生命周期感知的清理逻辑
 
-## 使用方法
+## 功能
 
-### 获取当前顶部 Activity
+- 获取顶部（当前可见）Activity
+- 为每个 Activity 实例存储和读取临时键值数据
+- 访问按打开顺序排列的所有活动 Activity 列表
 
-可获取当前显示在最前端的 Activity：
+## 使用方式
+
+### 获取顶部 Activity
 
 ```kotlin
 val currentActivity = ActivityHolder.getTopActivity()
 ```
 
-### 为某个 Activity 存储临时数据
+### 临时 Activity 数据
 
-你可以为指定 Activity 存储键值对数据。
-
-#### 存储数据：
+存储数据：
 
 ```kotlin
 ActivityHolder.putData(activity, "key", value)
 ```
 
-#### 获取数据：
+读取数据：
 
 ```kotlin
 val value = ActivityHolder.getData(activity, "key")
 ```
 
-#### 移除数据：
+移除数据：
 
 ```kotlin
 ActivityHolder.removeData(activity, "key")
 ```
 
-### 获取所有活动中的 Activity 实例列表
+### 所有活动 Activity
 
 ```kotlin
 val allActivities = ActivityHolder.activityList
 ```
 
-该列表会按照 Activity 启动顺序排列。
+列表按 Activity 打开顺序排列。
 
-## 注意事项
+## 源码链接
 
-- 适用于全局访问、跨 Activity 通信或统一资源清理等场景。
+[ActivityHolder.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/ActivityHolder.kt)

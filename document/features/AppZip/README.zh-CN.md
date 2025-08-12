@@ -1,50 +1,54 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppZip 使用指南
-
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt  
-**本文档由 ChatGPT 协助生成。**
+# AppZip
 
 ## 简介
 
-`AppZip` 是一个用于文件压缩与解压的工具类。  
-支持单个文件压缩、多文件或目录压缩，以及 `.zip` 文件解压缩。
+`AppZip` 提供文件压缩与解压工具，支持单文件压缩、多文件/目录压缩及 zip 解压，并保持目录结构。
 
-## 功能说明
+## 功能
 
-### 1. 压缩单个文件
+- 将单个文件压缩为 zip 条目
+- 压缩多个文件或目录并保留结构
+- 解压 zip 到目标目录
+- zip 条目名使用 UTF-8 编码
+
+## 使用方式
+
+压缩单个文件：
 
 ```kotlin
-val 输入文件 = File("示例.txt")
-val 压缩文件 = File("示例.zip")
+val inputFile = File("example.txt")
+val outputFile = File("example.zip")
 
-AppZip.zipFile("示例.txt", 输入文件.inputStream(), 压缩文件.outputStream())
+AppZip.zipFile("example.txt", inputFile.inputStream(), outputFile.outputStream())
 ```
 
-### 2. 压缩多个文件或目录
+压缩多个文件或目录：
 
 ```kotlin
 AppZip.zipFiles(
-    File("压缩输出.zip").outputStream(),
-    File("文件1.txt"),
-    File("目录2")
+    File("output.zip").outputStream(),
+    File("file1.txt"),
+    File("dir2")
 )
 ```
 
-目录结构会被保留在压缩包中。
-
-### 3. 解压 Zip 文件
+解压 zip 文件：
 
 ```kotlin
 AppZip.unzipFile(
-    File("示例.zip").inputStream(),
-    File("解压目录")
+    File("example.zip").inputStream(),
+    File("output_directory")
 )
 ```
 
-**注意**：当 ZIP 中的文件名不是 UTF-8 编码时会抛出异常。
+## 注意事项
 
-## 补充说明
+- 压缩时会保留空目录。
+- 文件名使用 UTF-8 编码存储（现代 Java 中 `ZipEntry` 的默认值）。
+- 若 zip 条目非 UTF-8 编码会抛出异常。
 
-- 支持空目录压缩。
-- 默认使用 UTF-8 编码存储文件名，兼容性好。
+## 源码链接
+
+[AppZip.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppZip.kt)

@@ -1,43 +1,42 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppRandom Usage Guide
+# AppRandom
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppRandom.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppRandom` provides convenient methods for generating random strings, integers, and shuffled lists. It uses a seed based on the current system time, ensuring randomness while allowing reproducibility when needed.
 
-`AppRandom` is a utility object that provides convenient methods for generating random values, including strings, integers, and shuffled lists. It uses a seed based on the current system time, ensuring randomness while allowing reproducibility if needed.
+## Use Cases
 
-> This tool is ideal for generating test data, creating unique identifiers, or randomizing user experiences.
+- Generate test data
+- Create unique identifiers
+- Randomize user experiences
 
-## How to Use
+## Features
 
-### 1. Generate a Random String
+- Random alphanumeric strings of configurable length
+- Random integers within a specified range
+- Shuffled copies of collections (original list is not modified)
 
-Creates a string composed of digits, lowercase and uppercase English letters:
+## Usage
+
+Generate a random string (digits, lowercase and uppercase letters):
 
 ```kotlin
 val str = AppRandom.randomString(12)
 // Example: "aZ3bD9x1YqT8"
 ```
 
-- `length` specifies how many characters the result will have.
-
-### 2. Generate a Random Integer in a Range
-
-Returns a random integer between the specified range:
+Generate a random integer in a range:
 
 ```kotlin
 val number = AppRandom.randomInt(10..99)
 // Example: 47
 ```
 
-- If the range is empty, `0` is returned.
+Returns `0` if the range is empty.
 
-### 3. Shuffle a List
-
-Returns a new shuffled version of the input collection:
+Shuffle a list:
 
 ```kotlin
 val list = listOf(1, 2, 3, 4, 5)
@@ -45,4 +44,6 @@ val shuffled = AppRandom.shuffleList(list)
 // Example: [3, 1, 5, 2, 4]
 ```
 
-- The original list is not modified.
+## Source Code
+
+[AppRandom.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppRandom.kt)

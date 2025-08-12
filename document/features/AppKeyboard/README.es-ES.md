@@ -1,25 +1,26 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppKeyboard
-
-> Este documento fue elaborado con la ayuda de ChatGPT  
-> Enlace al código fuente: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppKeyboard.kt
+# AppKeyboard
 
 ## Introducción
 
-`AppKeyboard` es una clase utilitaria para gestionar el teclado virtual en aplicaciones Android. Permite mostrar u ocultar el teclado de manera programada y detectar si se debe cerrar el teclado según la interacción del usuario.
+`AppKeyboard` gestiona el teclado virtual en aplicaciones Android. Proporciona métodos para mostrar u ocultar el teclado y detectar si un evento táctil debe provocar su cierre.
+
+## Casos de uso
+
+- Ocultar automáticamente el teclado al tocar fuera de un `EditText`
+- Mostrar el teclado cuando un campo de entrada recibe foco programáticamente
+- Centralizar el comportamiento del teclado en la app
 
 ## Características
 
-- Detecta si se debe ocultar el teclado según el evento táctil;
-- Muestra el teclado virtual;
-- Oculta el teclado virtual.
+- Detectar si el teclado debe ocultarse según la entrada táctil
+- Mostrar el teclado virtual programáticamente
+- Ocultar el teclado virtual
 
-## Cómo usar
+## Uso
 
-### 1. Determinar si se debe ocultar el teclado
-
-Úsalo dentro de `dispatchTouchEvent` para ocultar el teclado cuando el usuario toque fuera de un campo de texto:
+Ocultar el teclado al tocar fuera del campo — usar en `Activity.dispatchTouchEvent`:
 
 ```kotlin
 override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -30,24 +31,22 @@ override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
 }
 ```
 
-### 2. Mostrar el teclado virtual
+Mostrar el teclado virtual:
 
 ```kotlin
 AppKeyboard.showKeyboard(myEditText)
 ```
 
-### 3. Ocultar el teclado virtual
+Ocultar el teclado virtual:
 
 ```kotlin
 AppKeyboard.hideKeyboard()
 ```
 
-## Casos recomendados de uso
-
-- Ocultar automáticamente el teclado al tocar fuera de un EditText;
-- Mostrar el teclado cuando un campo necesita recibir foco programáticamente;
-- Gestionar el comportamiento del teclado de manera centralizada.
-
 ## Notas
 
-- `showKeyboard()` utiliza un retraso para garantizar que la vista esté lista antes de solicitar el foco.
+- `showKeyboard()` usa un breve retraso para asegurar que la vista esté lista antes de solicitar foco y mostrar el teclado.
+
+## Código fuente
+
+[AppKeyboard.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppKeyboard.kt)

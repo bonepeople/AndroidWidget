@@ -1,63 +1,60 @@
 多语言版本：[English](./README.md) | [Español](./README.es-ES.md)
 
-# AppTime 使用指南
-
-**源代码链接**：https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt  
-**本文档由 ChatGPT 协助完成。**
+# AppTime
 
 ## 简介
 
-`AppTime` 是一个时间处理工具类，支持时间戳格式化、时区转换和持续时间（毫秒）转换为可读字符串。
+`AppTime` 用于格式化与转换时间戳和时长，支持自定义输出格式、时区和地区设置。
 
-> 常用于时间展示、日志格式化、倒计时显示等场景。
+## 场景
 
-## 使用方法
+- 在日志、界面和报表中展示可读时间字符串
+- 计时器风格的时长展示
 
-### 1. 将时间戳转换为标准时间格式
+## 功能
+
+- 时间戳格式化，可选毫秒
+- 自定义 pattern、时区和 locale
+- 时长格式化为计时器字符串（可选完整单位和毫秒控制）
+- 兼容 API 26 前后版本
+
+## 使用方式
+
+格式化时间戳为可读日期时间：
 
 ```kotlin
 val result = AppTime.getDateTimeString(System.currentTimeMillis())
-// 结果："2025/6/30 14:33:45"
+// "2025/6/30 14:33:45"
+
+val withMillis = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
+// "2025/6/30 14:33:45.123"
 ```
 
-#### 包含毫秒：
-
-```kotlin
-val result = AppTime.getDateTimeString(System.currentTimeMillis(), withMillis = true)
-// 结果："2025/6/30 14:33:45.123"
-```
-
-### 2. 使用自定义格式化模板
+自定义 pattern 格式化：
 
 ```kotlin
 val result = AppTime.formatTime(
     timestamp = System.currentTimeMillis(),
     pattern = "yyyy-MM-dd HH:mm:ss.SSS",
     timeZone = TimeZone.getTimeZone("GMT+8"),
-    local = Locale.SIMPLIFIED_CHINESE
+    local = Locale.US
 )
-// 结果："2025-06-30 14:33:45.123"
+// "2025-06-30 14:33:45.123"
 ```
 
-> 支持 Android 旧版本和 8.0+ 系统。
-
-### 3. 将毫秒转换为定时器样式
+格式化时长（毫秒）为计时器字符串：
 
 ```kotlin
 val timer = AppTime.getTimeString(3661999)
-// 结果："1:01:01.999"
+// "1:01:01.999"
+
+val fullTimer = AppTime.getTimeString(5999, fullTimeString = true)
+// "00:00:05.999"
+
+val noMillis = AppTime.getTimeString(5999, withMillis = false)
+// "5"
 ```
 
-#### 强制显示小时与分钟：
+## 源码链接
 
-```kotlin
-val timer = AppTime.getTimeString(5999, fullTimeString = true)
-// 结果："00:00:05.999"
-```
-
-#### 不显示毫秒：
-
-```kotlin
-val timer = AppTime.getTimeString(5999, withMillis = false)
-// 结果："5"
-```
+[AppTime.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppTime.kt)

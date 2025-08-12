@@ -1,49 +1,53 @@
 Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Guía de uso de AppPermission
+# AppPermission
 
-**Código fuente**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt  
-**Este documento fue creado con la asistencia de ChatGPT.**
+## Introducción
 
-## Descripción general
+`AppPermission` simplifica la comprobación y solicitud de permisos en tiempo de ejecución en Android. Usa `ActivityResultContract` internamente y dispara el flujo de solicitud inmediatamente al llamar `request()`.
 
-`AppPermission` es una clase utilitaria para gestionar permisos en tiempo de ejecución en aplicaciones Android. Usa `ActivityResultContract` para simplificar el proceso de solicitud de permisos.
+## Características
 
-> Esta utilidad está diseñada para ser simple y flexible.
-> - Puedes solicitar varios permisos a la vez.
-> - Solo se solicitarán los permisos que aún no hayan sido concedidos.
-> - A diferencia de otros frameworks, `AppPermission.request()` inicia el proceso de solicitud de inmediato. No estás obligado a definir callbacks ni a llamar a una operación de "apply".
-> - El callback `onGranted` solo se activa si **todos** los permisos solicitados han sido concedidos. Es ideal para casos en los que no necesitas manejar la denegación de permisos.
+- Comprobar o solicitar múltiples permisos en una sola llamada
+- Solo solicita permisos aún no concedidos
+- Callback `onGranted` cuando todos los permisos solicitados están concedidos
+- Callback `onResult` con mapa detallado del estado de permisos
 
-## Cómo usarlo
+A diferencia de otros frameworks, llamar `AppPermission.request()` dispara inmediatamente el proceso de solicitud. No necesitas configurar callbacks por separado ni invocar una operación de «aplicar».
 
-### 1. Verificar permisos
+## Uso
 
-Puedes verificar si los permisos ya han sido concedidos usando el método `check()`:
+Comprobar permisos:
 
 ```kotlin
-val permiso = AppPermission.check(android.Manifest.permission.CAMERA)
+AppPermission.check(android.Manifest.permission.CAMERA)
     .onGranted {
-        // Todos los permisos solicitados han sido concedidos
+        // Todos los permisos solicitados están concedidos
     }
-    .onResult { todosConcedidos, mapaResultado ->
-        // Maneja el resultado si es necesario
+    .onResult { allGranted, resultMap ->
+        // Gestionar el mapa de resultados si es necesario
     }
 ```
 
-### 2. Solicitar permisos
-
-Para solicitar permisos al usuario:
+Solicitar permisos:
 
 ```kotlin
-val permiso = AppPermission.request(
+AppPermission.request(
     android.Manifest.permission.CAMERA,
     android.Manifest.permission.READ_EXTERNAL_STORAGE
 ).onGranted {
-    // Todos los permisos han sido concedidos
-}.onResult { todosConcedidos, mapaResultado ->
-    if (!todosConcedidos) {
-        // Manejar permisos denegados
+    // Todos los permisos concedidos
+}.onResult { allGranted, resultMap ->
+    if (!allGranted) {
+        // Gestionar permisos denegados
     }
 }
 ```
+
+## Notas
+
+- `onGranted` solo se dispara cuando **todos** los permisos solicitados están concedidos. Usa `onResult` cuando necesites gestionar casos de denegación.
+
+## Código fuente
+
+[AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt)

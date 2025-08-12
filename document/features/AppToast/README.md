@@ -1,25 +1,26 @@
 Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
-# AppToast Usage Guide
+# AppToast
 
-**Source Code**: https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt  
-**This document was created with the assistance of ChatGPT.**
+## Introduction
 
-## Overview
+`AppToast` displays toast messages from anywhere in your application. It automatically switches to the main thread and ignores blank messages.
 
-`AppToast` is a simple utility for displaying toast messages from anywhere in your application using coroutines.
+## Features
 
-> Automatically switches to the main thread when showing toasts.
+- Short and long duration support
+- Thread-safe display via coroutines
+- Automatic blank message filtering
 
-## How to Use
+## Usage
 
-### 1. Show a short-duration toast
+Show a short-duration toast:
 
 ```kotlin
 AppToast.show("Operation completed successfully")
 ```
 
-### 2. Show a long-duration toast
+Show a long-duration toast:
 
 ```kotlin
 AppToast.show("This message will stay longer", Toast.LENGTH_LONG)
@@ -27,5 +28,8 @@ AppToast.show("This message will stay longer", Toast.LENGTH_LONG)
 
 ## Notes
 
-- Automatically ignores null or blank messages.
-- Runs safely on the main thread using `CoroutinesHolder.main.launch`.
+- Runs on the main thread using `CoroutinesHolder.main.launch`.
+
+## Source Code
+
+[AppToast.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppToast.kt)
