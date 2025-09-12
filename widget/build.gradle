@@ -56,8 +56,8 @@ dependencies {
 
     // Kotlin Coroutines https://github.com/Kotlin/kotlinx.coroutines/blob/master/README.md#using-in-your-projects
     // kotlinx-coroutines-android dependency for switching to the Android UI thread
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
 
     // Local Broadcast https://github.com/bonepeople/LocalBroadcastUtil
     api 'com.github.bonepeople:LocalBroadcastUtil:1.4.1'
