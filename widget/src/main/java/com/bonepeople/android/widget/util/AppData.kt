@@ -92,8 +92,30 @@ class AppData private constructor(name: String) {
     @CheckResult
     fun getBooleanFlow(key: String, default: Boolean = false): Flow<Boolean> = getDataFlow(booleanPreferencesKey(key), default)
 
-    suspend fun remove(key: String) {
-        dataStore.edit { it.remove(stringPreferencesKey(key)) }
+    /**
+     * Checks whether the DataStore contains a value for the given key name.
+     *
+     * Note: The key type does not matter when checking existence.
+     * As long as the name matches, this will return true if a value is stored.
+     *
+     * @param name The name of the key to check.
+     * @return True if the key exists in the DataStore, false otherwise.
+     */
+    suspend fun contains(name: String): Boolean {
+        return dataStore.data.first().contains(stringPreferencesKey(name))
+    }
+
+    /**
+     * Removes the entry with the given key name from the DataStore.
+     *
+     * Note: The key type does not matter when removing.
+     * As long as the name matches, the corresponding entry will be removed
+     * regardless of the type it was originally stored with.
+     *
+     * @param name The name of the key to remove.
+     */
+    suspend fun remove(name: String) {
+        dataStore.edit { it.remove(stringPreferencesKey(name)) }
     }
 
     private suspend fun <T> putData(key: Preferences.Key<T>, value: T) {
