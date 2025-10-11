@@ -82,6 +82,14 @@ publishing {
             groupId = rootProject.publishConfig.groupId
             artifactId = rootProject.publishConfig.artifactId
             version = rootProject.publishConfig.publishVersion
+            pom {
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+            }
         }
     }
 }

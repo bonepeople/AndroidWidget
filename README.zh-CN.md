@@ -34,6 +34,10 @@ dependencies {
 }
 ```
 
+## 许可协议
+
+本项目采用 [Apache License 2.0](LICENSE) 开源协议。
+
 ## 仓库
 
 https://github.com/bonepeople/AndroidWidget

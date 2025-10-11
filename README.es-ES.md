@@ -34,6 +34,10 @@ dependencies {
 }
 ```
 
+## Licencia
+
+Este proyecto está licenciado bajo [Apache License 2.0](LICENSE).
+
 ## Repositorio
 
 https://github.com/bonepeople/AndroidWidget
