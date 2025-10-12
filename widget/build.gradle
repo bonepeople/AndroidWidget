@@ -10,7 +10,7 @@ plugins {
 
 def buildTime = System.currentTimeMillis()
 def formattedTime = Instant.ofEpochMilli(buildTime).atZone(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'").withLocale(Locale.ROOT))
-project.logger.lifecycle("▶ Build started at: $formattedTime ($buildTime)")
+project.logger.lifecycle(">>> Build started at: $formattedTime ($buildTime)")
 
 android {
     namespace "com.bonepeople.android.widget"
