@@ -1,7 +1,7 @@
 package com.bonepeople.android.widget.util.permission
 
 /**
- * Current permission status.
+ * Current runtime permission status.
  */
 enum class PermissionStatus {
     GRANTED,

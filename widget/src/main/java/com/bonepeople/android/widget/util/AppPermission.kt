@@ -9,12 +9,14 @@ import java.util.*
 import kotlin.collections.LinkedHashMap
 
 /**
- * Permission request utility class
+ * Legacy callback-based permission utility.
  *
- * Utilizes ActivityResultContract to request permissions
+ * Use [com.bonepeople.android.widget.util.permission.AppPermission] for synchronous permission checks
+ * and coroutine-based permission requests.
  *
  * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppPermission)
  */
+@Deprecated("Use com.bonepeople.android.widget.util.permission.AppPermission instead.")
 @Suppress("Unused")
 class AppPermission private constructor() {
     private val permissionResult = LinkedHashMap<String, Boolean>()

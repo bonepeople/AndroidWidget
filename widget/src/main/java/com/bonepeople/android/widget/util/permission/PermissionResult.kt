@@ -1,7 +1,9 @@
 package com.bonepeople.android.widget.util.permission
 
 /**
- * Result of a permission request.
+ * Result of a permission request, including the status of every requested permission.
+ *
+ * @property permissionStatuses permission statuses in the original permission order
  */
 data class PermissionResult(
     val permissionStatuses: Map<String, PermissionStatus>

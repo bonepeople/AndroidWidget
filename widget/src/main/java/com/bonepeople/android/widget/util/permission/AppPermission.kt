@@ -11,8 +11,14 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
 /**
- * Utility for handling app permissions.
+ * Utility for checking and requesting runtime permissions.
+ *
+ * Permission checks return synchronously. Permission requests suspend until the user completes the
+ * system permission flow and use [RequestMultiplePermissions] internally.
+ *
+ * [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/AppPermission)
  */
+@Suppress("Unused")
 object AppPermission {
     /**
      * Returns whether all permissions are currently granted.

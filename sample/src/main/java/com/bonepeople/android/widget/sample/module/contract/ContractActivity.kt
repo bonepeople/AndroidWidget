@@ -7,12 +7,14 @@ import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityContractBinding
 import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.util.AppGson
-import com.bonepeople.android.widget.util.AppPermission
 import com.bonepeople.android.widget.util.AppView.singleClick
+import com.bonepeople.android.widget.util.permission.AppPermission
+import kotlinx.coroutines.launch
 
 class ContractActivity : AppCompatActivity() {
     private val views: ActivityContractBinding by lazy { ActivityContractBinding.inflate(layoutInflater) }
@@ -62,13 +64,13 @@ class ContractActivity : AppCompatActivity() {
                     ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), REQ_2)
                 }
                 ActivityResult -> {
-                    AppPermission.request(android.Manifest.permission.CAMERA)
-                        .onGranted {
+                    lifecycleScope.launch {
+                        val permissionResult = AppPermission.request(android.Manifest.permission.CAMERA)
+                        if (permissionResult.allGranted()) {
                             LogUtil.test.info("permission result2 = granted @ $ActivityResult")
                         }
-                        .onResult { _, permissionResult ->
-                            LogUtil.test.info("permission result2 = ${AppGson.toJson(permissionResult)} @ $ActivityResult")
-                        }
+                        LogUtil.test.info("permission result2 = ${AppGson.toJson(permissionResult.permissionStatuses)} @ $ActivityResult")
+                    }
                 }
             }
         }
@@ -78,8 +80,9 @@ class ContractActivity : AppCompatActivity() {
                     ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), REQ_3)
                 }
                 ActivityResult -> {
-                    AppPermission.request(android.Manifest.permission.CAMERA)
-                        .onGranted {
+                    lifecycleScope.launch {
+                        val permissionResult = AppPermission.request(android.Manifest.permission.CAMERA)
+                        if (permissionResult.allGranted()) {
                             LogUtil.test.info("permission result3 = granted @ $ActivityResult")
                             Intent(MediaStore.ACTION_IMAGE_CAPTURE).launch()
                                 .onSuccess {
@@ -89,6 +92,7 @@ class ContractActivity : AppCompatActivity() {
                                     LogUtil.test.info("TAKE_PICTURE_CANCEL @ $ActivityResult")
                                 }
                         }
+                    }
                 }
             }
         }
