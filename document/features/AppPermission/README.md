@@ -4,50 +4,94 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 ## Introduction
 
-`AppPermission` simplifies runtime permission checks and requests in Android applications. It uses `ActivityResultContract` internally and triggers the request flow immediately when `request()` is called.
+`AppPermission` provides synchronous runtime permission checks and coroutine-based permission requests. Permission requests use AndroidX `ActivityResultContract` internally, start as soon as `request()` is executed, and return their result directly without callback chains or temporary variables.
 
 ## Features
 
-- Check or request multiple permissions in one call
+- Check one or more permissions synchronously
+- Query an individual permission as `GRANTED` or `DENIED`
+- Request multiple permissions from a coroutine
+- Uses AndroidX `ActivityResultContracts.RequestMultiplePermissions` for the system permission flow
+- Starts the permission flow when `request()` is called, with no separate callback registration or launch step
 - Only requests permissions that are not yet granted
-- `onGranted` callback when all requested permissions are granted
-- `onResult` callback with a detailed permission state map
-
-Unlike some other frameworks, calling `AppPermission.request()` immediately triggers the request process. You are not forced to set callbacks or invoke a separate "apply" operation.
+- Returns whether all permissions were granted and the status of every permission
 
 ## Usage
 
-Check permissions:
+Import the new permission utility:
 
 ```kotlin
-AppPermission.check(android.Manifest.permission.CAMERA)
-    .onGranted {
-        // All requested permissions are granted
+import androidx.lifecycle.lifecycleScope
+import com.bonepeople.android.widget.util.permission.AppPermission
+import com.bonepeople.android.widget.util.permission.PermissionStatus
+import kotlinx.coroutines.launch
+```
+
+Check whether all permissions are granted:
+
+```kotlin
+if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
+    // The camera permission is granted
+}
+```
+
+Query an individual permission:
+
+```kotlin
+when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
+    PermissionStatus.GRANTED -> openCamera()
+    PermissionStatus.DENIED -> showPermissionHint()
+}
+```
+
+Request permissions from a lifecycle-aware coroutine:
+
+```kotlin
+lifecycleScope.launch {
+    val result = AppPermission.request(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    if (result.allGranted()) {
+        startFeature()
     }
-    .onResult { allGranted, resultMap ->
-        // Handle the result map if needed
+
+    val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
+}
+```
+
+## Migrating from the Callback API
+
+Replace callback chains:
+
+```kotlin
+com.bonepeople.android.widget.util.AppPermission.request(permission)
+    .onResult { allGranted, permissionResult ->
+        if (allGranted) startFeature()
+        val granted = permissionResult[permission] == true
     }
 ```
 
-Request permissions:
+with the coroutine API:
 
 ```kotlin
-AppPermission.request(
-    android.Manifest.permission.CAMERA,
-    android.Manifest.permission.READ_EXTERNAL_STORAGE
-).onGranted {
-    // All permissions granted
-}.onResult { allGranted, resultMap ->
-    if (!allGranted) {
-        // Handle denied permissions
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(permission)
+    if (result.allGranted()) startFeature()
+    val status = result.permissionStatuses[permission]
 }
 ```
 
 ## Notes
 
-- `onGranted` is only triggered when **all** requested permissions are granted. Use `onResult` when you need to handle denial cases.
+- `checkGranted()` returns `true` only when every supplied permission is granted. An empty permission list is considered granted.
+- `request()` is a suspending function and must be called from a coroutine. A lifecycle-aware scope such as `lifecycleScope` is recommended.
+- `request()` skips permissions that are already granted. Its result still contains every supplied permission in the original order.
+- The legacy callback API remains available at `com.bonepeople.android.widget.util.AppPermission`, but new code should use the API documented here.
 
 ## Source Code
 
-[AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt)
+- [AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/AppPermission.kt)
+- [PermissionResult.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionResult.kt)
+- [PermissionStatus.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionStatus.kt)

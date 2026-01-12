@@ -79,19 +79,18 @@ Sin registro manual, gestión automática del ciclo de vida y soporte para lanza
 
 ---
 
-### AppPermission — Solicitud de permisos al instante
+### AppPermission — Comprobaciones síncronas, solicitudes con corrutinas
 
-Muchas bibliotecas de permisos requieren registrar un callback primero y luego activar la solicitud por separado. `AppPermission` inicia el flujo **en el momento de llamar a `request()`**:
+Comprueba permisos directamente y solicita solo los que faltan desde una corrutina consciente del ciclo de vida. Ejecutar `request()` inicia el flujo inmediatamente, sin registrar un callback ni realizar un lanzamiento por separado:
 
 ```kotlin
-AppPermission.request(Manifest.permission.CAMERA)
-    .onGranted { openCamera() }
-    .onResult { allGranted, resultMap ->
-        if (!allGranted) showDeniedHint(resultMap)
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(Manifest.permission.CAMERA)
+    if (result.allGranted()) openCamera()
+}
 ```
 
-Los permisos ya concedidos se filtran automáticamente — sin diálogos redundantes.
+El resultado incluye el estado de cada permiso y los permisos ya concedidos se excluyen automáticamente de la solicitud del sistema.
 
 👉 Documentación: [AppPermission](features/AppPermission/README.es-ES.md)
 

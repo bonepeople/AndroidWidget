@@ -4,50 +4,94 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 ## Introducción
 
-`AppPermission` simplifica la comprobación y solicitud de permisos en tiempo de ejecución en Android. Usa `ActivityResultContract` internamente y dispara el flujo de solicitud inmediatamente al llamar `request()`.
+`AppPermission` proporciona comprobaciones síncronas de permisos en tiempo de ejecución y solicitudes basadas en corrutinas. Las solicitudes usan internamente el `ActivityResultContract` de AndroidX, comienzan en cuanto se ejecuta `request()` y devuelven el resultado directamente, sin cadenas de callbacks ni variables temporales.
 
 ## Características
 
-- Comprobar o solicitar múltiples permisos en una sola llamada
+- Comprobar uno o varios permisos de forma síncrona
+- Consultar un permiso individual como `GRANTED` o `DENIED`
+- Solicitar varios permisos desde una corrutina
+- Usa `ActivityResultContracts.RequestMultiplePermissions` de AndroidX para el flujo de permisos del sistema
+- Inicia el flujo al llamar `request()`, sin registrar un callback ni realizar un lanzamiento por separado
 - Solo solicita permisos aún no concedidos
-- Callback `onGranted` cuando todos los permisos solicitados están concedidos
-- Callback `onResult` con mapa detallado del estado de permisos
-
-A diferencia de otros frameworks, llamar `AppPermission.request()` dispara inmediatamente el proceso de solicitud. No necesitas configurar callbacks por separado ni invocar una operación de «aplicar».
+- Devuelve si todos los permisos fueron concedidos y el estado de cada permiso
 
 ## Uso
 
-Comprobar permisos:
+Importar la nueva utilidad de permisos:
 
 ```kotlin
-AppPermission.check(android.Manifest.permission.CAMERA)
-    .onGranted {
-        // Todos los permisos solicitados están concedidos
+import androidx.lifecycle.lifecycleScope
+import com.bonepeople.android.widget.util.permission.AppPermission
+import com.bonepeople.android.widget.util.permission.PermissionStatus
+import kotlinx.coroutines.launch
+```
+
+Comprobar si todos los permisos están concedidos:
+
+```kotlin
+if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
+    // El permiso de la cámara está concedido
+}
+```
+
+Consultar el estado de un permiso:
+
+```kotlin
+when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
+    PermissionStatus.GRANTED -> openCamera()
+    PermissionStatus.DENIED -> showPermissionHint()
+}
+```
+
+Solicitar permisos desde una corrutina consciente del ciclo de vida:
+
+```kotlin
+lifecycleScope.launch {
+    val result = AppPermission.request(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    if (result.allGranted()) {
+        startFeature()
     }
-    .onResult { allGranted, resultMap ->
-        // Gestionar el mapa de resultados si es necesario
+
+    val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
+}
+```
+
+## Migración desde la API de callbacks
+
+Reemplaza las cadenas de callbacks:
+
+```kotlin
+com.bonepeople.android.widget.util.AppPermission.request(permission)
+    .onResult { allGranted, permissionResult ->
+        if (allGranted) startFeature()
+        val granted = permissionResult[permission] == true
     }
 ```
 
-Solicitar permisos:
+por la API de corrutinas:
 
 ```kotlin
-AppPermission.request(
-    android.Manifest.permission.CAMERA,
-    android.Manifest.permission.READ_EXTERNAL_STORAGE
-).onGranted {
-    // Todos los permisos concedidos
-}.onResult { allGranted, resultMap ->
-    if (!allGranted) {
-        // Gestionar permisos denegados
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(permission)
+    if (result.allGranted()) startFeature()
+    val status = result.permissionStatuses[permission]
 }
 ```
 
 ## Notas
 
-- `onGranted` solo se dispara cuando **todos** los permisos solicitados están concedidos. Usa `onResult` cuando necesites gestionar casos de denegación.
+- `checkGranted()` devuelve `true` solo cuando todos los permisos proporcionados están concedidos. Una lista vacía se considera concedida.
+- `request()` es una función suspendida y debe llamarse desde una corrutina. Se recomienda un ámbito consciente del ciclo de vida, como `lifecycleScope`.
+- `request()` omite los permisos ya concedidos, pero el resultado sigue incluyendo todos los permisos proporcionados en el orden original.
+- La API antigua basada en callbacks sigue disponible en `com.bonepeople.android.widget.util.AppPermission`, pero el código nuevo debe usar la API documentada aquí.
 
 ## Código fuente
 
-[AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt)
+- [AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/AppPermission.kt)
+- [PermissionResult.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionResult.kt)
+- [PermissionStatus.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionStatus.kt)

@@ -18,7 +18,7 @@ Administrar todas las instancias activas de `Activity`, obtener la actividad sup
 Simplificar el flujo de `startActivityForResult` con manejadores encadenados `.onSuccess`, `.onFailure`, `.onResult`. Gestión automática del ciclo de vida y soporte para lanzamientos concurrentes.
 
 #### [AppPermission](./AppPermission)
-Simplificar las solicitudes de permisos en tiempo de ejecución — manejar múltiples permisos en una llamada, solicitando solo los no concedidos. `onGranted` para concesión total, `onResult` para estado detallado.
+Comprobar permisos en tiempo de ejecución de forma síncrona y solicitar solo los no concedidos desde una corrutina. Devuelve el resultado global y el estado de cada permiso.
 
 ## 3. Almacenamiento de datos, serialización y seguridad
 

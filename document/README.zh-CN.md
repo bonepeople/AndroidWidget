@@ -79,19 +79,18 @@ Intent(this, DetailActivity::class.java)
 
 ---
 
-### AppPermission — 权限申请，调用即请求
+### AppPermission — 同步检查，协程申请
 
-很多权限库要求先注册回调、再触发请求，步骤割裂。`AppPermission` 在 **调用 `request()` 的瞬间即发起申请**：
+直接同步检查权限，并在生命周期感知的协程中只申请缺少的权限。执行 `request()` 即发起申请，无需先注册回调再单独触发：
 
 ```kotlin
-AppPermission.request(Manifest.permission.CAMERA)
-    .onGranted { openCamera() }
-    .onResult { allGranted, resultMap ->
-        if (!allGranted) showDeniedHint(resultMap)
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(Manifest.permission.CAMERA)
+    if (result.allGranted()) openCamera()
+}
 ```
 
-已授权的权限会自动过滤，避免重复弹窗。
+结果包含每项权限的状态，系统申请时会自动过滤已授权权限，避免重复弹窗。
 
 👉 详细文档：[AppPermission](features/AppPermission/README.zh-CN.md)
 

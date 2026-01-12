@@ -18,7 +18,7 @@ Manage all active `Activity` instances, retrieve the top activity, store tempora
 Simplify the `startActivityForResult` workflow with chainable `.onSuccess`, `.onFailure`, `.onResult` handlers. Automatic lifecycle management and concurrent launch support.
 
 #### [AppPermission](./AppPermission)
-Simplify runtime permission requests — handle multiple permissions in one call, requesting only ungranted ones. `onGranted` for full grants, `onResult` for detailed permission states.
+Check runtime permissions synchronously and request only ungranted permissions from a coroutine. Returns both the aggregate result and each permission status.
 
 ## 3. Data Storage, Serialization & Security
 

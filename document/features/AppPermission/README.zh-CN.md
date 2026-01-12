@@ -4,50 +4,94 @@
 
 ## 简介
 
-`AppPermission` 简化 Android 运行时权限的检查与请求。内部使用 `ActivityResultContract`，调用 `request()` 后立即触发请求流程。
+`AppPermission` 提供同步的运行时权限检查和基于协程的权限申请。权限申请内部使用 AndroidX `ActivityResultContract`，执行 `request()` 时立即发起申请，并直接返回结果，无需回调链或临时变量。
 
 ## 功能
 
-- 一次调用检查或请求多个权限
+- 同步检查一个或多个权限
+- 查询单个权限的 `GRANTED` 或 `DENIED` 状态
+- 在协程中申请多个权限
+- 使用 AndroidX `ActivityResultContracts.RequestMultiplePermissions` 发起系统权限流程
+- 调用 `request()` 即发起申请，无需先注册回调再单独触发
 - 仅请求尚未授权的权限
-- 全部授权时触发 `onGranted` 回调
-- `onResult` 回调返回详细的权限状态映射
-
-与其他框架不同，调用 `AppPermission.request()` 会立即触发请求流程，无需额外设置回调或调用单独的「申请」操作。
+- 同时返回是否全部授权及每项权限的状态
 
 ## 使用方式
 
-检查权限：
+导入新版权限工具：
 
 ```kotlin
-AppPermission.check(android.Manifest.permission.CAMERA)
-    .onGranted {
-        // 所有请求的权限均已授权
+import androidx.lifecycle.lifecycleScope
+import com.bonepeople.android.widget.util.permission.AppPermission
+import com.bonepeople.android.widget.util.permission.PermissionStatus
+import kotlinx.coroutines.launch
+```
+
+检查是否全部授权：
+
+```kotlin
+if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
+    // 相机权限已授权
+}
+```
+
+查询单个权限状态：
+
+```kotlin
+when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
+    PermissionStatus.GRANTED -> openCamera()
+    PermissionStatus.DENIED -> showPermissionHint()
+}
+```
+
+在生命周期感知的协程中申请权限：
+
+```kotlin
+lifecycleScope.launch {
+    val result = AppPermission.request(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    if (result.allGranted()) {
+        startFeature()
     }
-    .onResult { allGranted, resultMap ->
-        // 按需处理结果映射
+
+    val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
+}
+```
+
+## 从回调 API 迁移
+
+将旧版回调链：
+
+```kotlin
+com.bonepeople.android.widget.util.AppPermission.request(permission)
+    .onResult { allGranted, permissionResult ->
+        if (allGranted) startFeature()
+        val granted = permissionResult[permission] == true
     }
 ```
 
-请求权限：
+替换为协程 API：
 
 ```kotlin
-AppPermission.request(
-    android.Manifest.permission.CAMERA,
-    android.Manifest.permission.READ_EXTERNAL_STORAGE
-).onGranted {
-    // 全部授权
-}.onResult { allGranted, resultMap ->
-    if (!allGranted) {
-        // 处理被拒绝的权限
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(permission)
+    if (result.allGranted()) startFeature()
+    val status = result.permissionStatuses[permission]
 }
 ```
 
 ## 注意事项
 
-- `onGranted` 仅在**所有**请求的权限均被授权时触发。需要处理拒绝场景时请使用 `onResult`。
+- 只有传入的全部权限均已授权时，`checkGranted()` 才返回 `true`。空权限列表视为已全部授权。
+- `request()` 是挂起函数，必须在协程中调用，推荐使用 `lifecycleScope` 等生命周期感知的作用域。
+- `request()` 会跳过已经授权的权限，但结果仍按原始顺序包含传入的全部权限。
+- 旧版回调 API 仍保留在 `com.bonepeople.android.widget.util.AppPermission`，新代码应使用本文介绍的新版 API。
 
 ## 源码链接
 
-[AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/AppPermission.kt)
+- [AppPermission.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/AppPermission.kt)
+- [PermissionResult.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionResult.kt)
+- [PermissionStatus.kt](https://github.com/bonepeople/AndroidWidget/blob/main/widget/src/main/java/com/bonepeople/android/widget/util/permission/PermissionStatus.kt)

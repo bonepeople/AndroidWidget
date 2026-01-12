@@ -79,19 +79,18 @@ No manual registration, automatic lifecycle management, and support for concurre
 
 ---
 
-### AppPermission — Permission Requests That Fire on Call
+### AppPermission — Synchronous Checks, Coroutine Requests
 
-Many permission libraries require registering a callback first, then triggering the request separately. `AppPermission` starts the flow **the moment you call `request()`**:
+Check permissions directly and request only missing permissions from a lifecycle-aware coroutine. Executing `request()` starts the permission flow immediately—there is no separate callback registration or launch step:
 
 ```kotlin
-AppPermission.request(Manifest.permission.CAMERA)
-    .onGranted { openCamera() }
-    .onResult { allGranted, resultMap ->
-        if (!allGranted) showDeniedHint(resultMap)
-    }
+lifecycleScope.launch {
+    val result = AppPermission.request(Manifest.permission.CAMERA)
+    if (result.allGranted()) openCamera()
+}
 ```
 
-Already-granted permissions are filtered out automatically — no redundant dialogs.
+The result includes every permission status, while already-granted permissions are filtered out of the system request automatically.
 
 👉 Full docs: [AppPermission](features/AppPermission/README.md)
 

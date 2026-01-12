@@ -18,7 +18,7 @@ AndroidWidget 提供的工具模块目录。各模块均有独立 README，包�
 简化 `startActivityForResult` 流程，支持链式 `.onSuccess`、`.onFailure`、`.onResult` 处理。自动生命周期管理，支持并发启动。
 
 #### [AppPermission](./AppPermission)
-简化运行时权限请求，一次调用处理多个权限，仅请求未授权的权限。`onGranted` 处理全部授权，`onResult` 返回详细权限状态。
+同步检查运行时权限，并在协程中仅申请未授权权限，同时返回整体结果和每项权限状态。
 
 ## 3. 数据存储、序列化与安全
 
