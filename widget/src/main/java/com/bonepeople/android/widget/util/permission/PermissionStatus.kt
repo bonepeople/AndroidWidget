@@ -5,5 +5,6 @@ package com.bonepeople.android.widget.util.permission
  */
 enum class PermissionStatus {
     GRANTED,
-    DENIED
+    DENIED,
+    PERMANENTLY_DENIED
 }

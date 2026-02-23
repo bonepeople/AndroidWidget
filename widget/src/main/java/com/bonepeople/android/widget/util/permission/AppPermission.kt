@@ -2,7 +2,9 @@ package com.bonepeople.android.widget.util.permission
 
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.activity.result.launch
 import kotlinx.coroutines.Dispatchers
@@ -58,11 +60,16 @@ object AppPermission {
             }
 
             suspendCancellableCoroutine { continuation ->
+                val activity = ActivityHolder.getTopActivity() ?: throw IllegalStateException("No active Activity is available to request permissions.")
                 val contract = RequestMultiplePermissions()
                 contract.createIntent(ApplicationHolder.app, deniedPermissions).launch()
                     .onResult { result ->
                         contract.parseResult(result.resultCode, result.data).forEach { (permission, granted) ->
-                            permissionStatuses[permission] = if (granted) PermissionStatus.GRANTED else PermissionStatus.DENIED
+                            permissionStatuses[permission] = when {
+                                granted -> PermissionStatus.GRANTED
+                                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> PermissionStatus.DENIED
+                                else -> PermissionStatus.PERMANENTLY_DENIED
+                            }
                         }
                         continuation.resume(PermissionResult(permissionStatuses))
                     }

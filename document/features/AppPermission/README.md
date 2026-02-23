@@ -11,6 +11,7 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 - Check one or more permissions synchronously
 - Query an individual permission as `GRANTED` or `DENIED`
 - Request multiple permissions from a coroutine
+- Distinguish between a denial and a permanent denial after a request
 - Uses AndroidX `ActivityResultContracts.RequestMultiplePermissions` for the system permission flow
 - Starts the permission flow when `request()` is called, with no separate callback registration or launch step
 - Only requests permissions that are not yet granted
@@ -41,6 +42,7 @@ Query an individual permission:
 when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
     PermissionStatus.DENIED -> showPermissionHint()
+    PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
 }
 ```
 
@@ -58,6 +60,9 @@ lifecycleScope.launch {
     }
 
     val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
+    if (cameraStatus == PermissionStatus.PERMANENTLY_DENIED) {
+        openAppSettings()
+    }
 }
 ```
 
@@ -88,6 +93,8 @@ lifecycleScope.launch {
 - `checkGranted()` returns `true` only when every supplied permission is granted. An empty permission list is considered granted.
 - `request()` is a suspending function and must be called from a coroutine. A lifecycle-aware scope such as `lifecycleScope` is recommended.
 - `request()` skips permissions that are already granted. Its result still contains every supplied permission in the original order.
+- `checkStatus()` can only determine synchronously whether a permission is granted and returns `DENIED` otherwise. `PERMANENTLY_DENIED` is only returned by `request()`.
+- After a permission is denied, `request()` uses `ActivityCompat.shouldShowRequestPermissionRationale()` to determine whether the denial is permanent.
 - The legacy callback API remains available at `com.bonepeople.android.widget.util.AppPermission`, but new code should use the API documented here.
 
 ## Source Code

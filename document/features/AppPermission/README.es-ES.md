@@ -11,6 +11,7 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 - Comprobar uno o varios permisos de forma síncrona
 - Consultar un permiso individual como `GRANTED` o `DENIED`
 - Solicitar varios permisos desde una corrutina
+- Distinguir entre un rechazo normal y uno permanente después de una solicitud
 - Usa `ActivityResultContracts.RequestMultiplePermissions` de AndroidX para el flujo de permisos del sistema
 - Inicia el flujo al llamar `request()`, sin registrar un callback ni realizar un lanzamiento por separado
 - Solo solicita permisos aún no concedidos
@@ -41,6 +42,7 @@ Consultar el estado de un permiso:
 when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
     PermissionStatus.DENIED -> showPermissionHint()
+    PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
 }
 ```
 
@@ -58,6 +60,9 @@ lifecycleScope.launch {
     }
 
     val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
+    if (cameraStatus == PermissionStatus.PERMANENTLY_DENIED) {
+        openAppSettings()
+    }
 }
 ```
 
@@ -88,6 +93,8 @@ lifecycleScope.launch {
 - `checkGranted()` devuelve `true` solo cuando todos los permisos proporcionados están concedidos. Una lista vacía se considera concedida.
 - `request()` es una función suspendida y debe llamarse desde una corrutina. Se recomienda un ámbito consciente del ciclo de vida, como `lifecycleScope`.
 - `request()` omite los permisos ya concedidos, pero el resultado sigue incluyendo todos los permisos proporcionados en el orden original.
+- `checkStatus()` solo puede determinar de forma síncrona si un permiso está concedido y devuelve `DENIED` en caso contrario. `PERMANENTLY_DENIED` solo se devuelve desde `request()`.
+- Después de que se rechace un permiso, `request()` usa `ActivityCompat.shouldShowRequestPermissionRationale()` para determinar si el rechazo es permanente.
 - La API antigua basada en callbacks sigue disponible en `com.bonepeople.android.widget.util.AppPermission`, pero el código nuevo debe usar la API documentada aquí.
 
 ## Código fuente
