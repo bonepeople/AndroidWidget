@@ -23,13 +23,6 @@ import kotlin.coroutines.resume
 @Suppress("Unused")
 object AppPermission {
     /**
-     * Returns whether all permissions are currently granted.
-     */
-    fun checkGranted(vararg permissions: String): Boolean {
-        return permissions.all { checkStatus(it) == PermissionStatus.GRANTED }
-    }
-
-    /**
      * Returns the current status of a permission.
      */
     fun checkStatus(permission: String): PermissionStatus {

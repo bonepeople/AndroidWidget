@@ -8,8 +8,7 @@
 
 ## 功能
 
-- 同步检查一个或多个权限
-- 查询单个权限的 `GRANTED` 或 `DENIED` 状态
+- 同步查询单个权限的 `GRANTED` 或 `DENIED` 状态
 - 在协程中申请多个权限
 - 申请后区分普通拒绝和永久拒绝
 - 使用 AndroidX `ActivityResultContracts.RequestMultiplePermissions` 发起系统权限流程
@@ -28,11 +27,15 @@ import com.bonepeople.android.widget.util.permission.PermissionStatus
 import kotlinx.coroutines.launch
 ```
 
-检查是否全部授权：
+检查多个权限是否全部授权：
 
 ```kotlin
-if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
-    // 相机权限已授权
+val permissions = arrayOf(
+    android.Manifest.permission.CAMERA,
+    android.Manifest.permission.ACCESS_COARSE_LOCATION
+)
+if (permissions.all { AppPermission.checkStatus(it).isGranted() }) {
+    // 所有权限均已授权
 }
 ```
 
@@ -43,6 +46,14 @@ when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
     PermissionStatus.DENIED -> showPermissionHint()
     PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
+}
+```
+
+如果只需判断单个状态是否已授权，可以使用 `PermissionStatus.isGranted()`：
+
+```kotlin
+if (AppPermission.checkStatus(android.Manifest.permission.CAMERA).isGranted()) {
+    openCamera()
 }
 ```
 
@@ -90,7 +101,7 @@ lifecycleScope.launch {
 
 ## 注意事项
 
-- 只有传入的全部权限均已授权时，`checkGranted()` 才返回 `true`。空权限列表视为已全部授权。
+- 可以用 `permissions.all { AppPermission.checkStatus(it).isGranted() }` 检查多个权限；空权限列表的 `all` 结果为 `true`。
 - `request()` 是挂起函数，必须在协程中调用，推荐使用 `lifecycleScope` 等生命周期感知的作用域。
 - `request()` 会跳过已经授权的权限，但结果仍按原始顺序包含传入的全部权限。
 - `checkStatus()` 只能同步判断权限是否已授权，未授权时返回 `DENIED`；`PERMANENTLY_DENIED` 只会出现在 `request()` 的申请结果中。

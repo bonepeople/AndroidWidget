@@ -12,6 +12,6 @@ data class PermissionResult(
      * Returns whether all permissions are granted.
      */
     fun allGranted(): Boolean {
-        return permissionStatuses.values.all { it == PermissionStatus.GRANTED }
+        return permissionStatuses.values.all { it.isGranted() }
     }
 }

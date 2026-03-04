@@ -8,8 +8,7 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 ## Características
 
-- Comprobar uno o varios permisos de forma síncrona
-- Consultar un permiso individual como `GRANTED` o `DENIED`
+- Consultar de forma síncrona un permiso individual como `GRANTED` o `DENIED`
 - Solicitar varios permisos desde una corrutina
 - Distinguir entre un rechazo normal y uno permanente después de una solicitud
 - Usa `ActivityResultContracts.RequestMultiplePermissions` de AndroidX para el flujo de permisos del sistema
@@ -28,11 +27,15 @@ import com.bonepeople.android.widget.util.permission.PermissionStatus
 import kotlinx.coroutines.launch
 ```
 
-Comprobar si todos los permisos están concedidos:
+Comprobar si todos los permisos de una colección están concedidos:
 
 ```kotlin
-if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
-    // El permiso de la cámara está concedido
+val permissions = arrayOf(
+    android.Manifest.permission.CAMERA,
+    android.Manifest.permission.ACCESS_COARSE_LOCATION
+)
+if (permissions.all { AppPermission.checkStatus(it).isGranted() }) {
+    // Todos los permisos están concedidos
 }
 ```
 
@@ -43,6 +46,14 @@ when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
     PermissionStatus.DENIED -> showPermissionHint()
     PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
+}
+```
+
+Si solo necesitas comprobar si un estado individual está concedido, usa `PermissionStatus.isGranted()`:
+
+```kotlin
+if (AppPermission.checkStatus(android.Manifest.permission.CAMERA).isGranted()) {
+    openCamera()
 }
 ```
 
@@ -90,7 +101,7 @@ lifecycleScope.launch {
 
 ## Notas
 
-- `checkGranted()` devuelve `true` solo cuando todos los permisos proporcionados están concedidos. Una lista vacía se considera concedida.
+- Usa `permissions.all { AppPermission.checkStatus(it).isGranted() }` para comprobar varios permisos. `all` devuelve `true` para una colección vacía.
 - `request()` es una función suspendida y debe llamarse desde una corrutina. Se recomienda un ámbito consciente del ciclo de vida, como `lifecycleScope`.
 - `request()` omite los permisos ya concedidos, pero el resultado sigue incluyendo todos los permisos proporcionados en el orden original.
 - `checkStatus()` solo puede determinar de forma síncrona si un permiso está concedido y devuelve `DENIED` en caso contrario. `PERMANENTLY_DENIED` solo se devuelve desde `request()`.

@@ -8,8 +8,7 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 ## Features
 
-- Check one or more permissions synchronously
-- Query an individual permission as `GRANTED` or `DENIED`
+- Query an individual permission as `GRANTED` or `DENIED` synchronously
 - Request multiple permissions from a coroutine
 - Distinguish between a denial and a permanent denial after a request
 - Uses AndroidX `ActivityResultContracts.RequestMultiplePermissions` for the system permission flow
@@ -28,11 +27,15 @@ import com.bonepeople.android.widget.util.permission.PermissionStatus
 import kotlinx.coroutines.launch
 ```
 
-Check whether all permissions are granted:
+Check whether all permissions in a collection are granted:
 
 ```kotlin
-if (AppPermission.checkGranted(android.Manifest.permission.CAMERA)) {
-    // The camera permission is granted
+val permissions = arrayOf(
+    android.Manifest.permission.CAMERA,
+    android.Manifest.permission.ACCESS_COARSE_LOCATION
+)
+if (permissions.all { AppPermission.checkStatus(it).isGranted() }) {
+    // All permissions are granted
 }
 ```
 
@@ -43,6 +46,14 @@ when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
     PermissionStatus.DENIED -> showPermissionHint()
     PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
+}
+```
+
+If you only need to check whether an individual status is granted, use `PermissionStatus.isGranted()`:
+
+```kotlin
+if (AppPermission.checkStatus(android.Manifest.permission.CAMERA).isGranted()) {
+    openCamera()
 }
 ```
 
@@ -90,7 +101,7 @@ lifecycleScope.launch {
 
 ## Notes
 
-- `checkGranted()` returns `true` only when every supplied permission is granted. An empty permission list is considered granted.
+- Use `permissions.all { AppPermission.checkStatus(it).isGranted() }` to check multiple permissions. `all` returns `true` for an empty collection.
 - `request()` is a suspending function and must be called from a coroutine. A lifecycle-aware scope such as `lifecycleScope` is recommended.
 - `request()` skips permissions that are already granted. Its result still contains every supplied permission in the original order.
 - `checkStatus()` can only determine synchronously whether a permission is granted and returns `DENIED` otherwise. `PERMANENTLY_DENIED` is only returned by `request()`.
