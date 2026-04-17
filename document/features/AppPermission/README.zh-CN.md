@@ -8,9 +8,9 @@
 
 ## 功能
 
-- 同步查询单个权限的 `GRANTED` 或 `DENIED` 状态
+- 同步查询单个权限的当前状态
 - 在协程中申请多个权限
-- 申请后区分普通拒绝和永久拒绝
+- 申请后区分普通拒绝和请求受阻
 - 使用 AndroidX `ActivityResultContracts.RequestMultiplePermissions` 发起系统权限流程
 - 调用 `request()` 即发起申请，无需先注册回调再单独触发
 - 仅请求尚未授权的权限
@@ -44,8 +44,9 @@ if (permissions.all { AppPermission.checkStatus(it).isGranted() }) {
 ```kotlin
 when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
-    PermissionStatus.DENIED -> showPermissionHint()
-    PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
+    PermissionStatus.NOT_REQUESTED -> showFirstRequestHint()
+    PermissionStatus.DENIED -> requestPermission()
+    PermissionStatus.REQUEST_BLOCKED -> openAppSettings()
 }
 ```
 
@@ -71,7 +72,7 @@ lifecycleScope.launch {
     }
 
     val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
-    if (cameraStatus == PermissionStatus.PERMANENTLY_DENIED) {
+    if (cameraStatus == PermissionStatus.REQUEST_BLOCKED) {
         openAppSettings()
     }
 }
@@ -104,9 +105,10 @@ lifecycleScope.launch {
 - 可以用 `permissions.all { AppPermission.checkStatus(it).isGranted() }` 检查多个权限；空权限列表的 `all` 结果为 `true`。
 - `request()` 是挂起函数，必须在协程中调用，推荐使用 `lifecycleScope` 等生命周期感知的作用域。
 - `request()` 会跳过已经授权的权限，但结果仍按原始顺序包含传入的全部权限。
-- `checkStatus()` 只能同步判断权限是否已授权，未授权时返回 `DENIED`；`PERMANENTLY_DENIED` 只会出现在 `request()` 的申请结果中。
-- 权限被拒绝后，`request()` 通过 `ActivityCompat.shouldShowRequestPermissionRationale()` 判断是否应再次展示权限说明；不应展示时返回 `PERMANENTLY_DENIED`。
+- 权限被拒绝后，`request()` 通过 `ActivityCompat.shouldShowRequestPermissionRationale()` 判断普通申请流程是否受阻；受阻时返回 `REQUEST_BLOCKED`。
+- `REQUEST_BLOCKED` 表示普通权限申请流程当前受阻，常见于用户选择“不再询问”或多次拒绝权限；该状态不用于判断具体的受阻原因。
 - 旧版回调 API 仍保留在 `com.bonepeople.android.widget.util.AppPermission`，新代码应使用本文介绍的新版 API。
+- `NOT_REQUESTED` 的检测当前尚未实现，因此未授权的权限暂时返回 `DENIED`。
 
 ## 源码链接
 

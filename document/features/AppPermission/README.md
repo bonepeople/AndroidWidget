@@ -8,9 +8,9 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 ## Features
 
-- Query an individual permission as `GRANTED` or `DENIED` synchronously
+- Query the current status of an individual permission synchronously
 - Request multiple permissions from a coroutine
-- Distinguish between a denial and a permanent denial after a request
+- Distinguish between a regular denial and a blocked request after a request
 - Uses AndroidX `ActivityResultContracts.RequestMultiplePermissions` for the system permission flow
 - Starts the permission flow when `request()` is called, with no separate callback registration or launch step
 - Only requests permissions that are not yet granted
@@ -44,8 +44,9 @@ Query an individual permission:
 ```kotlin
 when (AppPermission.checkStatus(android.Manifest.permission.CAMERA)) {
     PermissionStatus.GRANTED -> openCamera()
-    PermissionStatus.DENIED -> showPermissionHint()
-    PermissionStatus.PERMANENTLY_DENIED -> openAppSettings()
+    PermissionStatus.NOT_REQUESTED -> showFirstRequestHint()
+    PermissionStatus.DENIED -> requestPermission()
+    PermissionStatus.REQUEST_BLOCKED -> openAppSettings()
 }
 ```
 
@@ -71,7 +72,7 @@ lifecycleScope.launch {
     }
 
     val cameraStatus = result.permissionStatuses[android.Manifest.permission.CAMERA]
-    if (cameraStatus == PermissionStatus.PERMANENTLY_DENIED) {
+    if (cameraStatus == PermissionStatus.REQUEST_BLOCKED) {
         openAppSettings()
     }
 }
@@ -104,9 +105,10 @@ lifecycleScope.launch {
 - Use `permissions.all { AppPermission.checkStatus(it).isGranted() }` to check multiple permissions. `all` returns `true` for an empty collection.
 - `request()` is a suspending function and must be called from a coroutine. A lifecycle-aware scope such as `lifecycleScope` is recommended.
 - `request()` skips permissions that are already granted. Its result still contains every supplied permission in the original order.
-- `checkStatus()` can only determine synchronously whether a permission is granted and returns `DENIED` otherwise. `PERMANENTLY_DENIED` is only returned by `request()`.
-- After a permission is denied, `request()` uses `ActivityCompat.shouldShowRequestPermissionRationale()` to determine whether the denial is permanent.
+- After a permission is denied, `request()` uses `ActivityCompat.shouldShowRequestPermissionRationale()` to determine whether the regular request flow is blocked and returns `REQUEST_BLOCKED` when it is.
+- `REQUEST_BLOCKED` means the regular permission request flow is currently blocked. This commonly occurs after the user chooses "Don't ask again" or denies the permission repeatedly; the status does not identify the specific cause.
 - The legacy callback API remains available at `com.bonepeople.android.widget.util.AppPermission`, but new code should use the API documented here.
+- Detection of `NOT_REQUESTED` is not currently implemented, so an ungranted permission temporarily returns `DENIED`.
 
 ## Source Code
 

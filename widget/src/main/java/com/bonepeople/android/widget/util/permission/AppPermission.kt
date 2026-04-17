@@ -43,25 +43,25 @@ object AppPermission {
                     this[permission] = checkStatus(permission)
                 }
             }
-            val deniedPermissions = permissionStatuses
-                .filterValues { it == PermissionStatus.DENIED }
+            val requestablePermissions = permissionStatuses
+                .filterValues { it.isRequestable() }
                 .keys
                 .toTypedArray()
 
-            if (deniedPermissions.isEmpty()) {
+            if (requestablePermissions.isEmpty()) {
                 return@withContext PermissionResult(permissionStatuses)
             }
 
             suspendCancellableCoroutine { continuation ->
                 val activity = ActivityHolder.getTopActivity() ?: throw IllegalStateException("No active Activity is available to request permissions.")
                 val contract = RequestMultiplePermissions()
-                contract.createIntent(ApplicationHolder.app, deniedPermissions).launch()
+                contract.createIntent(ApplicationHolder.app, requestablePermissions).launch()
                     .onResult { result ->
                         contract.parseResult(result.resultCode, result.data).forEach { (permission, granted) ->
                             permissionStatuses[permission] = when {
                                 granted -> PermissionStatus.GRANTED
                                 ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> PermissionStatus.DENIED
-                                else -> PermissionStatus.PERMANENTLY_DENIED
+                                else -> PermissionStatus.REQUEST_BLOCKED
                             }
                         }
                         continuation.resume(PermissionResult(permissionStatuses))
