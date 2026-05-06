@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".module.main.MainActivity"
+            android:name=".module.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".module.contract.ContractActivity"

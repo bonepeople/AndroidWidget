@@ -1,11 +1,11 @@
-package com.bonepeople.android.widget.sample.module.main
+package com.bonepeople.android.widget.sample.module.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
-import com.bonepeople.android.widget.sample.databinding.ActivityMainBinding
+import com.bonepeople.android.widget.sample.databinding.ActivityHomeBinding
 import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.sample.module.contract.ContractActivity
 import com.bonepeople.android.widget.sample.module.service.ServiceActivity
@@ -16,8 +16,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.system.measureTimeMillis
 
-class MainActivity : AppCompatActivity() {
-    private val views: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+class HomeActivity : AppCompatActivity() {
+    private val views: ActivityHomeBinding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
     private val loading by lazy { SimpleLoadingDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     LogUtil.test.debug("used ${AppTime.getTimeString(it)}")
                 }
             }.getOrElse {
-                LogUtil.test.error("exception@MainActivity.test", it)
+                LogUtil.test.error("exception@HomeActivity.test", it)
             }
             loading.dismiss()
         }
