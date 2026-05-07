@@ -2,6 +2,7 @@ package com.bonepeople.android.widget.sample.module.home
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.bonepeople.android.widget.CoroutinesHolder
 import com.bonepeople.android.widget.activity.result.launch
@@ -23,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        onBackPressedDispatcher.addCallback(this) { finishAndRemoveTask() }
         initView()
     }
 
