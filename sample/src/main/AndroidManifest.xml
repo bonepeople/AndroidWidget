@@ -12,7 +12,8 @@
         android:theme="@style/Theme.AndroidWidget">
         <activity
             android:name=".module.start.StartActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AndroidWidget.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

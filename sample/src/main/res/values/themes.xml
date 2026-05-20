@@ -14,4 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="android:textAllCaps">false</item>
     </style>
+
+    <style name="Theme.AndroidWidget.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/purple_500</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidWidget</item>
+    </style>
 </resources>
