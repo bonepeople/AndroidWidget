@@ -9,6 +9,7 @@ import com.bonepeople.android.widget.activity.result.launch
 import com.bonepeople.android.widget.sample.databinding.ActivityHomeBinding
 import com.bonepeople.android.widget.sample.global.LogUtil
 import com.bonepeople.android.widget.sample.module.contract.ContractActivity
+import com.bonepeople.android.widget.sample.module.icon.IconProcessActivity
 import com.bonepeople.android.widget.sample.module.service.ServiceActivity
 import com.bonepeople.android.widget.util.AppTime
 import com.bonepeople.android.widget.util.AppView.singleClick
@@ -32,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
         views.buttonTest.singleClick { startTest() }
         views.buttonContract.singleClick { Intent(this, ContractActivity::class.java).launch() }
         views.buttonService.singleClick { ServiceActivity.open() }
+        views.buttonIconProcess.singleClick { Intent(this, IconProcessActivity::class.java).launch() }
     }
 
     private fun startTest() {

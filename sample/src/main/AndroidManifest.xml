@@ -24,6 +24,10 @@
             android:name=".module.home.HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".module.icon.IconProcessActivity"
+            android:exported="false"
+            android:label="@string/icon_process" />
+        <activity
             android:name=".module.contract.ContractActivity"
             android:exported="false" />
         <activity

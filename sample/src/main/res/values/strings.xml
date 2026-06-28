@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidWidget</string>
+    <string name="icon_process">Icon Process</string>
 </resources>

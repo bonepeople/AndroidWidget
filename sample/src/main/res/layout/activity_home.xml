@@ -32,6 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Service" />
+
+            <Button
+                android:id="@+id/buttonIconProcess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_process" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
