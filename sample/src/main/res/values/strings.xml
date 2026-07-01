@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">AndroidWidget</string>
     <string name="icon_process">Icon Process</string>
+    <string name="icon_process_step_00_title">0. Original image</string>
+    <string name="icon_process_step_01_title">1. Border removed</string>
+    <string name="icon_process_step_02_title">2. Upscaled</string>
+    <string name="icon_process_step_03_title">3. Inner shadow removed</string>
+    <string name="icon_process_step_04_title">4. HD master</string>
+    <string name="icon_process_step_05_title">5. Safe zone</string>
+    <string name="icon_process_step_06_title">6. Extended artwork</string>
+    <string name="icon_process_step_07_title">7. Separated layers</string>
+    <string name="icon_process_step_08_title">8. Refined foreground</string>
+    <string name="icon_process_step_09_title">9. Monochrome layer</string>
 </resources>

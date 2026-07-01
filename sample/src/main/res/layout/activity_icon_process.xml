@@ -6,12 +6,194 @@
     android:layout_height="match_parent"
     tools:context=".module.icon.IconProcessActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/icon_process"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_process_step_00_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_00_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_00_original" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_01_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_01_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_01_border_removed" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_02_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_02_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_02_upscaled" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_03_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_03_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_03_inner_shadow_removed" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_04_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_04_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_04_hd_master" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_05_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_05_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_05_safe_zone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_06_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/icon_process_step_06_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_06_extended" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_07_title"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_07_background" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/icon_process_step_07_title"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_07_foreground" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_08_title"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_07_background" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/icon_process_step_08_title"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_08_refined_foreground" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/icon_process_step_09_title"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/black"
+                android:contentDescription="@string/icon_process_step_09_title"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_process_step_09_monochrome" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
