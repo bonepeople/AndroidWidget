@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".module.icon.IconProcessActivity">
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSafeZone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:text="@string/icon_process_show_safe_zone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -13,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/switchSafeZone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,13 +115,26 @@
                 android:text="@string/icon_process_step_05_title"
                 android:textStyle="bold" />
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="240dp"
                 android:layout_height="240dp"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/icon_process_step_05_title"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_process_step_05_safe_zone" />
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/icon_process_step_05_title"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_05_safe_zone" />
+
+                <ImageView
+                    android:id="@+id/imageSafeZoneOverlayStep05"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_safe_zone_overlay" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -117,13 +143,26 @@
                 android:text="@string/icon_process_step_06_title"
                 android:textStyle="bold" />
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="240dp"
                 android:layout_height="240dp"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/icon_process_step_06_title"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_process_step_06_extended" />
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/icon_process_step_06_title"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_06_extended" />
+
+                <ImageView
+                    android:id="@+id/imageSafeZoneOverlayStep06"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_safe_zone_overlay" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -150,6 +189,14 @@
                     android:contentDescription="@string/icon_process_step_07_title"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_process_step_07_foreground" />
+
+                <ImageView
+                    android:id="@+id/imageSafeZoneOverlayStep07"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_safe_zone_overlay" />
             </FrameLayout>
 
             <TextView
@@ -177,6 +224,14 @@
                     android:contentDescription="@string/icon_process_step_08_title"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_process_step_08_refined_foreground" />
+
+                <ImageView
+                    android:id="@+id/imageSafeZoneOverlayStep08"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_safe_zone_overlay" />
             </FrameLayout>
 
             <TextView
@@ -186,14 +241,27 @@
                 android:text="@string/icon_process_step_09_title"
                 android:textStyle="bold" />
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="240dp"
                 android:layout_height="240dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/black"
-                android:contentDescription="@string/icon_process_step_09_title"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_process_step_09_monochrome" />
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:contentDescription="@string/icon_process_step_09_title"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_step_09_monochrome" />
+
+                <ImageView
+                    android:id="@+id/imageSafeZoneOverlayStep09"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_process_safe_zone_overlay" />
+            </FrameLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
