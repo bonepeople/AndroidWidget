@@ -8,7 +8,7 @@ android {
     compileSdk rootProject.androidConfig.compileSdk
     defaultConfig {
         applicationId "com.bonepeople.android.widget.sample"
-        minSdk rootProject.androidConfig.minSdk
+        minSdk 26
         targetSdk rootProject.androidConfig.targetSdk
         versionCode rootProject.androidConfig.versionCode
         versionName rootProject.androidConfig.versionName
