@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AndroidWidget</string>
+    <string name="start_tagline">Practical Android utilities for everyday development.</string>
+    <string name="start_version_format">Version %s</string>
     <string name="icon_process">Icon Process</string>
     <string name="icon_process_show_safe_zone">Show safe zone</string>
     <string name="icon_process_step_00_title">0. Original image</string>
