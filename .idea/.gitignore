@@ -1,15 +1,18 @@
-/shelf
+# bonepeople 20260524
 /caches
 /libraries
-modules.xml
-workspace.xml
-navEditor.xml
+/shelf
+AndroidProjectSystem.xml
 assetWizardSettings.xml
-misc.xml
-deploymentTargetDropDown.xml
-gradle.xml
 compiler.xml
-kotlinc.xml
-migrations.xml
+deploymentTargetDropDown.xml
 deploymentTargetSelector.xml
+gradle.xml
+kotlinc.xml
+markdown.xml
+migrations.xml
+misc.xml
+modules.xml
+navEditor.xml
 runConfigurations.xml
+workspace.xml
