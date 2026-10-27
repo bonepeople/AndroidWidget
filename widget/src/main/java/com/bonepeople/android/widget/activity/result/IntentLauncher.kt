@@ -23,11 +23,22 @@ class IntentLauncher private constructor() : ActivityResultCallback<ActivityResu
     private var intentResult: IntentResult? = null
 
     internal fun launch(intent: Intent): IntentResult {
+        val activityResultLauncher = checkNotNull(launcher) {
+            "IntentLauncher is not registered. The current Activity cannot use Intent.launch()."
+        }
         val tempResult = IntentResult()
         intentResult = tempResult
         launchRecord[this] = "$hostName:IntentLauncher@${System.identityHashCode(this).toString(36)}:$intent"
-        launcher?.launch(intent)
-        return tempResult
+        return try {
+            activityResultLauncher.launch(intent)
+            tempResult
+        } catch (throwable: Throwable) {
+            launchRecord.remove(this)
+            if (intentResult === tempResult) {
+                intentResult = null
+            }
+            throw throwable
+        }
     }
 
     internal fun ready() = intentResult == null

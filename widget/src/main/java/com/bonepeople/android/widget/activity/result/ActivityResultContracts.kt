@@ -13,7 +13,8 @@ import com.bonepeople.android.widget.ActivityHolder
  *   [Documentation](https://github.com/bonepeople/AndroidWidget/tree/main/document/features/ActivityResult)
  */
 fun Intent.launch(): IntentResult {
-    val data = ActivityHolder.getTopActivity()?.let { ActivityHolder.getData(it, "com.bonepeople.android.widget.activity.result.IntentLauncher") }
+    val topActivity = ActivityHolder.getTopActivity()
+    val data = topActivity?.let { ActivityHolder.getData(it, "com.bonepeople.android.widget.activity.result.IntentLauncher") }
     if (data is ArrayList<*>) {
         data.firstOrNull {
             it is IntentLauncher && it.ready()
@@ -23,6 +24,6 @@ fun Intent.launch(): IntentResult {
         val recordLog: String = IntentLauncher.stackTraceToString()
         throw IllegalStateException("The number of simultaneously used IntentLaunchers exceeds the limit. You can adjust the limit by modifying IntentLauncher.initialCapacity.\n$recordLog")
     } else {
-        throw IllegalStateException("${ActivityHolder.getTopActivity()?.javaClass} must inherit from ComponentActivity to use this method.")
+        throw IllegalStateException("${topActivity?.javaClass} must inherit from ComponentActivity to use this method.")
     }
 }

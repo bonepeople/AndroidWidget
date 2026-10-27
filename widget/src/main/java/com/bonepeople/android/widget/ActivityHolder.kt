@@ -24,10 +24,13 @@ object ActivityHolder : DefaultActivityLifecycleCallbacks {
 
     /**
      * Retrieves the topmost [Activity] instance.
+     * Activities that are finishing or have been destroyed are ignored.
      * Returns `null` if no activities are present.
      */
     fun getTopActivity(): Activity? {
-        return if (activityList.isEmpty()) null else activityList.last
+        return activityList.asReversed().firstOrNull {
+            !it.isFinishing && !it.isDestroyed
+        }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
