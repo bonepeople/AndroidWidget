@@ -1,8 +1,8 @@
-# Release Note and Changelog Writing Guidelines
+# Release Note, Upgrade Guide, and Changelog Writing Guidelines
 
-This document defines the writing standards for Release Notes and Changelogs of the Android dependency library.
+This document defines the writing standards for Release Notes, Upgrade Guides, and Changelogs of the Android dependency library.
 
-The goal is to keep release documentation consistent, clear, developer-friendly, and easy to maintain across versions. Each release document should help library users, SDK integrators, Android developers, QA engineers, and maintainers understand what changed, whether an upgrade is required, and whether any integration action is needed.
+The goal is to keep release documentation consistent, clear, developer-friendly, and easy to maintain across versions. Each release document should help library users, SDK integrators, Android developers, QA engineers, and maintainers understand what changed, whether an upgrade is required, how to complete the upgrade, and whether any integration action is needed.
 
 ## 1. File Location
 
@@ -24,26 +24,48 @@ document/releases/
 
 Where:
 
-* `release-guidelines.md` describes the writing rules for Release Notes and Changelogs.
-* `vX.Y.Z.md` records the Release Note and Changelog for the corresponding library version.
+* `release-guidelines.md` describes the writing rules for Release Notes, Upgrade Guides, and Changelogs.
+* `vX.Y.Z.md` records the Release Note, Upgrade Guide, and Changelog for the corresponding library version.
 
 ## 2. Version File Structure
 
-Each version file must contain the following two sections:
+Each version file must contain the following three sections, in this order:
 
 ```md
 ## Release Note
 
+## Upgrade Guide
+
 ## Changelog
 ```
 
-The two sections serve different purposes and should be written with different levels of detail.
+The three sections serve different audiences and answer different questions:
+
+| Section | Primary audience | Primary question |
+|---------|------------------|------------------|
+| `Release Note` | Library users, SDK integrators, technical leads, and QA engineers evaluating the release | What changed, why does it matter, and should the project upgrade? |
+| `Upgrade Guide` | Consumer-project developers and integration owners actively performing the version upgrade | What must be searched, changed, and verified to complete the upgrade safely? |
+| `Changelog` | Library maintainers, contributors, code reviewers, and developers investigating behavior or regressions | What concrete APIs, modules, dependencies, and implementation behavior changed? |
+
+Audience is defined by the reader's current task rather than job title. The same developer may use the Release Note to make an upgrade decision, the Upgrade Guide to implement it, and the Changelog to investigate a technical detail.
+
+They are stored in one version file only because they describe the same release. Each section is an independent document unit and may be copied, published, or consumed without the other two sections.
+
+Each section must therefore:
+
+* Include the context needed to fulfill its own purpose without assuming that a sibling section was read.
+* Avoid positional references such as "above" or "below" and avoid directing readers to a sibling section in the same file.
+* Link directly to stable feature or reference documentation when additional detail is required.
+
+Independent use does not require duplicating all content across the three sections. Each section should remain focused on its own audience and purpose.
 
 ## 3. Release Note
 
-The Release Note is intended for developers and integrators who use the library.
+The Release Note is intended for library users, SDK integrators, technical leads, and QA engineers who need to evaluate the release and decide whether or when to adopt it.
 
 It should explain the value, impact, and integration requirements of the release in clear technical language. The Release Note should help readers quickly understand whether they should upgrade, what benefits the new version provides, and whether any code or configuration changes are required.
+
+One common independent use of the Release Note is as the GitHub Release description. It must remain complete and understandable in that context.
 
 ### Writing Principles
 
@@ -51,7 +73,7 @@ It should explain the value, impact, and integration requirements of the release
 * Focus on public APIs, integration behavior, compatibility, configuration, runtime behavior, and upgrade impact.
 * Highlight new capabilities, important fixes, breaking changes, deprecated APIs, and behavior changes when applicable.
 * Explain why the change matters, not only what changed.
-* Clearly mention required migration steps when applicable.
+* Clearly flag required migration when applicable and summarize its impact; keep step-by-step instructions in the Upgrade Guide.
 * Clearly state whether existing integrations are affected when this is useful for understanding upgrade impact.
 * Include compatibility notes when Android SDK, Gradle, Kotlin, Java, Android Gradle Plugin, AndroidX, or third-party dependencies are changed.
 * Mention changes to permissions, manifest configuration, ProGuard/R8 rules, initialization flow, callbacks, threading behavior, or error handling when they affect integrators.
@@ -59,6 +81,7 @@ It should explain the value, impact, and integration requirements of the release
 * Avoid directly copying commit messages.
 * Avoid using only task IDs, branch names, internal codenames, class names, or method names without explanation.
 * Avoid adding non-applicable optional sections or placeholder statements.
+* Keep step-by-step migration instructions in the Upgrade Guide instead of duplicating them in the Release Note.
 
 ### Recommended Content
 
@@ -76,13 +99,74 @@ A Release Note should include relevant information from the following categories
 
 These categories are guidance only. Include them only when they apply to the current release.
 
-## 4. Changelog
+## 4. Upgrade Guide
 
-The Changelog is intended for maintainers and developers who need a more detailed summary of code-level changes.
+The Upgrade Guide is intended for consumer-project developers and integration owners who are actively updating an existing project from an earlier library version. It should let them complete the upgrade without reading the source diff, the Release Note, or the Changelog.
+
+The guide must state its assumed starting version or supported upgrade path. The normal baseline is the immediately preceding release. When a project skips versions, direct readers to apply the Upgrade Guides for every skipped release unless the current guide explicitly covers that path.
+
+### Writing Principles
+
+* Start with the dependency version change or other entry point needed to adopt the release.
+* Classify each action as `[Required]`, `[Recommended]`, or `[Optional]`.
+* State who is affected before describing an action. Conditional requirements should use wording such as `[Required if ...]`.
+* Provide copyable search targets, such as a fully qualified class name, import, method call, Gradle coordinate, manifest entry, configuration key, or dependency name.
+* Explain what to do with every search result. Do not provide search terms without a corresponding action.
+* Show concise before-and-after code when an API, configuration, or integration pattern changes.
+* State whether the old API or behavior still works and whether migration can be deferred.
+* Include focused verification points for behavior that could regress during the upgrade.
+* Explain relevant semantic differences, including lifecycle, threading, cancellation, replay, persistence, error handling, and compatibility behavior.
+* Treat search targets as review aids, not instructions for an unreviewed global replacement.
+* Include only actions supported by the released public API and the actual version diff.
+* Exclude sample-app-only and internal maintenance changes unless they affect library consumers.
+
+### Replacement Opportunities for New Features
+
+When a release adds a new feature that can simplify existing consumer code, include an optional adoption item that explains:
+
+* Which older API or code pattern the new feature can replace.
+* What developers should search for to find candidate code.
+* The constraints that determine whether the replacement is behaviorally equivalent.
+* A small example of the preferred implementation when it materially reduces ambiguity.
+* Cases where the old approach should remain because the new feature has different semantics.
+
+Do not claim that a new API is a drop-in replacement when lifecycle, delivery, threading, persistence, or error-handling behavior differs.
+
+### When No Source Migration Is Required
+
+The Upgrade Guide is still required when a release is backward-compatible. Keep it concise and state that no source or configuration migration is required after the dependency update. Add compatibility checks or optional adoption opportunities only when they are concrete and useful; do not add empty subsections or generic placeholders.
+
+### Recommended Structure
+
+Use only the subsections that apply:
+
+```md
+## Upgrade Guide
+
+This guide assumes the project is upgrading from X.Y.Z to X.Y.Z.
+
+### Required Actions
+
+- [Required] Search for `old target` and replace or update it with `new target`.
+
+### Recommended Checks
+
+- [Recommended] Search for `affected target`, review the described condition, and verify the expected behavior.
+
+### Optional Adoption
+
+- [Optional] Replace `legacy pattern` with `new API` when the documented semantics fit the use case.
+```
+
+## 5. Changelog
+
+The Changelog is intended for library maintainers, contributors, code reviewers, and developers who need a detailed technical record for review, debugging, regression analysis, or future maintenance.
 
 It should be based on the actual changes in the current version, but it must not be a raw copy of commit history.
 
 The Changelog does not need to be split into multiple subsections. Use a direct bullet list.
+
+The Changelog must remain understandable when published independently. Each item should include enough context to identify the affected API, module, dependency, or behavior without relying on another section.
 
 ### Writing Principles
 
@@ -93,10 +177,11 @@ The Changelog does not need to be split into multiple subsections. Use a direct 
 * Use consistent wording and tense across all items.
 * Avoid vague descriptions such as “optimized logic,” “fixed bug,” or “updated code” without explaining what changed.
 * Do not directly copy commit messages.
+* Do not include release-only updates to the version being documented, such as its own version name, version code, or publication version. Dependency and compatibility version changes remain part of the Changelog when they affect the release.
 * Do not list only task IDs, branch names, temporary internal names, or issue numbers.
 * Do not include internal-only details that are not useful for future maintenance.
 
-## 5. Breaking Changes
+## 6. Breaking Changes
 
 If a release contains breaking changes, the Release Note must clearly identify them.
 
@@ -115,9 +200,9 @@ Breaking changes include but are not limited to:
 * Changed ProGuard or R8 rules.
 * Changed data format, protocol, or serialization behavior.
 
-## 6. Migration Notes
+## 7. Migration Notes
 
-Migration notes should be included whenever developers need to modify code, configuration, dependencies, build scripts, permissions, or initialization logic.
+Migration notes should be included in the Upgrade Guide whenever developers need to modify code, configuration, dependencies, build scripts, permissions, or initialization logic.
 
 Migration notes should explain:
 
@@ -128,7 +213,7 @@ Migration notes should explain:
 * Whether the migration is required immediately or can be deferred.
 * Example code before and after migration, when helpful.
 
-## 7. Deprecation Notes
+## 8. Deprecation Notes
 
 When an API is deprecated, the documentation should explain:
 
@@ -138,7 +223,7 @@ When an API is deprecated, the documentation should explain:
 * Whether removal is planned.
 * Which version may remove the API, if known.
 
-## 8. Dependency and Compatibility Notes
+## 9. Dependency and Compatibility Notes
 
 Compatibility information should be included whenever it changes.
 
@@ -157,7 +242,7 @@ Mention changes such as:
 * ABI or native library changes.
 * Compile-only or runtime dependency requirements.
 
-## 9. Known Issues
+## 10. Known Issues
 
 If a release has known limitations or risks, they should be documented clearly.
 
@@ -168,24 +253,39 @@ Known issues should explain:
 * Whether there is a workaround.
 * Whether it will be addressed in a future version, if known.
 
-## 10. Style Guidelines
+## 11. Style Guidelines
 
 Use clear, concise, and professional English.
 
-## 11. Final Checklist
+## 12. Final Checklist
 
 Before publishing a version release document, check the following:
 
 * The file is placed under `document/releases/`.
 * The file name follows the `vX.Y.Z.md` format.
-* Both `Release Note` and `Changelog` sections are included.
+* `Release Note`, `Upgrade Guide`, and `Changelog` sections are included in that order.
+* Each of the three sections is complete for its purpose and can be copied or published independently.
+* No section refers to sibling sections or content above or below it.
+* The Release Note helps its audience evaluate the release and make an upgrade decision.
+* The Upgrade Guide helps an integration owner perform and verify the upgrade.
+* The Changelog gives maintainers and investigators a concrete technical record of the changes.
 * The Release Note explains the impact on library users.
+* The Release Note is self-contained and can be published independently as the GitHub Release description.
 * New APIs and important behavior changes are clearly described.
 * Breaking changes are clearly marked.
-* Migration steps are included when needed.
+* The Upgrade Guide states its assumed starting version or upgrade path.
+* Every upgrade action is classified as required, recommended, or optional.
+* Required dependency, code, configuration, and compatibility actions are included.
+* Search targets are copyable and each has a clear follow-up action.
+* Before-and-after examples are included when they make a migration clearer.
+* New features identify safe replacement opportunities when applicable.
+* Semantic differences and cases that should not be replaced are documented.
+* Focused post-upgrade verification points are included when useful.
+* Backward-compatible releases explicitly state when no source or configuration migration is required.
 * Deprecated APIs include replacement guidance.
 * Compatibility or dependency changes are documented.
 * Known issues are documented when applicable.
 * The Changelog summarizes actual code changes instead of copying commit messages.
+* The Changelog does not list the release's own version name, version code, or publication version update.
 * Internal task IDs, branch names, and temporary codenames are not used as standalone descriptions.
 * The language is clear, consistent, and suitable for developers and maintainers.
