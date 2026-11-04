@@ -4,6 +4,9 @@ import android.app.Activity
 import android.os.Bundle
 import java.util.*
 import kotlin.collections.HashMap
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Activity State Holder
@@ -15,12 +18,27 @@ import kotlin.collections.HashMap
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ActivityHolder : DefaultActivityLifecycleCallbacks {
     private val activityData = HashMap<Activity, HashMap<String, Any>>()
+    private var startedActivityCount: Int = 0
+    private var activityChangingConfigurations: Boolean = false
+    private val appForegroundState: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     /**
      * List of active [Activity] instances.
      * Maintains all currently opened activities in the order they were launched.
      */
     val activityList = LinkedList<Activity>()
+
+    /**
+     * Indicates whether the application is currently in the foreground.
+     */
+    val isAppInForeground: Boolean
+        get() = appForegroundState.value
+
+    /**
+     * Emits the current application foreground state and subsequent state changes.
+     * `true` indicates foreground and `false` indicates background.
+     */
+    val appForegroundFlow: StateFlow<Boolean> = appForegroundState.asStateFlow()
 
     /**
      * Retrieves the topmost [Activity] instance.
@@ -35,6 +53,21 @@ object ActivityHolder : DefaultActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         activityList.addLast(activity)
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+        startedActivityCount++
+        if (startedActivityCount == 1 && !activityChangingConfigurations) {
+            appForegroundState.value = true
+        }
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+        activityChangingConfigurations = activity.isChangingConfigurations
+        startedActivityCount--
+        if (startedActivityCount == 0 && !activityChangingConfigurations) {
+            appForegroundState.value = false
+        }
     }
 
     override fun onActivityDestroyed(activity: Activity) {

@@ -17,6 +17,7 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 - Obtener la actividad superior (actualmente visible)
 - Almacenar y recuperar datos temporales clave-valor por instancia de actividad
 - Acceder a la lista ordenada de todas las actividades activas
+- Comprobar si la aplicación está en primer plano y observar los cambios mediante `StateFlow`
 
 ## Uso
 
@@ -53,6 +54,26 @@ val allActivities = ActivityHolder.activityList
 ```
 
 Mantiene el orden en que se abrieron las actividades.
+
+### Observar el estado de primer plano de la aplicación
+
+Leer el estado actual de forma síncrona:
+
+```kotlin
+val isForeground = ActivityHolder.isAppInForeground
+```
+
+Observar los cambios mediante `StateFlow`:
+
+```kotlin
+lifecycleScope.launch {
+    ActivityHolder.appForegroundFlow.collect { isForeground ->
+        // true indica primer plano; false indica segundo plano
+    }
+}
+```
+
+`appForegroundFlow` proporciona inmediatamente el estado actual y emite un nuevo valor cuando cambia. La navegación entre Activities y los cambios de configuración no se notifican como transiciones a segundo plano.
 
 ## Código fuente
 

@@ -17,6 +17,7 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 - Retrieve the top (currently visible) activity
 - Store and retrieve temporary key-value data per activity instance
 - Access the ordered list of all active activities
+- Check whether the application is in the foreground and observe state changes through `StateFlow`
 
 ## Usage
 
@@ -53,6 +54,26 @@ val allActivities = ActivityHolder.activityList
 ```
 
 Maintains the order in which activities were opened.
+
+### Observe application foreground state
+
+Read the current state synchronously:
+
+```kotlin
+val isForeground = ActivityHolder.isAppInForeground
+```
+
+Observe state changes through `StateFlow`:
+
+```kotlin
+lifecycleScope.launch {
+    ActivityHolder.appForegroundFlow.collect { isForeground ->
+        // true means foreground; false means background
+    }
+}
+```
+
+`appForegroundFlow` immediately provides the current state and emits a new value whenever it changes. Activity navigation and configuration changes are not reported as background transitions.
 
 ## Source Code
 
