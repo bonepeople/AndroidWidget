@@ -62,7 +62,7 @@ La instancia Gson predeterminada incluye un adaptador que filtra nulls durante l
 
 ---
 
-### Intent.launch — Navegación y callbacks encadenados
+### Intent.launch — Resultados con callbacks o espera en corrutinas
 
 ¿Sigue escribiendo `registerForActivityResult`, manteniendo referencias a Launcher y ramificando en callbacks? `Intent.launch()` comprime todo el flujo en una cadena:
 
@@ -73,7 +73,19 @@ Intent(this, DetailActivity::class.java)
     .onFailure { result -> handleCancel(result) }
 ```
 
-Sin registro manual, gestión automática del ciclo de vida y soporte para lanzamientos concurrentes.
+Si la lógica posterior de una corrutina necesita esperar a que vuelva la Activity, se puede llamar a `await()` después de `launch()` para suspender la ejecución hasta que el resultado esté disponible:
+
+```kotlin
+lifecycleScope.launch {
+    Intent(this@HomeActivity, DetailActivity::class.java)
+        .launch()
+        .await()
+        .onSuccess { data -> handleResult(data) }
+        .onFailure { result -> handleCancel(result) }
+}
+```
+
+`await()` es opcional. Ambos estilos evitan registrar manualmente los resultados, gestionan automáticamente el ciclo de vida y admiten solicitudes de resultados de Activity concurrentes.
 
 👉 Documentación: [ActivityResult / IntentLauncher](features/ActivityResult/README.es-ES.md)
 

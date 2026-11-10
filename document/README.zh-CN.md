@@ -62,7 +62,7 @@ val user: User = AppGson.toObject(json)  // 无需 TypeToken
 
 ---
 
-### Intent.launch — Activity 跳转与结果回调，链式写法
+### Intent.launch — Activity 结果回调与协程等待
 
 还在手写 `registerForActivityResult`、维护 Launcher 引用、在回调里分支判断？`Intent.launch()` 把整套流程压缩成链式调用：
 
@@ -73,7 +73,19 @@ Intent(this, DetailActivity::class.java)
     .onFailure { result -> handleCancel(result) }
 ```
 
-无需手动注册，生命周期自动管理，支持并发启动多个页面。
+如果协程中的后续逻辑需要等待 Activity 返回，可以在 `launch()` 后调用 `await()` 挂起等待：
+
+```kotlin
+lifecycleScope.launch {
+    Intent(this@HomeActivity, DetailActivity::class.java)
+        .launch()
+        .await()
+        .onSuccess { data -> handleResult(data) }
+        .onFailure { result -> handleCancel(result) }
+}
+```
+
+`await()` 并非必需。两种方式都无需手动注册结果回调，均由内部自动管理生命周期，并支持并发发起多个 Activity 结果请求。
 
 👉 详细文档：[ActivityResult / IntentLauncher](features/ActivityResult/README.zh-CN.md)
 

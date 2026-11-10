@@ -62,7 +62,7 @@ The default Gson instance includes a null-filtering adapter that ignores null fi
 
 ---
 
-### Intent.launch — Activity Navigation and Result Callbacks, Chained
+### Intent.launch — Activity Results with Callbacks or Coroutine Waiting
 
 Still writing `registerForActivityResult`, holding Launcher references, and branching in callbacks? `Intent.launch()` compresses the entire flow into a chain:
 
@@ -73,7 +73,19 @@ Intent(this, DetailActivity::class.java)
     .onFailure { result -> handleCancel(result) }
 ```
 
-No manual registration, automatic lifecycle management, and support for concurrent launches.
+If subsequent coroutine logic needs to wait for the Activity to return, call `await()` after `launch()` to suspend until the result is available:
+
+```kotlin
+lifecycleScope.launch {
+    Intent(this@HomeActivity, DetailActivity::class.java)
+        .launch()
+        .await()
+        .onSuccess { data -> handleResult(data) }
+        .onFailure { result -> handleCancel(result) }
+}
+```
+
+`await()` is optional. Both styles avoid manual result registration, use automatic lifecycle management, and support concurrent Activity result requests.
 
 👉 Full docs: [ActivityResult / IntentLauncher](features/ActivityResult/README.md)
 

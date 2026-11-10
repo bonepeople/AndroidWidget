@@ -15,7 +15,7 @@ AndroidWidget 提供的工具模块目录。各模块均有独立 README，包�
 ## 2. Activity 结果与权限处理
 
 #### [ActivityResult / IntentLauncher](./ActivityResult)
-简化 `startActivityForResult` 流程，支持链式 `.onSuccess`、`.onFailure`、`.onResult` 处理。自动生命周期管理，支持并发启动。
+简化 `startActivityForResult` 流程，支持链式 `.onSuccess`、`.onFailure`、`.onResult` 处理及挂起式 `.await()`。自动生命周期管理，支持并发启动。
 
 #### [AppPermission](./AppPermission)
 同步检查运行时权限，并在协程中仅申请未授权权限，同时返回整体结果和每项权限状态。

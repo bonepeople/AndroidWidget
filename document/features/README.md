@@ -15,7 +15,7 @@ Manage all active `Activity` instances, retrieve the top activity, store tempora
 ## 2. Activity Result & Permission Handling
 
 #### [ActivityResult / IntentLauncher](./ActivityResult)
-Simplify the `startActivityForResult` workflow with chainable `.onSuccess`, `.onFailure`, `.onResult` handlers. Automatic lifecycle management and concurrent launch support.
+Simplify the `startActivityForResult` workflow with chainable `.onSuccess`, `.onFailure`, `.onResult` handlers and suspending `.await()` support. Automatic lifecycle management and concurrent launch support.
 
 #### [AppPermission](./AppPermission)
 Check runtime permissions synchronously and request only ungranted permissions from a coroutine. Returns both the aggregate result and each permission status.

@@ -3,6 +3,7 @@ package com.bonepeople.android.widget.activity.result
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.ActivityResult
+import kotlinx.coroutines.CompletableDeferred
 
 /**
  * Intent Result
@@ -15,15 +16,30 @@ class IntentResult {
     private var successAction: ((Intent?) -> Unit)? = null
     private var failureAction: ((ActivityResult) -> Unit)? = null
     private var activityResult: ActivityResult? = null
+    private val resultReady = CompletableDeferred<Unit>()
 
     internal fun saveResult(result: ActivityResult) {
         activityResult = result
-        this.resultAction?.invoke(result)
-        if (result.resultCode == Activity.RESULT_OK) {
-            successAction?.invoke(result.data)
-        } else {
-            failureAction?.invoke(result)
+        try {
+            this.resultAction?.invoke(result)
+            if (result.resultCode == Activity.RESULT_OK) {
+                successAction?.invoke(result.data)
+            } else {
+                failureAction?.invoke(result)
+            }
+        } finally {
+            resultReady.complete(Unit)
         }
+    }
+
+    /**
+     * Suspends until the [Activity] returns a result, then returns this handler for chained result processing.
+     *
+     * Cancelling the waiting coroutine does not cancel the launched [Activity].
+     */
+    suspend fun await(): IntentResult {
+        resultReady.await()
+        return this
     }
 
     /**

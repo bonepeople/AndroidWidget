@@ -4,13 +4,14 @@ Language Versions: [Español](./README.es-ES.md) | [中文](./README.zh-CN.md)
 
 ## Introduction
 
-`IntentLauncher` simplifies the Android `startActivityForResult` workflow. Launch an `Activity` with the `.launch()` extension and handle results through chainable callbacks.
+`IntentLauncher` simplifies the Android `startActivityForResult` workflow. Launch an `Activity` with the `.launch()` extension and handle results through chainable callbacks or coroutine suspension.
 
 Lifecycle monitoring and launcher registration are handled automatically—no manual setup is required.
 
 ## Features
 
 - Chainable `.onSuccess`, `.onFailure`, and `.onResult` handlers
+- Suspending `.await()` support for coroutines
 - Automatic lifecycle management
 - Supports concurrent activity launches (with configurable capacity)
 
@@ -32,6 +33,22 @@ intent.launch()
         // Handle all result cases
     }
 ```
+
+If subsequent coroutine logic needs to wait for the Activity to return, call `await()` after `launch()` to suspend until the result is available:
+
+```kotlin
+Intent(this, DetailActivity::class.java)
+    .launch()
+    .await()
+    .onSuccess { data ->
+        // Continue with the successful result after the Activity returns
+    }
+    .onFailure { result ->
+        // Handle a non-RESULT_OK result after the Activity returns
+    }
+```
+
+`await()` is optional; existing call sites can continue chaining handlers directly from `launch()`. When used, it returns the same `IntentResult` after its result is available, so handlers chained after it run only after the Activity returns. Cancelling the waiting coroutine does not cancel the launched Activity. The same `IntentResult` can still be handled through callbacks or awaited from another coroutine.
 
 ### Concurrent launches
 

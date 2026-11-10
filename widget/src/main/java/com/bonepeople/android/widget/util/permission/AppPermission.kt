@@ -8,9 +8,7 @@ import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.activity.result.launch
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
 
 /**
  * Utility for checking and requesting runtime permissions.
@@ -52,21 +50,18 @@ object AppPermission {
                 return@withContext PermissionResult(permissionStatuses)
             }
 
-            suspendCancellableCoroutine { continuation ->
-                val activity = ActivityHolder.getTopActivity() ?: throw IllegalStateException("No active Activity is available to request permissions.")
-                val contract = RequestMultiplePermissions()
-                contract.createIntent(ApplicationHolder.app, requestablePermissions).launch()
-                    .onResult { result ->
-                        contract.parseResult(result.resultCode, result.data).forEach { (permission, granted) ->
-                            permissionStatuses[permission] = when {
-                                granted -> PermissionStatus.GRANTED
-                                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> PermissionStatus.DENIED
-                                else -> PermissionStatus.REQUEST_BLOCKED
-                            }
-                        }
-                        continuation.resume(PermissionResult(permissionStatuses))
+            val activity = ActivityHolder.getTopActivity() ?: throw IllegalStateException("No active Activity is available to request permissions.")
+            val activityResultContract = RequestMultiplePermissions()
+            activityResultContract.createIntent(ApplicationHolder.app, requestablePermissions).launch().await().onResult { result ->
+                activityResultContract.parseResult(result.resultCode, result.data).forEach { (permission, granted) ->
+                    permissionStatuses[permission] = when {
+                        granted -> PermissionStatus.GRANTED
+                        ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> PermissionStatus.DENIED
+                        else -> PermissionStatus.REQUEST_BLOCKED
                     }
+                }
             }
+            PermissionResult(permissionStatuses)
         }
     }
 }
