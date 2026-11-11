@@ -257,7 +257,7 @@ dependencyResolutionManagement {
 
 // 模块 build.gradle
 dependencies {
-    implementation 'com.github.bonepeople:AndroidWidget:1.7.4'
+    implementation 'com.github.bonepeople:AndroidWidget:1.7.7'
 }
 ```
 
