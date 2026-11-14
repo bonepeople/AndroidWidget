@@ -4,7 +4,7 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 ## Introducción
 
-`AppEvent` es un bus de eventos global con conocimiento del ciclo de vida, basado en `MutableSharedFlow`. Publica eventos desde cualquier lugar; suscríbete en un `LifecycleOwner` (p. ej. `Activity`, `Fragment`).
+`AppEvent` es un bus de eventos global con conocimiento del ciclo de vida, basado en un `Channel` ilimitado y un `MutableSharedFlow`. Publica eventos desde cualquier lugar; suscríbete en un `LifecycleOwner` (p. ej. `Activity`, `Fragment`).
 
 **La publicación es independiente del ciclo de vida del suscriptor** — `post` / `postAsync` siempre emiten al flujo global. **La recepción depende del ciclo de vida** — un suscriptor recoge eventos solo cuando su ciclo de vida está al menos en `minState`; al caer por debajo, deja de recibir y los eventos emitidos durante el periodo inactivo no se reproducen al reanudarse. La suscripción se cancela al destruirse.
 
@@ -79,7 +79,7 @@ AppEvent.postAsync(TabChangedEvent(0))
 AppEvent.postAsync(CommonEvent("refresh"))
 ```
 
-`postAsync` se despacha mediante el ámbito `default` de [CoroutinesHolder](../CoroutinesHolder/README.es-ES.md) en un hilo en segundo plano; los callbacks del suscriptor siguen ejecutándose en el hilo principal vía `lifecycleScope`.
+`postAsync` solo llama a `Channel.trySend` y vuelve tras el intento de encolado, sin esperar a que los suscriptores terminen. Después, un único consumidor en el ámbito `default` de [CoroutinesHolder](../CoroutinesHolder/README.es-ES.md) emite al flujo compartido. Los callbacks del suscriptor siguen ejecutándose en el hilo principal vía `lifecycleScope`.
 
 ### Resumen de API
 
@@ -87,7 +87,7 @@ AppEvent.postAsync(CommonEvent("refresh"))
 |--------|-------------|
 | `register(owner, minState, action)` | Suscripción vinculada al ciclo de vida; `action` es una función suspend |
 | `post(event)` | Publicar un evento desde una corrutina |
-| `postAsync(event)` | Publicar un evento de forma asíncrona desde un contexto no corrutina |
+| `postAsync(event)` | Encolar un evento desde un contexto no corrutina. Vuelve tras `trySend`, no después de que terminen los suscriptores |
 
 ## Notas
 
@@ -95,7 +95,8 @@ AppEvent.postAsync(CommonEvent("refresh"))
 - **Publicación vs recepción**: Los emisores no se ven afectados por el ciclo de vida de ningún suscriptor. Otros suscriptores que sigan activos reciben eventos con normalidad.
 - **Solo en proceso**: Los objetos de evento se pasan por referencia dentro del mismo proceso; no hay entrega entre procesos.
 - **Seguro con ciclo de vida**: Las suscripciones se cancelan automáticamente al destruir la `Activity` / `Fragment`; no hace falta desregistrar manualmente.
-- **Política de búfer**: Usa manejo de desbordamiento `DROP_OLDEST`; bajo carga extrema, pueden descartarse eventos antiguos.
+- **Cola y búfer**: La cola es `Channel.UNLIMITED`. El flujo compartido usa `replay = 0`, `extraBufferCapacity = 64` y `onBufferOverflow = SUSPEND`. Un suscriptor lento puede suspender al único consumidor y hacer crecer la cola ilimitada. No se descartan eventos. Esta contrapresión es intencional.
+- **Orden**: Los suscriptores que necesiten respetar el orden de encolado deben procesar cada evento directamente en el callback. No inicies una corrutina nueva por cada evento.
 - **Filtrado por tipo**: Cada suscriptor recibe todos los eventos publicados; filtra con `when`. Los eventos tipados son más fáciles de mantener que `CommonEvent`.
 
 ## Código fuente

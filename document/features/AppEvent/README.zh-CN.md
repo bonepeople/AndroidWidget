@@ -4,7 +4,7 @@
 
 ## 简介
 
-`AppEvent` 是基于 `MutableSharedFlow` 的生命周期感知全局事件总线。可在任意位置发送事件，在 `LifecycleOwner`（如 `Activity`、`Fragment`）中订阅。
+`AppEvent` 是基于无限 `Channel` 和 `MutableSharedFlow` 的生命周期感知全局事件总线。可在任意位置发送事件，在 `LifecycleOwner`（如 `Activity`、`Fragment`）中订阅。
 
 **发送与订阅方的生命周期无关** — `post` / `postAsync` 始终向全局 Flow 写入事件。**接收受生命周期约束** — 订阅者仅在其生命周期不低于 `minState` 时收集事件；低于该状态时停止接收，此期间发出的事件不会在生命周期恢复后补发。销毁时自动取消订阅。
 
@@ -79,7 +79,7 @@ AppEvent.postAsync(TabChangedEvent(0))
 AppEvent.postAsync(CommonEvent("refresh"))
 ```
 
-`postAsync` 通过 [CoroutinesHolder](../CoroutinesHolder/README.zh-CN.md) 的 `default` 作用域在后台线程分发；订阅者回调仍通过 `lifecycleScope` 在主线程执行。
+`postAsync` 只调用 `Channel.trySend`，入队尝试结束后立即返回，不会等待订阅者处理完成。随后由 [CoroutinesHolder](../CoroutinesHolder/README.zh-CN.md) `default` 上的单个消费者写入共享 Flow。订阅者回调仍通过 `lifecycleScope` 在主线程执行。
 
 ### API 概览
 
@@ -87,7 +87,7 @@ AppEvent.postAsync(CommonEvent("refresh"))
 |------|------|
 | `register(owner, minState, action)` | 生命周期绑定订阅；`action` 为 suspend 函数 |
 | `post(event)` | 在协程中发送事件 |
-| `postAsync(event)` | 在非协程上下文中异步发送事件 |
+| `postAsync(event)` | 在非协程上下文中入队。`trySend` 结束后返回，不等待订阅者处理完成 |
 
 ## 注意事项
 
@@ -95,7 +95,8 @@ AppEvent.postAsync(CommonEvent("refresh"))
 - **发送与接收分离**：发送方不受任何订阅方生命周期影响；其他仍处于 active 状态的订阅者照常接收。
 - **进程内**：事件对象在同一进程内按引用传递，不支持跨进程。
 - **生命周期安全**：`Activity` / `Fragment` 销毁时自动取消订阅，无需手动注销。
-- **缓冲策略**：使用 `DROP_OLDEST` 溢出处理；极端负载下可能丢弃较早事件。
+- **队列与缓冲**：队列为 `Channel.UNLIMITED`。共享 Flow 为 `replay = 0`、`extraBufferCapacity = 64`、`onBufferOverflow = SUSPEND`。慢订阅者会挂起唯一消费者，无限队列因此增长，事件不会被丢弃。该背压是既有行为，本次予以保留。
+- **顺序**：需要按入队顺序处理时，应在回调里直接串行执行，不要为每条事件再启动新协程。
 - **类型过滤**：每个订阅者都会收到所有已发送事件，需用 `when` 过滤。强类型事件比 `CommonEvent` 更易维护。
 
 ## 源码链接

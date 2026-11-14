@@ -6,18 +6,22 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.widget.CoroutinesHolder
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 /**
- * Lifecycle-aware global event bus based on [MutableSharedFlow].
+ * Lifecycle-aware global event bus based on [Channel] and [MutableSharedFlow].
  *
  * Post [AppEventData] from anywhere, subscribe in [LifecycleOwner] (e.g. Activity, Fragment).
- * Posting is independent of subscriber lifecycle; receiving is gated by [minState].
- * When lifecycle is below [minState], the subscriber stops collecting and events emitted
- * during that period are not replayed on resume. Subscription is cancelled on destroy.
+ * Events are enqueued immediately and dispatched sequentially by a single coroutine.
+ * Concurrent posting is thread-safe, and events are dispatched in FIFO order.
+ *
+ * Receiving is gated by minState. When lifecycle is below minState,
+ * the subscriber stops collecting. Events emitted during that period are not
+ * replayed on resume. Subscription is canceled on destroy.
  *
  * Usage:
  * ```
@@ -38,20 +42,31 @@ import kotlinx.coroutines.launch
  * ```
  *
  * Notes:
- * - Non-sticky: subscribers do not receive events posted before registration.
+ * - FIFO: events are dispatched in the order they enter the queue.
+ * - Non-blocking posting: postAsync returns without waiting for event processing.
+ * - Non-sticky broadcasting: events are not replayed to new subscribers.
  * - In-process only: event objects are passed by reference within the same process.
+ * - The dispatcher uses [CoroutinesHolder.default] and shares its lifecycle.
  */
 @Suppress("Unused")
 object AppEvent {
-    private val flow = MutableSharedFlow<AppEventData>(0, Int.MAX_VALUE, BufferOverflow.DROP_OLDEST)
+    private val queue = Channel<AppEventData>(Channel.UNLIMITED)
+    private val flow = MutableSharedFlow<AppEventData>(replay = 0, extraBufferCapacity = 64, onBufferOverflow = BufferOverflow.SUSPEND)
+
+    init {
+        CoroutinesHolder.default.launch {
+            for (event in queue) {
+                flow.emit(event)
+            }
+        }
+    }
 
     /**
      * Registers a lifecycle-aware subscriber.
      *
      * @param owner The [LifecycleOwner] to bind the subscription to.
-     * @param minState Minimum lifecycle state for a subscriber to receive events; defaults to [Lifecycle.State.STARTED].
-     *                 When lifecycle drops below this state, the subscriber stops collecting;
-     *                 events emitted during the inactive period are not replayed on resume.
+     * @param minState Minimum lifecycle state for receiving events; defaults to [Lifecycle.State.STARTED].
+     *                 Events emitted while inactive are not replayed on resume.
      * @param action Suspend callback invoked for each event; use `when` to handle specific event types.
      */
     fun register(owner: LifecycleOwner, minState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (AppEventData) -> Unit) {
@@ -59,21 +74,26 @@ object AppEvent {
     }
 
     /**
-     * Posts an event. Must be called from a coroutine.
+     * Enqueues an event from a coroutine.
+     * Returns without waiting for event processing.
+     * Events are dispatched asynchronously in FIFO order.
      *
      * @param event The event to post.
      */
     suspend fun post(event: AppEventData) {
-        flow.emit(event)
+        queue.send(event)
     }
 
     /**
-     * Posts an event from a non-coroutine context.
-     * Dispatches via [CoroutinesHolder.default]; subscribers still receive on the main thread.
+     * Enqueues an event from a non-coroutine context.
+     * Returns without waiting for event processing.
+     * Safe for concurrent calls from multiple threads.
      *
      * @param event The event to post.
      */
     fun postAsync(event: AppEventData) {
-        CoroutinesHolder.default.launch { post(event) }
+        check(queue.trySend(event).isSuccess) {
+            "AppEvent queue is closed"
+        }
     }
 }
