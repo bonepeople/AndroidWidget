@@ -88,7 +88,7 @@ RecyclerView linear item spacing with optional colored dividers and padding.
 Global coroutine scopes (`Default`, `Main`, `IO`) for simplified launching.
 
 #### [AppEvent](./AppEvent)
-Lifecycle-aware global event bus based on `Flow`. Non-sticky delivery, typed or `CommonEvent` generic events, `post` / `postAsync` posting modes.
+Global event bus based on `Flow`. Non-sticky delivery, lifecycle or `CoroutineScope` subscriptions, typed or `CommonEvent` events, `post` / `postAsync` posting modes.
 
 ## 8. Multi-language Management
 

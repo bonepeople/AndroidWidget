@@ -88,7 +88,7 @@ Decorador de espaciado para elementos lineales en RecyclerView, con divisores de
 Ámbitos globales de corrutinas (`Default`, `Main`, `IO`) para simplificar lanzamientos.
 
 #### [AppEvent](./AppEvent)
-Bus de eventos global con conocimiento del ciclo de vida, basado en `Flow`. Entrega no pegajosa, eventos tipados o genéricos con `CommonEvent`, modos de publicación `post` / `postAsync`.
+Bus de eventos global basado en `Flow`. Entrega no pegajosa, suscripciones por ciclo de vida o `CoroutineScope`, eventos tipados o genéricos con `CommonEvent` y modos de publicación `post` / `postAsync`.
 
 ## 8. Gestión multilingüe
 

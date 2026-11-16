@@ -4,9 +4,9 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 
 ## Introducción
 
-`AppEvent` es un bus de eventos global con conocimiento del ciclo de vida, basado en un `Channel` ilimitado y un `MutableSharedFlow`. Publica eventos desde cualquier lugar; suscríbete en un `LifecycleOwner` (p. ej. `Activity`, `Fragment`).
+`AppEvent` es un bus de eventos global basado en un `Channel` ilimitado y un `MutableSharedFlow`. Publica eventos desde cualquier lugar; suscríbete en un `LifecycleOwner` (p. ej. `Activity`, `Fragment`) o en cualquier `CoroutineScope`.
 
-**La publicación es independiente del ciclo de vida del suscriptor** — `post` / `postAsync` siempre emiten al flujo global. **La recepción depende del ciclo de vida** — un suscriptor recoge eventos solo cuando su ciclo de vida está al menos en `minState`; al caer por debajo, deja de recibir y los eventos emitidos durante el periodo inactivo no se reproducen al reanudarse. La suscripción se cancela al destruirse.
+**La publicación es independiente del ciclo de vida del suscriptor** — `post` / `postAsync` siempre encolan eventos para el flujo global. **La recepción vinculada al ciclo de vida depende de `minState`** — al caer por debajo de ese estado, el suscriptor deja de recibir y los eventos emitidos durante el periodo inactivo no se reproducen al reanudarse. Un suscriptor de ámbito permanece activo hasta que se cancela su ámbito o el `Job` devuelto.
 
 ## Características
 
@@ -14,6 +14,7 @@ Versiones de idioma: [English](./README.md) | [中文](./README.zh-CN.md)
 - Eventos tipados `data class` o señales genéricas `CommonEvent`
 - Modos de publicación `post` (corrutina) y `postAsync` (no corrutina)
 - Limpieza automática de suscripciones al destruir el ciclo de vida
+- Suscripción mediante `CoroutineScope` para trabajos que deben permanecer activos en segundo plano
 
 ## Uso
 
@@ -64,6 +65,16 @@ AppEvent.register(this, minState = Lifecycle.State.CREATED) { event ->
 }
 ```
 
+Suscríbete sin ciclo de vida cuando el recolector deba seguir activo en segundo plano. La recolección comienza antes de que vuelva `register`. Cancela el ámbito o el `Job` devuelto para detenerla:
+
+```kotlin
+val job = AppEvent.register(myScope) { event ->
+    if (event is CommonEvent && event.name == "refresh") {
+        reloadData()
+    }
+}
+```
+
 ### Publicar eventos
 
 Usa `post` dentro de una corrutina; usa `postAsync` desde contextos no corrutina (callbacks, listeners de clic, etc.):
@@ -79,22 +90,24 @@ AppEvent.postAsync(TabChangedEvent(0))
 AppEvent.postAsync(CommonEvent("refresh"))
 ```
 
-`postAsync` solo llama a `Channel.trySend` y vuelve tras el intento de encolado, sin esperar a que los suscriptores terminen. Después, un único consumidor en el ámbito `default` de [CoroutinesHolder](../CoroutinesHolder/README.es-ES.md) emite al flujo compartido. Los callbacks del suscriptor siguen ejecutándose en el hilo principal vía `lifecycleScope`.
+`postAsync` solo llama a `Channel.trySend` y vuelve tras el intento de encolado, sin esperar a que los suscriptores terminen. Después, un único consumidor en el ámbito `default` de [CoroutinesHolder](../CoroutinesHolder/README.es-ES.md) emite al flujo compartido. Los suscriptores con ciclo de vida recogen en el hilo principal vía `lifecycleScope`. Un suscriptor de ámbito recoge en el despachador del ámbito proporcionado.
 
 ### Resumen de API
 
 | Método | Descripción |
 |--------|-------------|
 | `register(owner, minState, action)` | Suscripción vinculada al ciclo de vida; `action` es una función suspend |
+| `register(scope, action)` | Suscripción vinculada a un ámbito. Devuelve un `Job`. La recolección comienza antes de que vuelva la llamada |
 | `post(event)` | Publicar un evento desde una corrutina |
 | `postAsync(event)` | Encolar un evento desde un contexto no corrutina. Vuelve tras `trySend`, no después de que terminen los suscriptores |
 
 ## Notas
 
 - **No pegajoso**: Los eventos publicados antes del registro no se reproducen. Los eventos publicados mientras un suscriptor está inactivo (ciclo de vida por debajo de `minState`) tampoco se reproducen al reanudarse — solo se reciben eventos publicados después.
-- **Publicación vs recepción**: Los emisores no se ven afectados por el ciclo de vida de ningún suscriptor. Otros suscriptores que sigan activos reciben eventos con normalidad.
+- **Publicación vs recepción**: Los emisores no se ven afectados por el ciclo de vida de ningún suscriptor. Los suscriptores con ciclo de vida solo reciben mientras están activos; los suscriptores de ámbito reciben hasta que se cancelan.
 - **Solo en proceso**: Los objetos de evento se pasan por referencia dentro del mismo proceso; no hay entrega entre procesos.
-- **Seguro con ciclo de vida**: Las suscripciones se cancelan automáticamente al destruir la `Activity` / `Fragment`; no hace falta desregistrar manualmente.
+- **Duración de la suscripción**: Una suscripción con ciclo de vida se cancela al destruirse su `Activity` / `Fragment`. Una suscripción de ámbito termina cuando se cancela su `CoroutineScope` o el `Job` devuelto.
+- **Política de excepciones del ámbito**: Las excepciones de un suscriptor de ámbito siguen la política de propagación y manejo del ámbito proporcionado. La app debe elegir un `SupervisorJob`, instalar un `CoroutineExceptionHandler` o capturar las excepciones cuando sea necesario.
 - **Cola y búfer**: La cola es `Channel.UNLIMITED`. El flujo compartido usa `replay = 0`, `extraBufferCapacity = 64` y `onBufferOverflow = SUSPEND`. Un suscriptor lento puede suspender al único consumidor y hacer crecer la cola ilimitada. No se descartan eventos. Esta contrapresión es intencional.
 - **Orden**: Los suscriptores que necesiten respetar el orden de encolado deben procesar cada evento directamente en el callback. No inicies una corrutina nueva por cada evento.
 - **Filtrado por tipo**: Cada suscriptor recibe todos los eventos publicados; filtra con `when`. Los eventos tipados son más fáciles de mantener que `CommonEvent`.

@@ -4,9 +4,9 @@
 
 ## 简介
 
-`AppEvent` 是基于无限 `Channel` 和 `MutableSharedFlow` 的生命周期感知全局事件总线。可在任意位置发送事件，在 `LifecycleOwner`（如 `Activity`、`Fragment`）中订阅。
+`AppEvent` 是基于无限 `Channel` 和 `MutableSharedFlow` 的全局事件总线。可在任意位置发送事件，在 `LifecycleOwner`（如 `Activity`、`Fragment`）或任意 `CoroutineScope` 中订阅。
 
-**发送与订阅方的生命周期无关** — `post` / `postAsync` 始终向全局 Flow 写入事件。**接收受生命周期约束** — 订阅者仅在其生命周期不低于 `minState` 时收集事件；低于该状态时停止接收，此期间发出的事件不会在生命周期恢复后补发。销毁时自动取消订阅。
+**发送与订阅方的生命周期无关** — `post` / `postAsync` 始终将事件加入全局 Flow 的队列。**生命周期订阅受 `minState` 约束** — 生命周期低于该状态时停止接收，此期间发出的事件不会在生命周期恢复后补发。Scope 订阅保持活跃，直到其作用域或返回的 `Job` 被取消。
 
 ## 功能
 
@@ -14,6 +14,7 @@
 - 强类型 `data class` 事件或通用 `CommonEvent` 信号
 - `post`（协程）和 `postAsync`（非协程）两种发送模式
 - 生命周期销毁时自动清理订阅
+- 不依赖界面生命周期的 `CoroutineScope` 订阅
 
 ## 使用方式
 
@@ -64,6 +65,16 @@ AppEvent.register(this, minState = Lifecycle.State.CREATED) { event ->
 }
 ```
 
+需要在后台保持收集时，可以使用不绑定生命周期的订阅。`register` 返回前已经开始收集；取消作用域或返回的 `Job` 即可停止：
+
+```kotlin
+val job = AppEvent.register(myScope) { event ->
+    if (event is CommonEvent && event.name == "refresh") {
+        reloadData()
+    }
+}
+```
+
 ### 发送事件
 
 在协程中使用 `post`；在回调、点击监听等非协程上下文中使用 `postAsync`：
@@ -79,22 +90,24 @@ AppEvent.postAsync(TabChangedEvent(0))
 AppEvent.postAsync(CommonEvent("refresh"))
 ```
 
-`postAsync` 只调用 `Channel.trySend`，入队尝试结束后立即返回，不会等待订阅者处理完成。随后由 [CoroutinesHolder](../CoroutinesHolder/README.zh-CN.md) `default` 上的单个消费者写入共享 Flow。订阅者回调仍通过 `lifecycleScope` 在主线程执行。
+`postAsync` 只调用 `Channel.trySend`，入队尝试结束后立即返回，不会等待订阅者处理完成。随后由 [CoroutinesHolder](../CoroutinesHolder/README.zh-CN.md) `default` 上的单个消费者写入共享 Flow。生命周期订阅者仍通过 `lifecycleScope` 在主线程收集；scope 订阅者在传入作用域的调度器上收集。
 
 ### API 概览
 
 | 方法 | 说明 |
 |------|------|
 | `register(owner, minState, action)` | 生命周期绑定订阅；`action` 为 suspend 函数 |
+| `register(scope, action)` | 绑定 `CoroutineScope` 的订阅，返回 `Job`。调用返回前已开始收集 |
 | `post(event)` | 在协程中发送事件 |
 | `postAsync(event)` | 在非协程上下文中入队。`trySend` 结束后返回，不等待订阅者处理完成 |
 
 ## 注意事项
 
 - **非粘性**：注册前发送的事件不会重放。订阅者处于 inactive 状态（生命周期低于 `minState`）期间发送的事件，恢复后也不会补发，仅接收恢复后新发送的事件。
-- **发送与接收分离**：发送方不受任何订阅方生命周期影响；其他仍处于 active 状态的订阅者照常接收。
+- **发送与接收分离**：发送方不受任何订阅方生命周期影响。生命周期订阅者仅在 active 状态下接收；scope 订阅者持续接收直到被取消。
 - **进程内**：事件对象在同一进程内按引用传递，不支持跨进程。
-- **生命周期安全**：`Activity` / `Fragment` 销毁时自动取消订阅，无需手动注销。
+- **订阅生命周期**：`Activity` / `Fragment` 销毁时自动取消生命周期订阅。Scope 订阅在其 `CoroutineScope` 或返回的 `Job` 被取消时结束。
+- **Scope 异常策略**：scope 订阅的回调异常遵循传入作用域的传播与处理策略。App 应按需选择 `SupervisorJob`、配置 `CoroutineExceptionHandler` 或自行捕获异常。
 - **队列与缓冲**：队列为 `Channel.UNLIMITED`。共享 Flow 为 `replay = 0`、`extraBufferCapacity = 64`、`onBufferOverflow = SUSPEND`。慢订阅者会挂起唯一消费者，无限队列因此增长，事件不会被丢弃。该背压是既有行为，本次予以保留。
 - **顺序**：需要按入队顺序处理时，应在回调里直接串行执行，不要为每条事件再启动新协程。
 - **类型过滤**：每个订阅者都会收到所有已发送事件，需用 `when` 过滤。强类型事件比 `CommonEvent` 更易维护。

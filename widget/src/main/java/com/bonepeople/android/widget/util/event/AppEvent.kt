@@ -5,23 +5,30 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bonepeople.android.widget.CoroutinesHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 
 /**
- * Lifecycle-aware global event bus based on [Channel] and [MutableSharedFlow].
+ * Global event bus based on [Channel] and [MutableSharedFlow].
  *
- * Post [AppEventData] from anywhere, subscribe in [LifecycleOwner] (e.g. Activity, Fragment).
+ * Post [AppEventData] from anywhere. Subscribe with a [LifecycleOwner] (for example Activity or Fragment)
+ * or with a [CoroutineScope] when the subscriber must stay active in the background.
  * Events are enqueued immediately and dispatched sequentially by a single coroutine.
  * Concurrent posting is thread-safe, and events are dispatched in FIFO order.
  *
- * Receiving is gated by minState. When lifecycle is below minState,
+ * Receiving on a [LifecycleOwner] is gated by minState. When lifecycle is below minState,
  * the subscriber stops collecting. Events emitted during that period are not
  * replayed on resume. Subscription is canceled on destroy.
+ * A scope subscriber is not gated by lifecycle. Cancel the scope or the returned [Job] to stop it.
  *
  * Usage:
  * ```
@@ -71,6 +78,27 @@ object AppEvent {
      */
     fun register(owner: LifecycleOwner, minState: Lifecycle.State = Lifecycle.State.STARTED, action: suspend (AppEventData) -> Unit) {
         flow.flowWithLifecycle(owner.lifecycle, minState).onEach(action).launchIn(owner.lifecycleScope)
+    }
+
+    /**
+     * Registers a subscriber bound to [scope].
+     *
+     * When [scope] is active, the subscription is established before this method returns.
+     * With a regular dispatcher, event handling resumes through the [scope] context after subscription setup.
+     * The returned [Job] is cancelled when [scope] is cancelled.
+     * Events posted before collection starts are not replayed.
+     * Exceptions thrown by [action] follow the propagation and handling policy of [scope].
+     *
+     * @param scope Scope that owns the subscription.
+     * @param action Suspend callback invoked for each event. Handle events serially inside this callback.
+     */
+    fun register(scope: CoroutineScope, action: suspend (AppEventData) -> Unit): Job {
+        return scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            flow.onSubscription {
+                // The slot is active; suspend once so action cannot run during undispatched setup.
+                yield()
+            }.collect { event -> action(event) }
+        }
     }
 
     /**

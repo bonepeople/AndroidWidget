@@ -88,7 +88,7 @@ RecyclerView 线性布局的间距装饰器，支持彩色分隔线与内边距�
 全局协程作用域（`Default`、`Main`、`IO`）便于统一启动。
 
 #### [AppEvent](./AppEvent)
-基于 `Flow` 的全局事件总线，支持生命周期感知的跨组件通信。非粘性分发、强类型或 `CommonEvent` 通用事件、`post` / `postAsync` 双模式发送。
+基于 `Flow` 的全局事件总线。支持生命周期或 `CoroutineScope` 订阅、非粘性分发、强类型或 `CommonEvent` 通用事件、`post` / `postAsync` 双模式发送。
 
 ## 8. 多语言管理
 
