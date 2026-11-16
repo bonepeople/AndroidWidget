@@ -48,6 +48,9 @@ AndroidWidget 提供的工具模块目录。各模块均有独立 README，包�
 #### [AppLog](./AppLog)
 增强型日志工具，支持线程信息、调用位置与可复用日志实例。
 
+#### [LibraryLog](./LibraryLog)
+依赖库运行日志，便于 App 开发者查看依赖库正在执行的工作。
+
 #### [AppSpan](./AppSpan)
 简化 `SpannableString` 样式的创建与应用。链式 API 支持文字颜色、背景、下划线、可点击区域等。
 

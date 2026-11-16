@@ -75,6 +75,8 @@ val job = AppEvent.register(myScope) { event ->
 }
 ```
 
+`LibraryLogEvent` 是依赖库发布的运行日志，详见 [LibraryLog](../LibraryLog/README.zh-CN.md)。
+
 ### 发送事件
 
 在协程中使用 `post`；在回调、点击监听等非协程上下文中使用 `postAsync`：

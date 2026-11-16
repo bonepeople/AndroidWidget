@@ -75,6 +75,8 @@ val job = AppEvent.register(myScope) { event ->
 }
 ```
 
+`LibraryLogEvent` es un registro de ejecución publicado por una biblioteca usada como dependencia. Consulta [LibraryLog](../LibraryLog/README.es-ES.md).
+
 ### Publicar eventos
 
 Usa `post` dentro de una corrutina; usa `postAsync` desde contextos no corrutina (callbacks, listeners de clic, etc.):

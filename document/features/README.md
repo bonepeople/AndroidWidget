@@ -48,6 +48,9 @@ Show/hide the software keyboard and automatically dismiss on outside touch.
 #### [AppLog](./AppLog)
 Enhanced logging with thread info, caller location, and reusable log instances.
 
+#### [LibraryLog](./LibraryLog)
+Runtime logs from dependency libraries, so app developers can see what those libraries are doing.
+
 #### [AppSpan](./AppSpan)
 Simplify `SpannableString` creation with a chainable API for text color, background, underline, clickable spans, and more.
 

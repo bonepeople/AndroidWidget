@@ -75,6 +75,8 @@ val job = AppEvent.register(myScope) { event ->
 }
 ```
 
+`LibraryLogEvent` is a runtime log published by a dependency library. See [LibraryLog](../LibraryLog/README.md).
+
 ### Post events
 
 Use `post` inside a coroutine; use `postAsync` from non-coroutine contexts (callbacks, click listeners, etc.):

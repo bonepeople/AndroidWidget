@@ -48,6 +48,9 @@ Mostrar/ocultar el teclado y cerrarlo automáticamente al tocar fuera.
 #### [AppLog](./AppLog)
 Registro mejorado con información de hilo, ubicación del llamador e instancias reutilizables.
 
+#### [LibraryLog](./LibraryLog)
+Registros de ejecución de bibliotecas usadas como dependencias, para que el desarrollador de la app pueda ver lo que están haciendo.
+
 #### [AppSpan](./AppSpan)
 Simplificar la creación de `SpannableString` con API encadenada para color de texto, fondo, subrayado, áreas clicables, etc.
 
