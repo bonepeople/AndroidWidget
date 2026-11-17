@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.bonepeople.android.widget.ActivityHolder
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.activity.result.launch
+import com.bonepeople.android.widget.internal.WidgetLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -35,6 +36,7 @@ object AppPermission {
      * Requests permissions and suspends until the request is complete.
      */
     suspend fun request(vararg permissions: String): PermissionResult {
+        WidgetLog.permission.info("request ${permissions.joinToString()}")
         return withContext(Dispatchers.Main.immediate) {
             val permissionStatuses = LinkedHashMap<String, PermissionStatus>().apply {
                 permissions.forEach { permission ->
@@ -47,10 +49,16 @@ object AppPermission {
                 .toTypedArray()
 
             if (requestablePermissions.isEmpty()) {
+                WidgetLog.permission.debug("request settled without dialog")
                 return@withContext PermissionResult(permissionStatuses)
             }
 
-            val activity = ActivityHolder.getTopActivity() ?: throw IllegalStateException("No active Activity is available to request permissions.")
+            val activity = ActivityHolder.getTopActivity()
+            if (activity == null) {
+                val error = IllegalStateException("No active Activity is available to request permissions.")
+                WidgetLog.permission.error(error.message, error)
+                throw error
+            }
             val activityResultContract = RequestMultiplePermissions()
             activityResultContract.createIntent(ApplicationHolder.app, requestablePermissions).launch().await().onResult { result ->
                 activityResultContract.parseResult(result.resultCode, result.data).forEach { (permission, granted) ->
@@ -61,6 +69,7 @@ object AppPermission {
                     }
                 }
             }
+            WidgetLog.permission.info("result ${permissionStatuses.entries.joinToString { "${it.key}=${it.value}" }}")
             PermissionResult(permissionStatuses)
         }
     }

@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.view.postDelayed
 import com.bonepeople.android.widget.ActivityHolder
+import com.bonepeople.android.widget.internal.WidgetLog
 
 /**
  * Utility class for managing the software keyboard.
@@ -39,6 +40,7 @@ object AppKeyboard {
      * @param editText The EditText for which the keyboard should be shown.
      */
     fun showKeyboard(editText: EditText) {
+        WidgetLog.keyboard.debug("show")
         editText.postDelayed(100) {
             editText.requestFocus()
             val inputMethodManager = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -51,12 +53,15 @@ object AppKeyboard {
      */
     fun hideKeyboard() {
         val focusedView = ActivityHolder.getTopActivity()?.window?.currentFocus
-        focusedView?.run {
-            clearFocus()
-            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            windowToken?.let { token ->
-                inputMethodManager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
-            }
+        if (focusedView == null) {
+            WidgetLog.keyboard.debug("hide skipped, no focused view")
+            return
+        }
+        WidgetLog.keyboard.debug("hide")
+        focusedView.clearFocus()
+        val inputMethodManager = focusedView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        focusedView.windowToken?.let { token ->
+            inputMethodManager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 }

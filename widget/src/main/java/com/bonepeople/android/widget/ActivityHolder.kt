@@ -2,6 +2,7 @@ package com.bonepeople.android.widget
 
 import android.app.Activity
 import android.os.Bundle
+import com.bonepeople.android.widget.internal.WidgetLog
 import java.util.*
 import kotlin.collections.HashMap
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,26 +54,32 @@ object ActivityHolder : DefaultActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         activityList.addLast(activity)
+        WidgetLog.activity.debug("activity created: ${activity.javaClass.simpleName}, count=${activityList.size}")
     }
 
     override fun onActivityStarted(activity: Activity) {
         startedActivityCount++
+        WidgetLog.activity.debug("activity started: ${activity.javaClass.simpleName}, started=$startedActivityCount")
         if (startedActivityCount == 1 && !activityChangingConfigurations) {
             appForegroundState.value = true
+            WidgetLog.activity.info("app foreground")
         }
     }
 
     override fun onActivityStopped(activity: Activity) {
         activityChangingConfigurations = activity.isChangingConfigurations
         startedActivityCount--
+        WidgetLog.activity.debug("activity stopped: ${activity.javaClass.simpleName}, started=$startedActivityCount, changingConfigurations=$activityChangingConfigurations")
         if (startedActivityCount == 0 && !activityChangingConfigurations) {
             appForegroundState.value = false
+            WidgetLog.activity.info("app background")
         }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
         activityList.remove(activity)
         activityData.remove(activity)
+        WidgetLog.activity.debug("activity destroyed: ${activity.javaClass.simpleName}, count=${activityList.size}")
     }
 
     /**

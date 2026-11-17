@@ -2,6 +2,7 @@ package androidx.startup
 
 import android.app.Application
 import android.content.Context
+import com.bonepeople.android.widget.internal.WidgetLog
 
 /**
  * Helper utility class for Startup initialization.
@@ -17,6 +18,7 @@ object StartupHelper {
      *   to ensure that initialization is completed before usage.
      */
     fun initializeAll(context: Context) {
+        WidgetLog.startup.info("initializeAll")
         AppInitializer.getInstance(context).discoverAndInitialize()
     }
 }

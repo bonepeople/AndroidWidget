@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.bonepeople.android.widget.ApplicationHolder
+import com.bonepeople.android.widget.internal.WidgetLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -139,9 +140,12 @@ class AppData private constructor(name: String) {
         @Synchronized
         fun create(storeName: String): AppData {
             if (!isValidFolderName(storeName)) {
-                throw IllegalArgumentException("Invalid name: $storeName")
+                val error = IllegalArgumentException("Invalid name: $storeName")
+                WidgetLog.data.error(error.message, error)
+                throw error
             }
             return instances.getOrPut(storeName) {
+                WidgetLog.data.info("create store=$storeName")
                 val instance = AppData(storeName)
                 runBlocking {
                     masterStore.edit {

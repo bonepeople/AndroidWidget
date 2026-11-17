@@ -1,5 +1,6 @@
 package com.bonepeople.android.widget.resource
 
+import com.bonepeople.android.widget.internal.WidgetLog
 import java.util.Locale
 
 /**
@@ -27,6 +28,7 @@ object StringResourceManager {
      * @param locales One or more locales. The string instance will be registered for each specified locale (e.g., `Locale.US`).
      */
     fun register(strings: StringTemplate, vararg locales: Locale) {
+        WidgetLog.stringResource.debug("register ${strings.templateClass.simpleName}, locales=${locales.joinToString { it.toLanguageTag() }}")
         locales.forEach { locale: Locale ->
             // Retrieve the class name of the string template to create a corresponding container
             val className: String = strings.templateClass.name
@@ -60,9 +62,11 @@ object StringResourceManager {
         val strings: StringTemplate? = countryMap[locale.country]
         return strings as? T ?: if (countryMap.isEmpty()) {
             // If no match is found for the language dimension, return the first registered string instance
+            WidgetLog.stringResource.warn("fallback ${templateClass.simpleName}, locale=${locale.toLanguageTag()}, reason=language")
             languageMap.values.first().values.first() as T
         } else {
             // If no match is found for the country dimension, return a string instance from the same language
+            WidgetLog.stringResource.warn("fallback ${templateClass.simpleName}, locale=${locale.toLanguageTag()}, reason=country")
             countryMap.values.first() as T
         }
     }

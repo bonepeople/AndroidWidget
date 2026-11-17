@@ -3,6 +3,7 @@ package com.bonepeople.android.widget.activity.result
 import android.app.Activity
 import android.content.Intent
 import com.bonepeople.android.widget.ActivityHolder
+import com.bonepeople.android.widget.internal.WidgetLog
 
 /**
  * Launches the [Intent] and returns an [IntentResult], used to obtain the result returned by an Activity.
@@ -22,8 +23,12 @@ fun Intent.launch(): IntentResult {
             return (it as IntentLauncher).launch(this)
         }
         val recordLog: String = IntentLauncher.stackTraceToString()
-        throw IllegalStateException("The number of simultaneously used IntentLaunchers exceeds the limit. You can adjust the limit by modifying IntentLauncher.initialCapacity.\n$recordLog")
+        val message = "The number of simultaneously used IntentLaunchers exceeds the limit. You can adjust the limit by modifying IntentLauncher.initialCapacity.\n$recordLog"
+        WidgetLog.intent.error("launch rejected, launcher capacity exceeded")
+        throw IllegalStateException(message)
     } else {
-        throw IllegalStateException("${topActivity?.javaClass} must inherit from ComponentActivity to use this method.")
+        val message = "${topActivity?.javaClass} must inherit from ComponentActivity to use this method."
+        WidgetLog.intent.error(message)
+        throw IllegalStateException(message)
     }
 }

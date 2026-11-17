@@ -1,5 +1,6 @@
 package com.bonepeople.android.widget
 
+import com.bonepeople.android.widget.internal.WidgetLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -72,7 +73,10 @@ object CoroutinesHolder {
      */
     suspend fun <T> runSerial(name: String, block: suspend () -> T): T {
         val mutex = getSerialMutex(name)
-        return mutex.withLock { block() }
+        return mutex.withLock {
+            WidgetLog.coroutine.debug("serial run name=$name")
+            block()
+        }
     }
 
     /**

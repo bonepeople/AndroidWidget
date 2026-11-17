@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.startup.Initializer
 import com.bonepeople.android.widget.activity.result.IntentLauncher
+import com.bonepeople.android.widget.internal.WidgetLog
 
 /**
  * Application State Holder
@@ -18,13 +19,23 @@ import com.bonepeople.android.widget.activity.result.IntentLauncher
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 object ApplicationHolder {
     private var application: Application? = null
+    private var missingAppReported = false
 
     /**
      * The current application's [Application] instance.
      * Throws an [IllegalStateException] if not successfully initialized.
      */
     val app: Application
-        get() = application ?: throw IllegalStateException("Initialization failed. Please call StartupHelper.initializeAll to initialize.")
+        get() {
+            val current = application
+            if (current != null) return current
+            val error = IllegalStateException("Initialization failed. Please call StartupHelper.initializeAll to initialize.")
+            if (!missingAppReported) {
+                missingAppReported = true
+                WidgetLog.application.error(error.message, error)
+            }
+            throw error
+        }
 
     /**
      * The current application's [PackageInfo].
@@ -66,6 +77,9 @@ object ApplicationHolder {
                 application = context
                 app.registerActivityLifecycleCallbacks(ActivityHolder)
                 app.registerActivityLifecycleCallbacks(IntentLauncher.Registry)
+                WidgetLog.application.info("initialized, package=${context.packageName}")
+            } else {
+                WidgetLog.application.warn("initialization skipped, context=${context.javaClass.name}")
             }
             return ApplicationHolder
         }

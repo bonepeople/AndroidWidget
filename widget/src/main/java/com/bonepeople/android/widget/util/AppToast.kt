@@ -3,6 +3,7 @@ package com.bonepeople.android.widget.util
 import android.widget.Toast
 import com.bonepeople.android.widget.ApplicationHolder
 import com.bonepeople.android.widget.CoroutinesHolder
+import com.bonepeople.android.widget.internal.WidgetLog
 import kotlinx.coroutines.launch
 
 /**
@@ -24,7 +25,11 @@ object AppToast {
      * @param duration Duration of the Toast: [android.widget.Toast.LENGTH_SHORT] or [android.widget.Toast.LENGTH_LONG]
      */
     fun show(content: CharSequence?, duration: Int) {
-        if (content.isNullOrBlank()) return
+        if (content.isNullOrBlank()) {
+            WidgetLog.toast.debug("show skipped, content is blank")
+            return
+        }
+        WidgetLog.toast.debug("show duration=$duration, length=${content.length}")
         CoroutinesHolder.main.launch {
             Toast.makeText(ApplicationHolder.app, content, duration).show()
         }
